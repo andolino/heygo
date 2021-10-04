@@ -236,28 +236,28 @@
 			},
 			methods: {
         getCountries(){
-          axios.get('/heygo/get-countries', {}).then((res) => {
+          axios.get(process.env.MIX_BASE_URL+'/get-countries', {}).then((res) => {
             this.countries = res.data;
             
           }).catch((error) => {});
         },
         getLessonTypeRate(){
-          axios.get('/heygo/get-lesson-type-rate', { 'user_id': this.user_id }).then((res) => {
+          axios.get(process.env.MIX_BASE_URL+'/get-lesson-type-rate', { 'user_id': this.user_id }).then((res) => {
             this.lessonTypeRate = res.data;
           }).catch((error) => {});
         },
         getLessonPlan(){
-          axios.get('/heygo/get-lesson-plan', { 'user_id': this.user_id }).then((res) => {
+          axios.get(process.env.MIX_BASE_URL+'/get-lesson-plan', { 'user_id': this.user_id }).then((res) => {
             this.lessonPlan = res.data;
           }).catch((error) => {});
         },
         getCurrencyRate(){
-          axios.get('/heygo/get-curreny-rate', { 'user_id': this.user_id }).then((res) => {
+          axios.get(process.env.MIX_BASE_URL+'/get-curreny-rate', { 'user_id': this.user_id }).then((res) => {
             this.currencyRate = res.data;
           }).catch((error) => {});
         },
         getTeachersData(){
-          axios.post('/heygo/get-teachers-details', { 'user_id': this.user_id }).then((res) => {
+          axios.post(process.env.MIX_BASE_URL+'/get-teachers-details', { 'user_id': this.user_id }).then((res) => {
             this.form.firstname = res.data[0].firstname;
             this.form.lastname = res.data[0].lastname;
             this.form.contact_no = res.data[0].contact_no;
@@ -286,7 +286,7 @@
 					data.append('objective_text', this.form.objective_text);
 					data.append('user_id', this.user_id);
 					data.append('_token', this.csrf);
-					axios.post('/heygo/update-teacher-settings', data).then((res) => {
+					axios.post(process.env.MIX_BASE_URL+'/update-teacher-settings', data).then((res) => {
             if (typeof res.data.errors === 'undefined') {
               window.location.reload();
             }

@@ -64,7 +64,7 @@
 					let data = new FormData();
 					data.append('email', this.form.email)
 					data.append('password', this.form.password)
-					axios.post('/heygo/api/register/teachers', data).then(() => {
+					axios.post(process.env.MIX_BASE_URL+'/api/register/teachers', data).then(() => {
 						this.form.reset();
 					}).catch((error) => {
 						this.form.errors.record(error.response.data.errors);

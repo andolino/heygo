@@ -121,12 +121,12 @@
 			},
 			methods: {
         getCountries(){
-          axios.get('/heygo/get-countries', {}).then((res) => {
+          axios.get(process.env.MIX_BASE_URL+'/get-countries', {}).then((res) => {
             this.countries = res.data;
           }).catch((error) => {});
         },
         getStudentsData(){
-          axios.post('/heygo/get-students-details', { 'user_id': this.user_id }).then((res) => {
+          axios.post(process.env.MIX_BASE_URL+'/get-students-details', { 'user_id': this.user_id }).then((res) => {
             this.form.firstname = res.data[0].firstname;
             this.form.lastname = res.data[0].lastname;
             this.form.contact_no = res.data[0].contact_no;
@@ -145,7 +145,7 @@
 					data.append('about_me', this.form.about_me);
 					data.append('user_id', this.user_id);
 					data.append('_token', this.csrf);
-					axios.post('/heygo/update-student-settings', data).then((res) => {
+					axios.post(process.env.MIX_BASE_URL+'/update-student-settings', data).then((res) => {
             if (typeof res.data.errors === 'undefined') {
               window.location.reload();
             }

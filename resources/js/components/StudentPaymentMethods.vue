@@ -113,7 +113,7 @@
 			},
 			methods: {
       	fetchAllBankAccount(){
-          axios.post('/heygo/get-bank-acct-per-student', data).then((res) => {
+          axios.post(process.env.MIX_BASE_URL+'/get-bank-acct-per-student', data).then((res) => {
             // if (typeof res.data.errors === 'undefined') {
             //   window.location.reload();
             // }
@@ -132,7 +132,7 @@
 					data.append('card_name', this.form.card_name);
 					data.append('user_id', this.user_id);
 					data.append('_token', this.csrf);
-					axios.post('/heygo/save-student-bank-acct', data).then((res) => {
+					axios.post(process.env.MIX_BASE_URL+'/save-student-bank-acct', data).then((res) => {
             // if (typeof res.data.errors === 'undefined') {
             //   window.location.reload();
             // }

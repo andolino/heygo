@@ -151,14 +151,14 @@
     },
     methods: {
       getTeachersAvailability(){
-        axios.get('/heygo/get-teachers-availability', { 'teachers_id' : this.user_id }).then((res) => {
+        axios.get(process.env.MIX_BASE_URL+'/get-teachers-availability', { 'teachers_id' : this.user_id }).then((res) => {
             this.calendarOptions.events = res.data[0];
           }).catch((error) => {
             console.log(error);
         });
       },
       getLessonPlan(){
-        axios.get('/heygo/get-lesson-plan', { 'user_id': this.user_id }).then((res) => {
+        axios.get(process.env.MIX_BASE_URL+'/get-lesson-plan', { 'user_id': this.user_id }).then((res) => {
           this.lessonPlan = res.data;
         }).catch((error) => {});
       },
@@ -173,7 +173,7 @@
           confirmButtonText: 'Yes'
         }).then((result) => {
           if (result.isConfirmed) {
-            axios.post('/heygo/save-teacher-availability', this.form ).then((res) => {
+            axios.post(process.env.MIX_BASE_URL+'/save-teacher-availability', this.form ).then((res) => {
               this.calendarOptions.events = res.data[0];
               // this.$refs.calendar.$emit('rerenderEvents');
               }).catch((error) => {
