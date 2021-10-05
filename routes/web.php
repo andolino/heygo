@@ -52,6 +52,7 @@ Route::post('/get-week-calendar', [HomeController::class, 'getAWeekCalendar']);
 Route::post('/get-booked-student-info', [HomeController::class, 'getBookedStudentInfo']);
 Route::get('/get-students-info/{any}', [HomeController::class, 'getStudentsInfo']);
 Route::get('/verifying-student-email/{email}', [RegisterController::class, 'verifyingStudentEmail']);
+Route::get('/verifying-teacher-email/{email}', [RegisterController::class, 'verifyingTeacherEmail']);
 Route::get('/view-reg-template', [RegisterController::class, 'viewRegTemplate']);
 
 /**

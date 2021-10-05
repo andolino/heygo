@@ -108,6 +108,7 @@ class RegisterController extends Controller
             // 'objective_title' => $request->objective_title,
             // 'objective_text'  => $request->objective_text
         ]);
+        $this->verifyTeacherEmail($request);
         return redirect()->intended('login/teachers');
     }
 
@@ -144,8 +145,40 @@ class RegisterController extends Controller
         ];
         Mail::to($email)->send(new RegisterMail($details));
     }
+    
+    public function verifyTeacherEmail($req){
+        $email = $req->email;
+        $details = [
+            'dest'=>'registration',
+            'title' => 'This is a title',
+            'body' => 'This is a body',
+            'ver_link' => url('/verifying-teacher-email') . '/' . Crypt::encryptString($email),
+        ];
+        Mail::to($email)->send(new RegisterMail($details));
+    }
 
     public function verifyingStudentEmail($encEmail){
+        $email = Crypt::decryptString($encEmail);
+        $q = Students::where('email', $email)
+                    ->update(['is_verified' => 1]);
+        if ($q) {
+            $logged_in = false;
+            return view('index', [
+                'is_verified' => true,
+                'logged_in' => $logged_in,
+                'msg' => 'Your email is already verified!'
+            ]);
+        } else {
+            $logged_in = false;
+            return view('index', [
+                'is_verified' => false,
+                'logged_in' => $logged_in,
+                'msg' => 'Error encounter!'
+            ]);
+        }
+    }
+    
+    public function verifyingTeacherEmail($encEmail){
         $email = Crypt::decryptString($encEmail);
         $q = Students::where('email', $email)
                     ->update(['is_verified' => 1]);

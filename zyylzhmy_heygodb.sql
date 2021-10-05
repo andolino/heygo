@@ -25,7 +25,7 @@ DELIMITER $$
 --
 -- Functions
 --
-CREATE DEFINER=`root`@`localhost` FUNCTION `fn_get_ctr` (`p_trans_code` VARCHAR(20), `p_yr` INT) RETURNS VARCHAR(100) CHARSET utf8mb4 BEGIN
+CREATE FUNCTION `fn_get_ctr` (`p_trans_code` VARCHAR(20), `p_yr` INT) RETURNS VARCHAR(100) CHARSET utf8mb4 BEGIN
                             DECLARE val INT;
                             DECLARE len INT;
                             DECLARE pre char(30);
