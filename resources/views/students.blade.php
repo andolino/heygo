@@ -73,6 +73,7 @@
             @else
                 <fetch-feeds :teachersdata="{{ $teachersprofile }}"></fetch-feeds>
             @endif
+            
         </div>
 
 
