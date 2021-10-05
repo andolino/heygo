@@ -61,6 +61,7 @@
 			},
 			methods: {
 				signupTeachers(){
+					console.log(process.env.MIX_BASE_URL);
 					let data = new FormData();
 					data.append('email', this.form.email)
 					data.append('password', this.form.password)
