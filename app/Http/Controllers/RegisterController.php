@@ -180,7 +180,7 @@ class RegisterController extends Controller
     
     public function verifyingTeacherEmail($encEmail){
         $email = Crypt::decryptString($encEmail);
-        $q = Students::where('email', $email)
+        $q = Teachers::where('email', $email)
                     ->update(['is_verified' => 1]);
         if ($q) {
             $logged_in = false;
