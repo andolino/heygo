@@ -68,11 +68,6 @@
                     </div>
                 </div>
                 <h2>Hey</h2>
-                <pre>
-                    @php
-                        print_r($teachers);
-                    @endphp
-                </pre>
                <fetch-feeds :findtutor="{{ $teachers }}"></fetch-feeds>
             @elseif (!empty($teachersprofile))
                 <teachers-profile :teachersdata="{{ $teachersprofile }}"></teachers-profile>
