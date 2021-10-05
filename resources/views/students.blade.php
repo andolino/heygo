@@ -67,13 +67,14 @@
                         </form>
                     </div>
                 </div>
+                <h2>Hey</h2>
                <fetch-feeds :findtutor="{{ $teachers }}"></fetch-feeds>
             @elseif (!empty($teachersprofile))
                 <teachers-profile :teachersdata="{{ $teachersprofile }}"></teachers-profile>
             @else
                 <fetch-feeds :teachersdata="{{ $teachersprofile }}"></fetch-feeds>
             @endif
-            
+
         </div>
 
 
