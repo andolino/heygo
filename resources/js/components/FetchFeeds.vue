@@ -12,8 +12,12 @@
               <div class="cicle-active"></div>
               <div class="row">
                 <div class="col-lg-7">
-                  <span class="ml-4" style="font-size: 23px;"> 
-                    {{ dft.lastname.toUpperCase() }}, {{ dft.firstname.toUpperCase() }}</span>
+                  <span class="ml-4" style="font-size: 23px;" v-if="dft.lastname != null"> 
+                    {{ dft.lastname.toUpperCase() }}, {{ dft.firstname.toUpperCase() }}
+                  </span>
+                  <span class="ml-4" style="font-size: 23px;" v-else> 
+                    {{ dft.email.toUpperCase() }}
+                  </span>
                   <span class="ml-3">
                     <i class="fas fa-map-marker-alt text-warning p-2"></i>
                     <img :src="asset + 'images/flag-1.png'" width="20"></span>
