@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h4>Hey 2</h4>
     <div v-for="dft in findtutor" :key="dft.id" class="mb-3">
       <div class="card rounded-11px">
         <div class="card-body mt-2">
