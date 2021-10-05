@@ -59,7 +59,7 @@
 					let data = new FormData();
 					data.append('email', this.form.email)
 					data.append('password', this.form.password)
-					axios.post('/heygo/login/students', data).then((res) => {
+					axios.post(process.env.MIX_BASE_URL+'/login/students', data).then((res) => {
 						this.form.reset();
             if (typeof res.data.errors === 'undefined') {
               window.location.href = this.base_url + "/students";

@@ -262,7 +262,7 @@ export default {
   },
   methods: {
     getUpcomingLesson(){
-      axios.post('/heygo/get-teacher-booked-lesson', { 'students_id' : this.user_id }).then((res) => {
+      axios.post(process.env.MIX_BASE_URL+'/get-teacher-booked-lesson', { 'students_id' : this.user_id }).then((res) => {
           this.upcomingLessonData = res.data;
           this.teacherInfo.teachers_id = res.data[0].id;
         }).catch((error) => {
@@ -270,7 +270,7 @@ export default {
       });
     },
     fnAcceptingLesson(e, lesson_schedule_id){
-      axios.post('/heygo/get-booked-teacher-info', { 'lesson_date' : e, 'lesson_schedule_id': lesson_schedule_id }).then((res) => {
+      axios.post(process.env.MIX_BASE_URL+'/get-booked-teacher-info', { 'lesson_date' : e, 'lesson_schedule_id': lesson_schedule_id }).then((res) => {
           this.teacherInfo.name             = res.data[0].fullname;
           this.teacherInfo.date             = moment(new Date(res.data[0].start_date)).format('LL');
           this.teacherInfo.time             = res.data[0].time_sched;
@@ -394,7 +394,7 @@ export default {
     fnBookATrial(){
       //get the teachers_id
       // this.formToSave.teachers_id = e;
-      // axios.get('/heygo/get-teachers-info/'+e).then((res) => {
+      // axios.get(process.env.MIX_BASE_URL+'/get-teachers-info/'+e).then((res) => {
       //     this.teachersdata = res.data;
       //     this.rate_per_hr = res.data[0].rate_per_hr;
       //     this.formToSave.lesson_plan_id = res.data[0].lesson_plan_id;
@@ -403,7 +403,7 @@ export default {
       // });
     },
     fetchCalendarWeek(){
-      axios.post('/heygo/get-week-calendar', { 'teachers_id' : this.teacherInfo.teachers_id }).then((res) => {
+      axios.post(process.env.MIX_BASE_URL+'/get-week-calendar', { 'teachers_id' : this.teacherInfo.teachers_id }).then((res) => {
         this.dataWeekCalendar = res.data;
         // console.log(this.dataWeekCalendar);
       }).catch((error) => {
@@ -411,7 +411,7 @@ export default {
       });
     },
     fetchTimePerDay(){
-      axios.post('/heygo/get-time-available-per-day', { 'teachers_id' : this.teacherInfo.teachers_id }).then((res) => {
+      axios.post(process.env.MIX_BASE_URL+'/get-time-available-per-day', { 'teachers_id' : this.teacherInfo.teachers_id }).then((res) => {
         this.dataTimaAvPerDay = res.data;
       }).catch((error) => {
           console.log(error);
@@ -435,7 +435,7 @@ export default {
           cancelButtonText: 'Wait',
         }).then((result) => {
           if (result.isConfirmed) {
-            axios.post('/heygo/update-student-schedule', this.formToSave).then((res) => {
+            axios.post(process.env.MIX_BASE_URL+'/update-student-schedule', this.formToSave).then((res) => {
               // console.log(this.formToSave);
               // this.dataWeekCalendar = res.data;
               // console.log(this.dataWeekCalendar);

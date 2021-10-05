@@ -303,7 +303,7 @@
             if (result.isConfirmed) {
               // this.joinClassPanel = !this.joinClassPanel;
               this.formPref.teachers_id = this.teachers_id;
-              axios.post('/heygo/save-student-pref', this.formPref).then((res) => {
+              axios.post(process.env.MIX_BASE_URL+'/save-student-pref', this.formPref).then((res) => {
                 this.$bvModal.hide('modal-students-pref');
                 this.fnBookATrial(this.teachers_id);
                 console.log(res);
@@ -321,7 +321,7 @@
       },
       fnGetStudentsLevel(){
         //get the teachers_id
-        axios.get('/heygo/get-students-level').then((res) => {
+        axios.get(process.env.MIX_BASE_URL+'/get-students-level').then((res) => {
           this.studentsLevel = res.data;
 					}).catch((error) => {
 						console.log(error);
@@ -329,7 +329,7 @@
       },
       fnGetLessonTypeDetails(){
         //get the teachers_id
-        axios.get('/heygo/get-lesson-type-details').then((res) => {
+        axios.get(process.env.MIX_BASE_URL+'/get-lesson-type-details').then((res) => {
           this.optionsLessonType = res.data;
 					}).catch((error) => {
 						console.log(error);
@@ -337,7 +337,7 @@
       },
       fnGetStudentsTestPrep(){
         //get the teachers_id
-        axios.get('/heygo/get-test-student-preparation').then((res) => {
+        axios.get(process.env.MIX_BASE_URL+'/get-test-student-preparation').then((res) => {
           this.studentsTestPrep = res.data;
 					}).catch((error) => {
 						console.log(error);
@@ -345,7 +345,7 @@
       },
       fnGetStudentsEnglishLevel(){
         //get the teachers_id
-        axios.get('/heygo/get-students-english-level').then((res) => {
+        axios.get(process.env.MIX_BASE_URL+'/get-students-english-level').then((res) => {
           this.optionsEnglishLevel = res.data;
 					}).catch((error) => {
 						console.log(error);
@@ -353,7 +353,7 @@
       },
       fnGetStudentsDatePlan(){
         //get the teachers_id
-        axios.get('/heygo/get-students-date-plan').then((res) => {
+        axios.get(process.env.MIX_BASE_URL+'/get-students-date-plan').then((res) => {
           this.optionsStudentsDatePlan = res.data;
 					}).catch((error) => {
 						console.log(error);

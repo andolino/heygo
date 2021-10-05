@@ -477,7 +477,7 @@
     },
     methods: {
       getLessonOption(students_id, teachers_id){
-        axios.post('/heygo/get-lesson-option', { 'students_id' : students_id, 'teachers_id' : teachers_id }).then((res) => {
+        axios.post(process.env.MIX_BASE_URL+'/get-lesson-option', { 'students_id' : students_id, 'teachers_id' : teachers_id }).then((res) => {
 						this.lessonOption = res.data;
             //if student have book a trial lesson
             // if (res.data[0].trial_lesson_rate == 0) {
@@ -491,21 +491,21 @@
         });
       },
       getCommunicationApp(){
-        axios.get('/heygo/get-com-app').then((res) => {
+        axios.get(process.env.MIX_BASE_URL+'/get-com-app').then((res) => {
 						this.getComApp = res.data
 					}).catch((error) => {
 						console.log(error);
         });
       },
       fetchTutor(){
-        axios.get('/heygo/api/get-fetch-tutor').then((res) => {
+        axios.get(process.env.MIX_BASE_URL+'/api/get-fetch-tutor').then((res) => {
 						this.dataFetchTutor = res.data
 					}).catch((error) => {
 						console.log(error);
         });
       },
       fetchCalendarWeek(tId){
-        axios.post('/heygo/get-week-calendar', { teachers_id: tId }).then((res) => {
+        axios.post(process.env.MIX_BASE_URL+'/get-week-calendar', { teachers_id: tId }).then((res) => {
             this.dataWeekCalendar = res.data;
             // console.log(res.data);
 					}).catch((error) => {
@@ -513,7 +513,7 @@
         });
       },
       fetchTimePerDay(tId){
-        axios.post('/heygo/get-time-available-per-day', {teachers_id: tId}).then((res) => {
+        axios.post(process.env.MIX_BASE_URL+'/get-time-available-per-day', {teachers_id: tId}).then((res) => {
             this.dataTimaAvPerDay = res.data;
             // console.log(this.dataTimaAvPerDay);
 					}).catch((error) => {
@@ -529,7 +529,7 @@
         this.getCommunicationApp();
         this.getStudentsInfo();
         this.formToSave.teachers_id = e;
-        axios.get('/heygo/get-teachers-info/'+e).then((res) => {
+        axios.get(process.env.MIX_BASE_URL+'/get-teachers-info/'+e).then((res) => {
             this.teachersdata = res.data.data;
             this.formToSave.lesson_plan_id = res.data.data[0].lesson_plan_id;
             this.rate_per_hr = res.data.data[0].rate_per_hr;
@@ -608,7 +608,7 @@
         // data.append('user_id', this.user_id);
         // data.append('_token', this.csrf);
         data.append('lesson_schedule_id', this.lesson_schedule_id);
-        axios.post('/heygo/save-email-communication', data).then((res) => {
+        axios.post(process.env.MIX_BASE_URL+'/save-email-communication', data).then((res) => {
           if (typeof res.data.errors === 'undefined') {
             window.location.reload();
             
@@ -745,7 +745,7 @@
         }
       },
       getStudentsInfo(){
-        axios.get('/heygo/get-students-info/'+this.user_id).then((res) => {
+        axios.get(process.env.MIX_BASE_URL+'/get-students-info/'+this.user_id).then((res) => {
             this.studentsData = res.data
           }).catch((error) => {
             console.log(error);

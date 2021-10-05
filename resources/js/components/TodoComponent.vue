@@ -29,7 +29,7 @@
 			},
 			methods: {
 				getTodos(){
-					axios.get('/heygo/api/todo').then((res) => {
+					axios.get(process.env.MIX_BASE_URL+'/api/todo').then((res) => {
 						this.todos = res.data
 					}).catch((error) => {
 						console.log(error);
@@ -38,7 +38,7 @@
 				saveData(){
 					let data = new FormData();
 					data.append('title', this.form.title)
-					axios.post('/heygo/api/todo', data).then(() => {
+					axios.post(process.env.MIX_BASE_URL+'/api/todo', data).then(() => {
 						this.form.reset();
 						this.getTodos();
 					}).catch((error) => {

@@ -338,7 +338,7 @@ export default {
       console.log(this.sorted_date);
     },
     fnAcceptingLesson(e, students_id, lesson_schedule_id){
-      axios.post('/heygo/get-booked-student-info', { 
+      axios.post(process.env.MIX_BASE_URL+'/get-booked-student-info', { 
         'lesson_date' : e, 
         'students_id': students_id,
         'lesson_schedule_id': lesson_schedule_id })
@@ -395,7 +395,7 @@ export default {
               console.log(error);
           });
         } else {
-        //   axios.post('/heygo/approve-student-booking', { 
+        //   axios.post(process.env.MIX_BASE_URL+'/approve-student-booking', { 
         //     'lesson_schedule_id': lesson_schedule_id, 'approval_type' : approval_type })
         //       .then((res) => {
         //         Swal.fire({
@@ -413,21 +413,21 @@ export default {
       });
     },
     fetchTimePerDay(){
-      axios.post('/heygo/get-time-available-per-day', { 'teachers_id' : this.user_id }).then((res) => {
+      axios.post(process.env.MIX_BASE_URL+'/get-time-available-per-day', { 'teachers_id' : this.user_id }).then((res) => {
         this.dataTimaAvPerDay = res.data;
       }).catch((error) => {
           console.log(error);
       });
     },
     testEmail(){
-      axios.post('/heygo/verify-student-email', { 'email': 'dondonpentavia@gmail.com' }).then((res) => {
+      axios.post(process.env.MIX_BASE_URL+'/verify-student-email', { 'email': 'dondonpentavia@gmail.com' }).then((res) => {
         // this.dataTimaAvPerDay = res.data;
       }).catch((error) => {
           console.log(error);
       });
     },
     fetchCalendarWeek(){
-      axios.post('/heygo/get-week-calendar', { 'teachers_id' : this.user_id }).then((res) => {
+      axios.post(process.env.MIX_BASE_URL+'/get-week-calendar', { 'teachers_id' : this.user_id }).then((res) => {
         this.dataWeekCalendar = res.data;
       }).catch((error) => {
           console.log(error);
@@ -439,7 +439,7 @@ export default {
     },
     getStudentData(e){
       const students_id = this.studentInfo.students_id;
-      axios.get('/heygo/get-students-info/'+students_id).then((res) => {
+      axios.get(process.env.MIX_BASE_URL+'/get-students-info/'+students_id).then((res) => {
           this.studentsData = res.data
           this.joinClassPanel = !this.joinClassPanel
           this.stepperStudentsData = !this.stepperStudentsData
