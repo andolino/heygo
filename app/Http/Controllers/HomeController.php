@@ -20,6 +20,7 @@ class HomeController extends Controller {
      *
      * @return void
      */
+
     public function __construct(){
         // $this->middleware('auth');
     }
@@ -110,6 +111,8 @@ class HomeController extends Controller {
         return view('student-purchase-history', ['data' => $data, 'purchases' => $purchases]);
     }
     
+    
+    
     public function getTeachersAvailability(){
         // $data = DB::table('teacher_availability')->where('teacher_id', '=', Auth::id())->get();
         $teacher_id = Auth::id();
@@ -180,6 +183,16 @@ class HomeController extends Controller {
     
     public function getFetchTeacher(){
        return Teachers::latest()->get();
+    }
+
+    public function getTeacherInformation($teachers_id){
+        $res = Teachers::where('id', $teachers_id)->first();
+        return response()->json($res);
+    }
+    
+    public function getStudentsInformation($students_id){
+        $res = Students::where('id', $students_id)->first();
+        return response()->json($res);
     }
 
     public function updateTeacherSettings(){

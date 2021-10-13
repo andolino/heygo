@@ -17,6 +17,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FeedsController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ChatController;
 use App\Mail\RegisterMail;
 
 Route::get('/', [HomeController::class, 'index']);
@@ -54,6 +55,7 @@ Route::get('/get-students-info/{any}', [HomeController::class, 'getStudentsInfo'
 Route::get('/verifying-student-email/{email}', [RegisterController::class, 'verifyingStudentEmail']);
 Route::get('/verifying-teacher-email/{email}', [RegisterController::class, 'verifyingTeacherEmail']);
 Route::get('/view-reg-template', [RegisterController::class, 'viewRegTemplate']);
+
 
 /**
  * Routes for mailing
@@ -93,6 +95,9 @@ Route::group(['middleware' => 'auth:students'], function () {
     Route::post('/save-student-pref', [HomeController::class, 'saveStudentPref']);
     Route::post('/update-student-schedule', [HomeController::class, 'updateStudentSchedule']);
     Route::get('/students-purchase-history', [HomeController::class, 'studentsPurchaseHistory']);
+    Route::get('/start-chat-students/{any}', [ChatController::class, 'startChat']);
+    Route::post('/messages-students', [ChatController::class, 'message']);
+    Route::post('/get-conversation-students', [ChatController::class, 'getConversation']);
 });
 
 Route::group(['middleware' => 'auth:teachers'], function () {
@@ -109,6 +114,9 @@ Route::group(['middleware' => 'auth:teachers'], function () {
     Route::get('/get-teachers-availability', [HomeController::class, 'getTeachersAvailability']);
     Route::post('/save-teacher-availability', [HomeController::class, 'saveTeacherAvailability']);
     Route::get('/teachers-purchase-history', [HomeController::class, 'teachersPurchaseHistory']);
+    Route::get('/start-chat-teachers/{any}', [ChatController::class, 'startChat']);
+    Route::post('/messages-teachers', [ChatController::class, 'message']);
+    Route::post('/get-conversation-teachers', [ChatController::class, 'getConversation']);
 });
 
 Route::get('logout', [LoginController::class,'logout']);

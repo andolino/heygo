@@ -82,15 +82,15 @@
                           <li><label for="">Name of Teacher : </label><span class="capitalize"> {{ this.teacherInfo.name }}</span></li>
                           <li><label for="">Date : </label><span> {{ this.teacherInfo.date }}</span></li>
                           <li><label for="">Time : </label><span> {{ this.teacherInfo.time }}</span></li>
-                          <li><label for="">Type of Lesson : </label><span> {{ this.teacherInfo.type_of_lesson }} 
-                            (Via {{ this.teacherInfo.app_name }})</span></li>
+                          <!-- <label for="">Type of Lesson : </label> {{ this.teacherInfo.type_of_lesson }} -->
+                          <li><span> (Via {{ this.teacherInfo.app_name }})</span></li>
                         </ul>
                       </div>
-                       <div class="row mb-3">
-                          <div class="col-lg-3">
-                            <button 
-                            type="button" 
-                              class="btn btn-md btn-yellow w-100 font-12"> Go to Profile</button>
+                        <div class="row mb-3">
+                          <div class="col-lg-4">
+                            <a 
+                              :href="baseurl+'/start-chat-students/'+this.teacherInfo.teachers_id"
+                              class="btn btn-md btn-yellow w-100 font-12"> Start Conversation</a>
                           </div>
                         </div>
                         <div class="row" v-if="this.teacherInfo.lesson_status == 3">
@@ -116,7 +116,7 @@
                         class="btn btn-default float-right btn-dashboard mb-3 font-14 stepper-next"
                         v-on:click="chooseClassStatus(teacherInfo.app_id)" v-if="this.teacherInfo.lesson_status == 3">Next</button>
                     <button type="button" v-if="this.teacherInfo.lesson_status != 0"
-                        class="btn btn-default float-right btn-dashboard mb-3 font-14 stepper-next"
+                        class="btn btn-default float-right btn-dashboard mb-3 font-14 stepper-prev"
                         @click="rescheduleStudentBooked">Reschedule</button>
                   </div>
                   

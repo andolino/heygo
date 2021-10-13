@@ -39,6 +39,7 @@
         "font-awesome": "^4.7.0",
         "formBuilder": "^3.7.3",
         "moment": "^2.29.1",
+        "pusher-js": "^7.0.3",
         "sweetalert2": "^11.1.7",
         "vue-popperjs": "^2.3.0",
         "vue-sweetalert2": "^4.3.1",

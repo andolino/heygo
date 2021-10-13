@@ -7,6 +7,8 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FeedsController;
+use App\Http\Controllers\ChatController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +29,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::resource('/todo', 'App\Http\Controllers\TodoController');
 Route::get('/get-fetch-tutor', [HomeController::class,'getFetchTeacher']);//'App\Http\Controllers\HomeController\getFetchTeacher');
+Route::get('/get-teacher-information/{any}', [HomeController::class,'getTeacherInformation']);//'App\Http\Controllers\HomeController\getFetchTeacher');
+Route::get('/get-student-information/{any}', [HomeController::class,'getStudentsInformation']);//'App\Http\Controllers\HomeController\getFetchTeacher');
 Route::post('/register/teachers', [RegisterController::class,'createTeachers']);
 Route::post('/register/students', [RegisterController::class,'createStudents']);
 
@@ -37,6 +41,6 @@ Route::post('/student-payment-charge', [HomeController::class,'studentPaymentCha
 Route::post('/teacher-create-stripe', [HomeController::class,'teacherCreateStripe'])->name('teacher-create-stripe');
 Route::post('/approve-student-booking', [HomeController::class, 'approveStudentBooking'])->name('approval-booking');
 Route::post('/student-book-free-trial', [HomeController::class, 'studentBookFreeTrial'])->name('student-booking-trial');
-
+Route::post('/student-book-free-trial', [HomeController::class, 'studentBookFreeTrial'])->name('student-booking-trial');
 
 // Route::get('/todo', [TodoController::class, 'index']);

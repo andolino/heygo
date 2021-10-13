@@ -211,7 +211,7 @@
             cancelButtonText: 'Wait',
           }).then((result) => {
             if (result.isConfirmed) {
-              axios.post('api/teacher-create-stripe', { 
+              axios.post(process.env.MIX_BASE_URL+'/api/teacher-create-stripe', { 
                 'account_name': this.form.account_name,
                 'email': this.form.email,
                 'teachers_id': this.user_id

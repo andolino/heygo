@@ -97,7 +97,15 @@
                             (Via {{ this.studentInfo.app_name }})</span></li>
                         </ul>
                       </div>
+                      <div class="row mb-3">
+                        <div class="col-lg-4">
+                          <a 
+                            :href="baseurl+'/start-chat-teachers/'+studentInfo.students_id"
+                            class="btn btn-md btn-yellow w-100 font-12"> Start Conversation</a>
+                        </div>
+                      </div>
                     </div>
+                    
                     
                     <button type="button" 
                         class="btn btn-default float-right btn-dashboard mb-3 font-14 stepper-next" 
@@ -194,6 +202,8 @@
 
                   </div>
                   
+
+                  
               </div>
 
 
@@ -222,7 +232,7 @@ export default {
   props: [ 'base_url' ],
   data(){
     return {
-      bgImgStepper: 'public/images/stepper-left.png',
+      bgImgStepper: document.querySelector('meta[name="url-asset"]').getAttribute('content') + 'images/stepper-left.png',
       bgImgStudentView: 'public/images/feedback-1.png',
       showStepper1: true,
       joinClassPanel: true,
@@ -377,7 +387,7 @@ export default {
       }).then((result) => {
         if (result.isConfirmed) {
           this.showLoading = true;
-          axios.post('api/approve-student-booking', { 
+          axios.post(process.env.MIX_BASE_URL+'/api/approve-student-booking', { 
             'lesson_schedule_id': lesson_schedule_id, 'approval_type' : approval_type })
               .then((res) => {
                 Swal.fire({

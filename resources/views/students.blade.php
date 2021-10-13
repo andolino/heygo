@@ -14,7 +14,6 @@
                 </div>
                 <div class="upcoming-lesson-list custom-scrollbar-css p-2 mCustomScrollbar" data-mcs-theme="minimal-dark">
                     <student-upcoming-lesson></student-upcoming-lesson>
-                    
                 </div>
             </div>
             
@@ -70,10 +69,11 @@
                <fetch-feeds :findtutor="{{ $teachers }}"></fetch-feeds>
             @elseif (!empty($teachersprofile))
                 <teachers-profile :teachersdata="{{ $teachersprofile }}"></teachers-profile>
+            @elseif (!empty($messageDisplay))
+                <chat-panel :messageDisplay="{{ $messageDisplay }}" :teachers-id="{{ $teachers_id ?? 0 }}" :students-id="{{ $students_id ?? 0 }}"></chat-panel>
             @else
                 <fetch-feeds :teachersdata="{{ $teachersprofile }}"></fetch-feeds>
             @endif
-
         </div>
 
 

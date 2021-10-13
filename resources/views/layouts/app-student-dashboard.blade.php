@@ -8,6 +8,8 @@
     <meta name="base-url" content="{{ url('') }}">
     <meta name="url-asset" content="{{ asset('') }}">
     <meta name="user-id" content="{{ Auth::id() }}">
+    <meta name="user-type" content="students">
+    <meta name="user-name" content="{{ $data->lastname . ', ' . $data->firstname }}">
     
     <title>{{ config('app.name', 'Laravel') }}</title>
 

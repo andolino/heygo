@@ -665,7 +665,7 @@
             this.formStudentPayment.book_description = this.totalHrs + ' hr/s Lesson';
             this.formStudentPayment.student_name = this.studentsData[0].lastname + ', ' + this.studentsData[0].firstname;
             this.showLoading = true;
-            axios.post('api/student-payment-charge', this.formStudentPayment).then((res)=>{
+            axios.post(process.env.MIX_BASE_URL+'/api/student-payment-charge', this.formStudentPayment).then((res)=>{
               console.log("res: ", res.data.stripe_date);
               this.lesson_schedule_id = res.data.lesson_schedule_id;
               this.showLoading = false;
@@ -703,7 +703,7 @@
             this.formStudentPayment.book_description = this.totalHrs + ' hr/s Lesson';
             this.formStudentPayment.student_name = this.studentsData[0].lastname + ', ' + this.studentsData[0].firstname;
             this.showLoading = true;
-            axios.post('api/student-book-free-trial', this.formStudentPayment).then((res)=>{
+            axios.post(process.env.MIX_BASE_URL+'/api/student-book-free-trial', this.formStudentPayment).then((res)=>{
               console.log("res: ", res.data.stripe_date);
               this.lesson_schedule_id = res.data.lesson_schedule_id;
               this.showLoading = false;

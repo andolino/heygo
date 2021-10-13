@@ -25,9 +25,11 @@ import TeachersNotifications from './components/TeachersNotifications.vue';
 import TeachersLibrary from './components/TeachersLibrary.vue';
 import TeachersCalendar from './components/TeachersCalendar.vue';
 import TeachersPurchaseHistory from './components/TeachersPurchaseHistory.vue';
+import ChatPanel from './components/ChatPanel.vue';
 import { BootstrapVue, IconsPlugin, BCard } from 'bootstrap-vue';
 import VueSweetalert2 from 'vue-sweetalert2';
 import swal from 'sweetalert2';
+import helpers from './helpers';
 
 
 // Import Bootstrap an BootstrapVue CSS files (order is important)
@@ -40,6 +42,15 @@ import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 
 window.Form = Form
 window.Swal = swal
+
+const plugin = {
+  install () {
+    Vue.helpers = helpers
+    Vue.prototype.$helpers = helpers
+  }
+}
+
+
 
 /**
  * The following block of code may be used to automatically register your
@@ -54,9 +65,22 @@ window.Swal = swal
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(VueSweetalert2)
+Vue.use(plugin)
 Vue.component('BCard', BCard)
 Vue.component('todo-component', require('./components/TodoComponent.vue').default );
 // Vue.component('b-carousel', '');
+
+Vue.filter('toCurrency', function (value) {
+	if (typeof value !== "number") {
+			return value;
+	}
+	var formatter = new Intl.NumberFormat('en-US', {
+			style: 'currency',
+			currency: 'USD',
+			minimumFractionDigits: 0
+	});
+	return formatter.format(value);
+});
 
 
 /**
@@ -69,24 +93,25 @@ const app = new Vue({
 	el: '#app',
 	components: {
 		// 'todo-component':
-		'home-slider'							: HomeSlider,
-		'available-lesson' 				: AvailableLesson,
-		'signup-form-student'   	: SignupFormStudent,
-		'signup-form-teacher'   	: SignupFormTeacher,
-		'student-acct-settings' 	: StudentAcctSettings,
-		'teacher-acct-settings' 	: TeacherAcctSettings,
-		'fetch-feeds'							: FetchFeeds,
-		'teacher-feeds'						: TeacherFeeds,
-		'student-homework'				: StudentHomework,
-		'teachers-profile'				: TeachersProfile,
-		'student-payment-methods'	: StudentPaymentMethods,
-		'teacher-payment-methods'	: TeacherPaymentMethods,
-		'teacher-upcoming-lesson' : TeacherUpcomingLesson,
-		'student-upcoming-lesson' : StudentUpcomingLesson,
-		'teachers-notifications' 	: TeachersNotifications,
-		'teachers-library' 			 	: TeachersLibrary,
-		'teachers-calendar' 			: TeachersCalendar,
-		'teachers-purchase-history' : TeachersPurchaseHistory
+		'home-slider'							  : HomeSlider,
+		'available-lesson' 				  : AvailableLesson,
+		'signup-form-student'   	  : SignupFormStudent,
+		'signup-form-teacher'   	  : SignupFormTeacher,
+		'student-acct-settings' 	  : StudentAcctSettings,
+		'teacher-acct-settings' 	  : TeacherAcctSettings,
+		'fetch-feeds'							  : FetchFeeds,
+		'teacher-feeds'						  : TeacherFeeds,
+		'student-homework'				  : StudentHomework,
+		'teachers-profile'				  : TeachersProfile,
+		'student-payment-methods'	  : StudentPaymentMethods,
+		'teacher-payment-methods'	  : TeacherPaymentMethods,
+		'teacher-upcoming-lesson'   : TeacherUpcomingLesson,
+		'student-upcoming-lesson'   : StudentUpcomingLesson,
+		'teachers-notifications' 	  : TeachersNotifications,
+		'teachers-library' 			 	  : TeachersLibrary,
+		'teachers-calendar' 			  : TeachersCalendar,
+		'teachers-purchase-history' : TeachersPurchaseHistory,
+		'chat-panel'                : ChatPanel
 	}
 });
 

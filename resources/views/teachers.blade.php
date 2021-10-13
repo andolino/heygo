@@ -30,8 +30,12 @@
 			{{-- mid content --}}
 
 			<div class="col-lg-6 pr-2 pl-4">
-				<teacher-feeds></teacher-feeds>
-				
+				@if(!empty($messageDisplay))
+					<chat-panel :messageDisplay="{{ $messageDisplay }}" :teachers-id="{{ $teachers_id ?? 0 }}" :students-id="{{ $students_id ?? 0 }}"></chat-panel>
+				@else
+					<teacher-feeds></teacher-feeds>
+				@endif
+
 			</div>
 
 
