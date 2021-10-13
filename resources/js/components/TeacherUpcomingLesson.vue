@@ -275,7 +275,7 @@ export default {
       $('#modalWriteAPost').modal('show')
     },
     getUpcomingLesson(){
-      axios.post('/heygo/get-student-booked-lesson', { 'teachers_id' : this.user_id }).then((res) => {
+      axios.post(process.env.MIX_BASE_URL+'/get-student-booked-lesson', { 'teachers_id' : this.user_id }).then((res) => {
           this.upcomingLessonData = res.data;
         }).catch((error) => {
           console.log(error);
