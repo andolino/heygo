@@ -161,7 +161,7 @@
 
 {{-- custom scrollbar --}}
 <!-- Google CDN jQuery with fallback to local -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+{{-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> --}}
 {{-- <script>window.jQuery || document.write('<script src="../js/minified/jquery-1.11.0.min.js"><\/script>')</script> --}}
 
 <!-- custom scrollbar plugin -->
