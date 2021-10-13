@@ -154,7 +154,7 @@ export default {
   },
   mounted() {
     // Enable pusher logging - don't include this in production
-    Pusher.logToConsole = true;
+    // Pusher.logToConsole = true;
 
     var pusher = new Pusher('d1967d32adc2619d10fb', {
       cluster: 'ap1'
