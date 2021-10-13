@@ -10,6 +10,7 @@
     <meta name="user-id" content="{{ Auth::id() }}">
     <meta name="user-type" content="teachers">
     <meta name="user-name" content="{{ $data->lastname . ', ' . $data->firstname }}">
+    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
     
     <title>{{ config('app.name', 'Laravel') }}</title>
 
