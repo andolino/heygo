@@ -243,8 +243,8 @@
                                   </div>
                                   <div class="col-lg-6 text-right">
                                     <label for="">Service Details</label>
-                                    <p class="mb-1" v-if="trialFree">0/hour <br> {{ totalHrs }} <br> {{ 0 }} JPY</p>
-                                    <p class="mb-1" v-else>{{ (rate_per_hr || 0) }}/hour <br> {{ totalHrs }} <br> {{ procFee }} JPY</p>
+                                    <p class="mb-1" v-if="trialFree">0/hour <br> {{ totalHrs }} <br> {{ 0 }}</p>
+                                    <p class="mb-1" v-else>{{ rate_per_hr | toCurrency }} /hour <br> {{ totalHrs }} <br> {{ procFee | toCurrency }} <br> </p>
                                   </div>
                                 </div>
                                 
@@ -254,8 +254,14 @@
                                     <label for="">TOTAL</label>
                                   </div>
                                   <div class="col-lg-6 text-right">
-                                    <label for="" v-if="trialFree">0 JPY</label>
-                                    <label for="" v-else>{{ (rate_per_hr || 0) * totalHrs + procFee }} JPY</label>
+                                    <label for="" v-if="trialFree">0</label>
+                                    <label for="" v-else>{{ totalAmntToPay | toCurrency}}</label>
+                                  </div>
+                                  <div class="col-lg-6 text-left">
+                                    <label for="" v-if="noOfLessonOnForTeacher == 10">DISCOUNT</label>
+                                  </div>
+                                  <div class="col-lg-6 text-right">
+                                    <label for="" v-if="noOfLessonOnForTeacher == 10"> {{ (totalAmntToPay * 15) / 100 | toCurrency }}</label>
                                   </div>
                                 </div>
                               </div>
@@ -300,17 +306,17 @@
                                 <tr>
                                   <td><strong>RATE PER HR</strong></td>
                                   <td class="text-right" v-if="trialFree">0 </td>
-                                  <td class="text-right" v-else>{{ rate_per_hr }} </td>
+                                  <td class="text-right" v-else>{{ rate_per_hr | toCurrency }} </td>
                                 </tr>
                                 <tr>
                                   <td><strong>SERVICE CHARGE</strong></td>
-                                  <td class="text-right" v-if="trialFree">0 JPY</td>
-                                  <td class="text-right" v-else>{{ procFee }} JPY</td>
+                                  <td class="text-right" v-if="trialFree">0</td>
+                                  <td class="text-right" v-else>{{ procFee | toCurrency}}</td>
                                 </tr>
                                 <tr>
                                   <td><strong>TOTAL AMOUNT TO PAY</strong></td>
                                   <td class="text-right" v-if="trialFree">0</td>
-                                  <td class="text-right" v-else>{{ (rate_per_hr || 0) * totalHrs + procFee }}</td>
+                                  <td class="text-right" v-else>{{ totalAmntToPay | toCurrency }}</td>
                                 </tr>
                               </table>
                             </div>
@@ -476,12 +482,14 @@
         pickComApp: true,
         showLoading: false,
         procFee: 0,
-        trialFree: false
+        trialFree: false,
+        noOfLessonOnForTeacher: 0,
+        totalAmntToPay: 0
       }
     },
     methods: {
       getLessonOption(students_id, teachers_id){
-        axios.post(process.env.MIX_BASE_URL+'/get-lesson-option', { 'students_id' : students_id, 'teachers_id' : teachers_id }).then((res) => {
+        axios.post(process.env.MIX_BASE_URL+'/get-lesson-option', { 'students_id' : students_id, 'teachers_id' : teachers_id, '_token': this.csrf }).then((res) => {
 						this.lessonOption = res.data;
             //if student have book a trial lesson
             // if (res.data[0].trial_lesson_rate == 0) {
@@ -537,6 +545,7 @@
             this.teachersdata = res.data.data;
             this.formToSave.lesson_plan_id = res.data.data[0].lesson_plan_id;
             this.rate_per_hr = res.data.data[0].rate_per_hr;
+            this.noOfLessonOnForTeacher = res.data.total_booked;
             // data from StudentPref Component
             // this.$root.$refs.StudentsPref.formPref
             if (res.data.has_pref) {
@@ -600,6 +609,11 @@
       chooseBookingDate(){
         this.showStepper2 = !this.showStepper2; 
         this.showStepper3 = !this.showStepper3;
+        /**
+         * Calculate to of amount to pay of students
+         */
+        this.totalAmntToPay = (this.rate_per_hr || 0) * this.totalHrs + this.procFee;
+        console.log(this.noOfLessonOnForTeacher);
       },
       submitBookedSchedule(){
         let data = new FormData();
@@ -615,7 +629,6 @@
         axios.post(process.env.MIX_BASE_URL+'/save-email-communication', data).then((res) => {
           if (typeof res.data.errors === 'undefined') {
             window.location.reload();
-            
           }
         }).catch((error) => {
           console.log(error);

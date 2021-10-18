@@ -7,6 +7,7 @@ use Request;
 use App\Models\Teachers;
 use App\Models\Students;
 use App\Models\Admins;
+use App\Models\LessonSchedule;
 use Auth;
 use DB;
 use Cartalyst\Stripe\Laravel\Facades\Stripe;
@@ -273,15 +274,25 @@ class HomeController extends Controller {
     }
     
     public function getTeachersInfo($id){
-        $data = DB::table('teachers')->where('id', '=', $id)->get();
-        $student_id = Auth::id();
+        $data = Teachers::where('id', '=', $id)->get();
+        /**
+         * get the total of students booked for this teachers that was confirmed status = 3
+         */
+        $noOfBooked = LessonSchedule::where('teachers_id', $id)
+                            ->where('students_id', Auth::id())
+                            ->where('status', 3)
+                            ->count();
         $has_pref = DB::table('students_pref')
                         ->where([
-                            ['students_id', '=', $student_id],
+                            ['students_id', '=', Auth::id()],
                             ['teachers_id', '=', $id]
                         ])
                         ->get();
-        return response()->json(['data'=>$data, 'has_pref'=> count($has_pref) == 0 ? false : true]); //(count($has_pref) > 0 ? true : false)
+        return response()->json([
+                            'data'=>$data, 
+                            'has_pref'=> count($has_pref) == 0 ? false : true,
+                            'total_booked'=>$noOfBooked
+                        ]); //(count($has_pref) > 0 ? true : false)
     }
 
     public function getLessonTypeRate(){
@@ -510,7 +521,6 @@ class HomeController extends Controller {
         return view('students', ['data' => $data, 'teachers' => $teachers]);
     }
 
-
     public function studentsAccountSettings(){
         $data = DB::table('students')->where('id', '=', Auth::id())->first();
         return view('students-account-settings', ['data' => $data]);
@@ -523,6 +533,7 @@ class HomeController extends Controller {
         $data = DB::table('teachers')->where('id', '=', Auth::id())->first();
         return view('teachers-payment-methods', ['data' => $data]);
     }
+    
     public function saveEmailCommunication(){
         $lesson_schedule_id = Request::post('lesson_schedule_id');
         $m = array();

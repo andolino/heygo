@@ -8,6 +8,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FeedsController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\UploadController;
 
 
 /*
@@ -42,5 +43,6 @@ Route::post('/teacher-create-stripe', [HomeController::class,'teacherCreateStrip
 Route::post('/approve-student-booking', [HomeController::class, 'approveStudentBooking'])->name('approval-booking');
 Route::post('/student-book-free-trial', [HomeController::class, 'studentBookFreeTrial'])->name('student-booking-trial');
 Route::post('/student-book-free-trial', [HomeController::class, 'studentBookFreeTrial'])->name('student-booking-trial');
+Route::post('/upload-img', [UploadController::class, 'uploadImage']);
 
 // Route::get('/todo', [TodoController::class, 'index']);

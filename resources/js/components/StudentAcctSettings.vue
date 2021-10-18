@@ -3,8 +3,15 @@
     <form @submit.prevent="submitStudentsAcctSettings">
       <div class="row mt-5">
         <div class="col-lg-5 text-center">
-          <img :src="asset + 'images/ellipse-1.png'" alt="">
-            
+          <div class="img-container">
+            <img :src="asset + 'images/ellipse-1.png'" alt="">
+            <input type="file" class="d-none" ref="uploadImg" @change="selectFileUpload">
+            <div class="overlay">
+              <a href="javascript:void(0);" @click="$refs.uploadImg.click()" class="icon" title="User Profile">
+                <i class="fa fa-user"></i>
+              </a>
+            </div>
+          </div>
         </div>
 
         <div class="col-lg-5 offset-lg-1">
@@ -116,7 +123,12 @@
           csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
           baseurl: document.querySelector('meta[name="base-url"]').getAttribute('content'),
           asset: document.querySelector('meta[name="url-asset"]').getAttribute('content'),
-          user_id: document.querySelector('meta[name="user-id"]').getAttribute('content')
+          user_id: document.querySelector('meta[name="user-id"]').getAttribute('content'),
+          dataImage: {
+            photo: null,
+            description: '',
+            productId: 0,
+          }
 				}
 			},
 			methods: {
@@ -154,6 +166,17 @@
 						this.form.errors.record(error.response.data.errors);
 					});
 				},
+        selectFileUpload(event){
+          this.dataImage.photo = event.target.files[0];
+          const data = new FormData();
+          data.append('photo', this.dataImage.photo);
+          const json = JSON.stringify({
+              description: 'students',
+              students_id: this.user_id,
+          });
+          data.append('data', json);
+          axios.post(process.env.MIX_BASE_URL+"/api/upload-img", data);
+        },
 			},
 			mounted() { 
         this.getCountries();
@@ -290,4 +313,59 @@
     border-radius: 19px;
     text-align: left;
   }
+
+    
+
+  .img-container {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .img-container .image {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .img-container .overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 48%;
+    opacity: 0;
+    transition: .3s ease;
+    background-color: rgba(79, 73, 73, 0.7);
+    margin: auto;
+    border-radius: 93px;
+  }
+
+  .img-container .overlay a {
+    color: #f0f0f0;
+  }
+
+  .img-container:hover .overlay {
+    opacity: 1;
+  }
+
+  .icon {
+    color: white;
+    font-size: 100px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    text-align: center;
+    font-size: 29px;
+  }
+
+  .fa-user:hover {
+    color: #eee;
+  }
+
+
 </style>
