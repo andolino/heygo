@@ -3,12 +3,12 @@
     <form @submit.prevent="submitStudentsAcctSettings">
       <div class="row mt-5">
         <div class="col-lg-5 text-center">
-          <div class="img-container">
-            <img :src="asset + 'images/ellipse-1.png'" alt="">
+          <div class="img-container-sts">
+            <img :src="defaultImg" ref="student_dp" class="rounded-circle" alt="">
             <input type="file" class="d-none" ref="uploadImg" @change="selectFileUpload">
             <div class="overlay">
               <a href="javascript:void(0);" @click="$refs.uploadImg.click()" class="icon" title="User Profile">
-                <i class="fa fa-user"></i>
+                <i class="fas fa-upload"></i>
               </a>
             </div>
           </div>
@@ -126,9 +126,9 @@
           user_id: document.querySelector('meta[name="user-id"]').getAttribute('content'),
           dataImage: {
             photo: null,
-            description: '',
-            productId: 0,
-          }
+            description: ''
+          },
+          defaultImg: document.querySelector('meta[name="url-asset"]').getAttribute('content') + 'images/ellipse-1.png'
 				}
 			},
 			methods: {
@@ -145,6 +145,8 @@
             this.form.country_id = res.data[0].country_id;
             this.form.email = res.data[0].email;
             this.form.about_me = res.data[0].about_me;
+            this.defaultImg = this.baseurl + '/public/images/profile/students/thumb/' + res.data[0].picture;
+            // console.log(this.defaultImg)
           }).catch((error) => {});
         },
 				submitStudentsAcctSettings(){
@@ -175,7 +177,12 @@
               students_id: this.user_id,
           });
           data.append('data', json);
-          axios.post(process.env.MIX_BASE_URL+"/api/upload-img", data);
+          axios.post(process.env.MIX_BASE_URL+"/api/upload-img", data).then((res) => {
+            // console.log(res);
+            this.getStudentsData();
+
+            // this.defaultImg = this.baseurl + '/public/images/profile/students/thumb/' + res.data.imagename;
+          });
         },
 			},
 			mounted() { 
@@ -314,21 +321,22 @@
     text-align: left;
   }
 
-    
 
-  .img-container {
+
+
+  .img-container-sts {
     position: relative;
     width: 100%;
     max-width: 400px;
   }
 
-  .img-container .image {
+  .img-container-sts .image{
     display: block;
     width: 100%;
     height: auto;
   }
 
-  .img-container .overlay {
+  .img-container-sts .overlay {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -343,15 +351,15 @@
     border-radius: 93px;
   }
 
-  .img-container .overlay a {
+  .img-container-sts .overlay a {
     color: #f0f0f0;
   }
 
-  .img-container:hover .overlay {
+  .img-container-sts:hover .overlay {
     opacity: 1;
   }
 
-  .icon {
+  .img-container-sts .icon{
     color: white;
     font-size: 100px;
     position: absolute;

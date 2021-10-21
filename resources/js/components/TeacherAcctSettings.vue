@@ -3,7 +3,61 @@
     <form @submit.prevent="submitTeachersAcctSettings">
       <div class="row mt-5">
         <div class="col-lg-5 text-center">
-          <img :src="asset + 'images/ellipse-4.png'" alt="">
+            <div class="img-card">
+              <h5 class="text-left font-14">Profile Pic</h5>
+              <div class="img-container mb-3">
+                <img :src="this.defaultImg" ref="prof_display" class="rounded-circle" alt="">
+                <input type="file" class="d-none" ref="uploadImg" @change="selectFileUploadImg">
+                <div class="overlay">
+                  <a href="javascript:void(0);" @click="$refs.uploadImg.click()" class="icon" title="User Profile">
+                    <i class="fa fa-upload"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="img-card">
+              <h5 class="text-left font-14">Short Video</h5>
+              <div class="vid-container">
+                <!-- <img :src="this.defaultVid" ref="prof_display" class="rounded-circle" alt=""> -->
+                <video ref="videoRef" src="" id="video-container" width="135" height="135" controls></video>
+                <input type="file" class="d-none" ref="uploadVideo" @change="selectFileUploadVid">
+                <div class="overlay">
+                  <div class="row w-100 m-auto">
+                    <div class="col-sm-4">
+                      <a href="javascript:void(0);" @click="$refs.uploadVideo.click()" class="icon" title="User Profile">
+                        <i class="fas fa-upload"></i>
+                      </a>
+                    </div>
+                    <div class="col-sm-4">
+                      <a href="javascript:void(0);" @click="$refs.videoRef.play();" class="icon" title="User Profile">
+                        <i class="fas fa-play"></i>
+                      </a>
+                    </div>
+                    <div class="col-sm-4">
+                      <a href="javascript:void(0);" @click="$refs.videoRef.pause();" class="icon" title="User Profile">
+                        <i class="fa fa-pause"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-12">
+                <b-form-group label="Choose you want to display in profile" class="font-12" v-slot="{ ariaDescribedby }">
+                  <b-form-radio-group
+                    id="btn-radios-1"
+                    v-model="vp_selected"
+                    :options="options"
+                    size="sm"
+                    :aria-describedby="ariaDescribedby"
+                    name="radios-btn-default"
+                    buttons
+                    @change="setDisplayTeacher"
+                  ></b-form-radio-group>
+                </b-form-group>
+              </div>
+            </div>
             <div class="row up-trial-ctrl p-4">
               <div class="col-lg-12">
                 <label for="">Trial Lesson</label>
@@ -178,12 +232,8 @@
                   name="objective_title">
             </div>
             <p class="text-danger text-center mb-3" v-if="form.errors.has('objective_title')" v-text="form.errors.get('objective_title')"></p>
-            
-            
-          </div>
-        </div>
-        <div class="col-lg-5 offset-lg-6">
             <label for="" class="text-left w-100">Objective Description</label>
+
             <div class="form-group input-group mb-0">
                 <textarea 
                   id="objective_text" 
@@ -196,6 +246,11 @@
             <p class="text-danger text-center mb-3" v-if="form.errors.has('objective_text')" v-text="form.errors.get('objective_text')"></p>
             
             <button type="submit" class="btn btn-default font-14 float-right text-center btn-cust-radius pr-4 pl-4 mt-4 mb-4">Okay</button>
+            
+          </div>
+        </div>
+        <div class="col-lg-5 offset-lg-6">
+            
         </div>
       </div>
     </form>
@@ -231,7 +286,22 @@
           csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
           baseurl: document.querySelector('meta[name="base-url"]').getAttribute('content'),
           asset: document.querySelector('meta[name="url-asset"]').getAttribute('content'),
-          user_id: document.querySelector('meta[name="user-id"]').getAttribute('content')
+          user_id: document.querySelector('meta[name="user-id"]').getAttribute('content'),
+          dataImage: {
+            photo: null,
+            description: ''
+          },
+          dataVideo: {
+            video: null,
+            description: ''
+          },
+          defaultImg: document.querySelector('meta[name="url-asset"]').getAttribute('content') + 'images/ellipse-4.png',
+          vp_selected: 'radio1',
+          options: [
+            { text: 'Display Picture', value: '0' },
+            { text: 'Diplay Video', value: '1' }
+          ]
+          // defaultVid: document.querySelector('meta[name="url-asset"]').getAttribute('content') + 'images/ellipse-4.png',
 				}
 			},
 			methods: {
@@ -269,6 +339,10 @@
             this.form.currency_rate_id = res.data[0].currency_rate_id;
             this.form.objective_title = res.data[0].objective_title;
             this.form.objective_text = res.data[0].objective_text;
+            this.defaultImg = this.baseurl + '/public/images/profile/teachers/thumb/' + res.data[0].picture;
+            // this.defaultVid = this.baseurl + '/public/videos/teachers/' + res.data[0].video;
+            this.$refs.videoRef.src = this.baseurl + '/public/videos/teachers/' + res.data[0].video; //"http://iandevlin.github.io/mdn/video-player/video/tears-of-steel-battle-clip-medium.mp4",
+            this.$refs.videoRef.play();
           }).catch((error) => {});
         },
 				submitTeachersAcctSettings(){
@@ -295,6 +369,37 @@
 						this.form.errors.record(error.response.data.errors);
 					});
 				},
+        selectFileUploadImg(event){
+          this.dataImage.photo = event.target.files[0];
+          const data = new FormData();
+          data.append('photo', this.dataImage.photo);
+          const json = JSON.stringify({
+              description: 'teachers',
+              type: 'picture',
+              teachers_id: this.user_id,
+          });
+          data.append('data', json);
+          axios.post(process.env.MIX_BASE_URL+"/api/upload-img", data).then((res) => {
+            this.defaultImg = this.baseurl + '/public/images/profile/teachers/thumb/' + res.data.imagename;
+          });
+        },
+        selectFileUploadVid(event){
+          this.dataVideo.video = event.target.files[0];
+          const data = new FormData();
+          data.append('video', this.dataVideo.video);
+          const json = JSON.stringify({
+              description: 'teachers',
+              type: 'video',
+              teachers_id: this.user_id,
+          });
+          data.append('data', json);
+          axios.post(process.env.MIX_BASE_URL+"/api/upload-img", data).then((res) => {
+            // this.defaultVid = this.baseurl + '/public/videos/teachers/' + res.data.videoname;
+          });
+        },
+        setDisplayTeacher(){
+          axios.post(process.env.MIX_BASE_URL+"/update-default-dp", { 'display_status' : this.vp_selected }).then((res) => {});
+        }
 			},
 			mounted() { 
         this.getCountries();
@@ -443,4 +548,116 @@
     border-radius: 19px;
     text-align: left;
   }
+
+  .vid-container {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .vid-container .image {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .vid-container .overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 70%;
+    opacity: 0;
+    transition: .3s ease;
+    background-color: rgba(217, 160, 25, 0.33);
+    margin: auto;
+    /* border-radius: 93px; */
+  }
+
+  .vid-container .overlay a {
+    color: #f0f0f0;
+  }
+
+  .vid-container:hover .overlay {
+    opacity: 1;
+  }
+
+  .vid-container .row {
+    color: white;
+    font-size: 100px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    text-align: center;
+    font-size: 29px;
+  }
+
+  .fa-upload:hover {
+    color: #eee;
+  }
+
+  .img-card {
+    padding: 21px;
+    margin: 29px;
+    margin-top: 29px;
+    margin-top: 0;
+    border: solid 0.5px #ccc;
+    border-radius: 13px;
+  }
+
+
+
+
+  .img-container {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .img-container .image{
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .img-container .overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 73%;
+    opacity: 0;
+    transition: .3s ease;
+    background-color: rgba(79, 73, 73, 0.7);
+    margin: auto;
+    border-radius: 93px;
+  }
+
+  .img-container .overlay a {
+    color: #f0f0f0;
+  }
+
+  .img-container:hover .overlay {
+    opacity: 1;
+  }
+
+  .img-container .icon{
+    color: white;
+    font-size: 100px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    text-align: center;
+    font-size: 29px;
+  }
+
+
 </style>

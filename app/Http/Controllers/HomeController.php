@@ -520,7 +520,6 @@ class HomeController extends Controller {
         }
         return view('students', ['data' => $data, 'teachers' => $teachers]);
     }
-
     public function studentsAccountSettings(){
         $data = DB::table('students')->where('id', '=', Auth::id())->first();
         return view('students-account-settings', ['data' => $data]);

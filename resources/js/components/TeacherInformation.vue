@@ -2,9 +2,20 @@
   <div>
     <div class="card rounded-0 bg-transparent border-0">
       <div class="card-body pb-5">
-        <div class="col-lg-12 text-center pb-5 pt-5">
-          <img :src="asset + 'images/ellipse-4.png'" alt="">
+
+        <div class="col-lg-12 text-center pb-5 pt-5" v-if="teachersData.display_status == 0">
+          <img :src="this.defaultImg" ref="prof_display" class="rounded-circle" alt="" >
         </div>
+        <div class="col-lg-12 text-center" @click="toggleModal" v-else>
+          <video ref="videoRef" src="" id="video-container" width="250" height="190" @mouseover="playVidsEvt(true)" @mouseleave="playVidsEvt(false)"></video>
+        </div>
+
+        <div>
+          <b-modal static class="p-0" v-model="showVideoModal" id="video-container-mod" ref="my-modal" hide-footer>
+            <video ref="videoRefMod" src="" width="100%" height="100%" controls></video>
+          </b-modal>
+        </div>
+
         <div class="col-lg-12 text-justify">
           <ul id="ti_ul" class="mb-1">
             <li class="pl-0" style="font-size:20px;">
@@ -81,17 +92,39 @@
         baseurl: document.querySelector('meta[name="base-url"]').getAttribute('content'),
         asset: document.querySelector('meta[name="url-asset"]').getAttribute('content'),
         teachersData: '',
+        defaultImg: '',
+        hover: false,
+        showVideoModal: false,
+        teacherVideo: ''
       }
     },
     methods: {
       fetTeachersData(){
         axios.get(process.env.MIX_BASE_URL+'/api/get-teacher-information/'+this.teachersId).then((res) => {
-						this.teachersData = res.data
-            console.log(this.teachersData);
-					}).catch((error) => {
+						this.teachersData = res.data;
+            this.defaultImg = this.baseurl + '/public/images/profile/teachers/thumb/' + res.data.picture;
+            if (typeof this.$refs.videoRef !== 'undefined') {
+              this.$refs.videoRef.src = this.baseurl + '/public/videos/teachers/' + res.data.video;
+            } 
+            if (typeof this.$refs.videoRefMod !== 'undefined'){
+              this.$refs.videoRefMod.src = this.baseurl + '/public/videos/teachers/' + res.data.video;
+            }
+          }).catch((error) => {
 						console.log(error);
         });
-        console.log();
+      },
+      playVidsEvt(b){
+        if (b == true) {
+          this.$refs.videoRef.play();
+        } else {
+          this.$refs.videoRef.src = this.baseurl + '/public/videos/teachers/' + this.teachersData.video;
+          this.teacherVideo = this.baseurl + '/public/videos/teachers/' + this.teachersData.video;
+        }
+        // console.log(b);
+      },
+      toggleModal(){
+        this.showVideoModal = true;
+        this.$refs.videoRefMod.src = this.baseurl + '/public/videos/teachers/' + this.teachersData.video;
       }
     },
     mounted() {
@@ -118,5 +151,8 @@ ul#ti_ul {
   text-align: center;
   padding: 16px;
   text-decoration: none;
+}
+#video-container-mod .modal-body{
+  padding: 0 !important;
 }
 </style>

@@ -18,6 +18,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FeedsController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\UploadController;
 use App\Mail\RegisterMail;
 
 Route::get('/', [HomeController::class, 'index']);
@@ -55,6 +56,7 @@ Route::get('/get-students-info/{any}', [HomeController::class, 'getStudentsInfo'
 Route::get('/verifying-student-email/{email}', [RegisterController::class, 'verifyingStudentEmail']);
 Route::get('/verifying-teacher-email/{email}', [RegisterController::class, 'verifyingTeacherEmail']);
 Route::get('/view-reg-template', [RegisterController::class, 'viewRegTemplate']);
+
 
 
 /**
@@ -117,6 +119,7 @@ Route::group(['middleware' => 'auth:teachers'], function () {
     Route::get('/start-chat-teachers/{any}', [ChatController::class, 'startChat']);
     Route::post('/messages-teachers', [ChatController::class, 'message']);
     Route::post('/get-conversation-teachers', [ChatController::class, 'getConversation']);
+    Route::post('/update-default-dp', [UploadController::class, 'updateDefaultDp']);
 });
 
 Route::get('logout', [LoginController::class,'logout']);
