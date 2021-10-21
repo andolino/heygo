@@ -264,7 +264,6 @@ export default {
     getUpcomingLesson(){
       axios.post(process.env.MIX_BASE_URL+'/get-teacher-booked-lesson', { 'students_id' : this.user_id }).then((res) => {
           this.upcomingLessonData = res.data;
-          this.teacherInfo.teachers_id = res.data[0].id;
         }).catch((error) => {
           console.log(error);
       });
@@ -285,6 +284,9 @@ export default {
           this.formToSave.teacher_email = res.data[0].teacher_email;
           this.formToSave.teacher_name = this.teacherInfo.name;
           this.formToSave.lesson_type = res.data[0].level + ' - ' + res.data[0].title;
+
+          this.teacherInfo.teachers_id = res.data[0].id;
+
         }).catch((error) => {
           console.log(error);
       });
