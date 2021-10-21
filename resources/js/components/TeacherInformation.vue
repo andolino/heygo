@@ -125,6 +125,7 @@
       toggleModal(){
         this.showVideoModal = true;
         this.$refs.videoRefMod.src = this.baseurl + '/public/videos/teachers/' + this.teachersData.video;
+      
       }
     },
     mounted() {
