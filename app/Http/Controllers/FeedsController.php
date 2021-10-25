@@ -41,6 +41,7 @@ class FeedsController extends Controller{
                 $files = [$files];
             }
 
+            
             $teachersFeeds = TeacherFeeds::create([
                 'teacher_id' => $request->teacher_id,
                 'feed_title' => '',
