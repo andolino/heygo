@@ -19,7 +19,7 @@
               <h5 class="text-left font-14">Short Video</h5>
               <div class="vid-container">
                 <!-- <img :src="this.defaultVid" ref="prof_display" class="rounded-circle" alt=""> -->
-                <video ref="videoRef" src="" id="video-container" width="135" height="135" controls></video>
+                <video ref="videoRef" src="" id="video-container" width="100%" height="100%" controls></video>
                 <input type="file" class="d-none" ref="uploadVideo" @change="selectFileUploadVid">
                 <div class="overlay">
                   <div class="row w-100 m-auto">
@@ -339,7 +339,9 @@
             this.form.currency_rate_id = res.data[0].currency_rate_id;
             this.form.objective_title = res.data[0].objective_title;
             this.form.objective_text = res.data[0].objective_text;
-            this.defaultImg = this.baseurl + '/public/images/profile/teachers/thumb/' + res.data[0].picture;
+            if (res.data[0].picture != null) {
+              this.defaultImg = this.baseurl + '/public/images/profile/teachers/thumb/' + res.data[0].picture;
+            }
             // this.defaultVid = this.baseurl + '/public/videos/teachers/' + res.data[0].video;
             this.$refs.videoRef.src = this.baseurl + '/public/videos/teachers/' + res.data[0].video; //"http://iandevlin.github.io/mdn/video-player/video/tears-of-steel-battle-clip-medium.mp4",
             this.$refs.videoRef.play();
@@ -395,6 +397,7 @@
           data.append('data', json);
           axios.post(process.env.MIX_BASE_URL+"/api/upload-img", data).then((res) => {
             // this.defaultVid = this.baseurl + '/public/videos/teachers/' + res.data.videoname;
+            this.$refs.videoRef.src = this.baseurl + '/public/videos/teachers/' + res.data.videoname;
           });
         },
         setDisplayTeacher(){
@@ -414,7 +417,6 @@
         //   target.innerHTML = newValue;
         // }
         // elem.addEventListener("input", rangeValue);
-        
         
       },
 	  }
@@ -568,7 +570,7 @@
     left: 0;
     right: 0;
     height: 100%;
-    width: 70%;
+    width: 100%;
     opacity: 0;
     transition: .3s ease;
     background-color: rgba(217, 160, 25, 0.33);

@@ -29,8 +29,16 @@ class UploadController extends Controller {
         ]);
         if ($req['data']->description == 'students') {
             $image = $request->file('photo');
-            $lastname = Students::where('id', $req['data']->students_id)->first()->lastname;
-            $input['imagename'] = $lastname.time().'.'.$image->extension();
+            $stdnts = Students::where('id', $req['data']->students_id)->first();
+            if ($stdnts->picture != '') {
+                $deletethumb = public_path() . '\images\profile\students\thumb\\' . $stdnts->picture;
+                $deleteimg = public_path() . '\images\profile\students\\' . $stdnts->picture;
+                if (file_exists($deletethumb)) {
+                    unlink($deletethumb);
+                    unlink($deleteimg);
+                }
+            }
+            $input['imagename'] = $stdnts->lastname.time().'.'.$image->extension();
             Students::where('id', $req['data']->students_id)
                                 ->update(['picture' => $input['imagename']]);
             /**
@@ -58,8 +66,16 @@ class UploadController extends Controller {
                 $video->move($filePath, $input['videoname']);
             } else {
                 $image = $request->file('photo');
-                $lastname = Teachers::where('id', $req['data']->teachers_id)->first()->lastname;
-                $input['imagename'] = $lastname.time().'.'.$image->extension();
+                $tchrs = Teachers::where('id', $req['data']->teachers_id)->first();
+                if ($tchrs->picture != '') {
+                    $deletethumb = public_path() . '\images\profile\teachers\thumb\\' . $tchrs->picture;
+                    $deleteimg = public_path() . '\images\profile\teachers\\' . $tchrs->picture;
+                    if (file_exists($deletethumb)) {
+                        unlink($deletethumb);
+                        unlink($deleteimg);
+                    }
+                }
+                $input['imagename'] = $tchrs->lastname.time().'.'.$image->extension();
                 Teachers::where('id', $req['data']->teachers_id)
                                     ->update(['picture' => $input['imagename']]);
                 /**

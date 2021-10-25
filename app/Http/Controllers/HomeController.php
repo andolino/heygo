@@ -512,11 +512,26 @@ class HomeController extends Controller {
                         ->get();
         if (isset($_GET['q'])) {
             $q = $_GET['q'];
-            $teachers = Teachers::where('firstname','LIKE','%'.$q.'%')
-                                ->orWhere('middlename','LIKE','%'.$q.'%')
-                                ->orWhere('lastname','LIKE','%'.$q.'%')
-                                ->orWhere('email','LIKE','%'.$q.'%')
-                                ->get();
+            $teachers = DB::table('teachers')
+                        ->leftJoin('currency_rate', 'currency_rate.id', '=', 'teachers.currency_rate_id')
+                        ->leftJoin('lesson_rate_type', 'lesson_rate_type.id', '=', 'teachers.lesson_rate_type_id')
+                        ->leftJoin('lesson_schedule', 'lesson_schedule.teachers_id', '=', 'teachers.id')
+                        ->select('teachers.*', 
+                                'currency_rate.currency', 
+                                'lesson_rate_type.type', 
+                                DB::raw("GROUP_CONCAT(DISTINCT lesson_schedule.lesson_option_id
+                                ORDER BY lesson_schedule.lesson_option_id DESC SEPARATOR ',') as lesson_option_id"))
+                        ->where('teachers.firstname','LIKE','%'.$q.'%')
+                                            ->orWhere('teachers.middlename','LIKE','%'.$q.'%')
+                                            ->orWhere('teachers.lastname','LIKE','%'.$q.'%')
+                                            ->orWhere('teachers.email','LIKE','%'.$q.'%')
+                        ->groupBy('teachers.id')
+                        ->get();
+            // $teachers = Teachers::where('firstname','LIKE','%'.$q.'%')
+            //                     ->orWhere('middlename','LIKE','%'.$q.'%')
+            //                     ->orWhere('lastname','LIKE','%'.$q.'%')
+            //                     ->orWhere('email','LIKE','%'.$q.'%')
+            //                     ->get();
         }
         return view('students', ['data' => $data, 'teachers' => $teachers]);
     }

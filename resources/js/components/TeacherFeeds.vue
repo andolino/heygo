@@ -5,30 +5,10 @@
         <div class="bg-light rounded-lg w-100 p-3" @click="showModalPost()">Create Your Post</div>
         <i class="fas fa-paper-plane cursor"></i>
       </div>
-      <div class="col-lg-12 float-right">
-        <form class="form-inline float-right font-12">
-          <label class="my-1 mr-2" for="inlineFormCustomSelectPref">Filter 1</label>
-          <select class="custom-select my-1 rounded mr-3 rounded-pill font-14" id="inlineFormCustomSelectPref">
-            <option selected>Choose...</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </select>
-          <label class="my-1 mr-2" for="inlineFormCustomSelectPref">Filter 1</label>
-          <select class="custom-select my-1 rounded mr-3 rounded-pill font-14" id="inlineFormCustomSelectPref">
-            <option selected>Choose...</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </select>
-          <label class="my-1 mr-2" for="inlineFormCustomSelectPref">Filter 1</label>
-          <select class="custom-select my-1 rounded rounded-pill font-14" id="inlineFormCustomSelectPref">
-            <option selected>Choose...</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </select>
-        </form>
+      <div class="col-lg-12 float-left mb-1">
+        <button type="button" class="btn rounded-3 btn-md btn-default rounded-pill font-14">All</button>
+        <button type="button" class="btn rounded-3 btn-md btn-default rounded-pill font-14">Students</button>
+        <button type="button" class="btn rounded-3 btn-md btn-default rounded-pill font-14">Teachers</button>
       </div>
     </div>
 
@@ -42,22 +22,46 @@
             </button>
           </div>
           <div class="modal-body">
-            <div class="m-auto">
-              <p class="text-center">
-                <a href="" class="text-warning font-12">Post a Question</a> &nbsp; <a href="" class="text-dark font-12">Post a Lesson Plan</a>
-              </p>
-            </div>
-            <vue-dropzone 
-              ref="myVueDropzone" 
-              id="dropzone" 
-              :options="dropzoneOptions"
-              @vdropzone-complete="afterUploadComplete"
-              @vdropzone-sending-multiple="sendTeacherFeeds"></vue-dropzone>
-            <form>
-              <div class="form-group mt-3">
-                <textarea v-model="post_msg" class="form-control font-14" rows="6" id="message-post" placeholder="Create you post"></textarea>
+
+            <ul class="nav nav-tabs border-0 justify-content-center font-12" id="myTab" role="tablist">
+              <li class="nav-item" role="presentation">
+                <a class="nav-link border-0 active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Post a Question</a>
+              </li>
+              <li class="nav-item" role="presentation">
+                <a class="nav-link border-0" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Post a Lesson Plan</a>
+              </li>
+            </ul>
+
+            <div class="tab-content" id="myTabContent">
+              <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <form>
+                  <div class="form-group mt-3">
+                    <textarea v-model="post_msg" class="form-control font-14" rows="6" id="message-post" placeholder="Create you question"></textarea>
+                  </div>
+                </form>
               </div>
-            </form>
+              <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <!-- <div class="m-auto">
+                  <p class="text-center">
+                    <a href="" class="text-warning font-12">Post a Question</a> &nbsp; <a href="" class="text-dark font-12">Post a Lesson Plan</a>
+                  </p>
+                </div> -->
+                <vue-dropzone 
+                  ref="myVueDropzone" 
+                  id="dropzone" 
+                  :options="dropzoneOptions"
+                  @vdropzone-complete="afterUploadComplete"
+                  @vdropzone-sending-multiple="sendTeacherFeeds"></vue-dropzone>
+                <form>
+                  <div class="form-group mt-3">
+                    <textarea v-model="post_msg" class="form-control font-14" rows="6" id="message-post" placeholder="Create you post"></textarea>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+
+            
           </div>
           <div class="modal-footer">
             <div class="row mr-auto text-light post-feed-icon">
@@ -101,12 +105,12 @@
               </div>
               <div class="row">
                 <div class="col-lg-7">
-                  {{ displayAttachments(pfd.attmnts) }}
-                  <div class="row">
+                  <!-- {{ displayAttachments(pfd.attmnts) }} -->
+                  <!-- <div class="row">
                     <div class="col-lg-4" v-for="(item, index) in dataAttachments" :key="index">
                       <a :href="baseurl + '/uploads/teachers-feeds/' + item" class="font-12 text-black-50"  download>Attachment {{ index + 1 }}</a>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -133,9 +137,9 @@
             <div class="col-lg-1 pl-1 text-right">
               <img :src="asset + 'images/ellipse.png'" alt="">
             </div>
-            <div class="col-lg-10 text-right pl-1 pr-1count-feeds-like">
+            <!-- <div class="col-lg-10 text-right pl-1 pr-1 count-feeds-like">
               <input type="text" class="form-control form-control-sm font-12">
-            </div>
+            </div> -->
             <div class="col-lg-1 text-left pr-1 count-feeds-comment">
               <a href="#" class="text-black-50"><i class="fas fa-paper-plane text-warning" style="position: relative;
                                                                                                   right: 56px;

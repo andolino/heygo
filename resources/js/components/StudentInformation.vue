@@ -2,8 +2,12 @@
   <div>
     <div class="card rounded-0 bg-transparent border-0">
       <div class="card-body pb-5">
-        <div class="col-lg-12 text-center pb-5 pt-5">
+        <!-- <div class="col-lg-12 text-center pb-5 pt-5">
           <img :src="asset + 'images/ellipse-4.png'" alt="">
+        </div> -->
+        <!-- v-if="teachersData.display_status == 0" -->
+        <div class="col-lg-12 text-center pb-5 pt-5" >
+          <img :src="this.defaultImg" ref="prof_display" class="rounded-circle" alt="" >
         </div>
         <div class="col-lg-12 text-justify">
           <ul id="ti_ul" class="mb-1">
@@ -81,12 +85,14 @@
         baseurl: document.querySelector('meta[name="base-url"]').getAttribute('content'),
         asset: document.querySelector('meta[name="url-asset"]').getAttribute('content'),
         studentsData: '',
+        defaultImg: ''
       }
     },
     methods: {
       fetStudentsData(){
         axios.get(process.env.MIX_BASE_URL+'/api/get-student-information/'+this.studentsId).then((res) => {
 						this.studentsData = res.data
+            this.defaultImg = this.baseurl + '/public/images/profile/students/thumb/' + res.data.picture;
 					}).catch((error) => {
 						console.log(error);
         });

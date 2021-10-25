@@ -432,8 +432,7 @@
   export default {
     props: {
       findtutor: {
-        type: Array,
-        default: [],
+        type: Object,
       },
     },
     name: 'FetchFeeds',
@@ -772,6 +771,7 @@
         if (lesson_option_id === null) {
           return false;
         } else {
+          if (!Array.isArray(lesson_option_id)) { return false; }
           var e_loi = lesson_option_id.split(',');
           if (e_loi.includes('1')) {
             return true;
