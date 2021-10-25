@@ -60,14 +60,14 @@
               <img :src="asset + 'images/badge.png'" width="60">
             </div>
           </div>
-          <div class="row">
+          <div class="row mt-5">
             <div class="col-lg-12">
               <button type="button" 
                         class="btn btn-default float-left btn-dashboard mb-3 font-12 pl-3 pr-3"  
                         data-apptype="confirm">Book A Lesson</button>
-              <button type="button" 
+              <a :href="baseurl + '/teachers-profile/' + this.teachersData.id"
                         class="btn btn-default float-right btn-dashboard mb-3 font-12"  
-                        data-apptype="confirm">See Profile</button>
+                        data-apptype="confirm">See Profile</a>
             </div>
           </div>
         </div>
