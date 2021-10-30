@@ -44,5 +44,7 @@ Route::post('/approve-student-booking', [HomeController::class, 'approveStudentB
 Route::post('/student-book-free-trial', [HomeController::class, 'studentBookFreeTrial'])->name('student-booking-trial');
 Route::post('/student-book-free-trial', [HomeController::class, 'studentBookFreeTrial'])->name('student-booking-trial');
 Route::post('/upload-img', [UploadController::class, 'uploadImage']);
+Route::post('/post-likes', [FeedsController::class, 'postLikes']);
+Route::post('/post-comments', [FeedsController::class, 'postComments']);
 
 // Route::get('/todo', [TodoController::class, 'index']);

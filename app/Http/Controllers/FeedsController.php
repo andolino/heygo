@@ -64,14 +64,23 @@ class FeedsController extends Controller{
                 $teacherFeedsAttchmts->save();
             }
             return response()->json(['message' => 'file uploaded', 'data' => $request->all()], 200);
-        } else{
+        } else {
+            if ($request->feed_body) {
+                $teachersFeeds = TeacherFeeds::create([
+                    'teacher_id' => $request->teacher_id,
+                    'feed_title' => '',
+                    'feed_body' => $request->feed_body
+                ]);
+                $teachersFeeds->save();
+                return response()->json(['message' => 'Your Question is Posted', 'data' => $request->all()], 200);
+            }
             return response()->json(['message' => 'error uploading file'], 503);
         }
     }
 
     public function displayTeacherFeeds(Request $request){
-        $teachers_id = $request->teachers_id;
-        $data = DB::select(DB::raw("SELECT 
+        // $teachers_id = $request->teachers_id;
+        $question = DB::select(DB::raw("SELECT 
                                         tn.*,
                                         tna.file,
                                         t.lastname,
@@ -79,16 +88,120 @@ class FeedsController extends Controller{
                                         t.middlename,
                                         t.rate_per_hr,
                                         t.email,
-                                        GROUP_CONCAT(DISTINCT tna.file ORDER BY tna.file DESC SEPARATOR '==') as attmnts
+                                        GROUP_CONCAT(DISTINCT tna.file ORDER BY tna.file DESC SEPARATOR '==') as attmnts,
+                                        tnl.is_like
                                     FROM teacher_newsfeed tn
                                     LEFT JOIN teacher_newsfeed_attachments tna ON tna.teacher_newsfeed_id = tn.id
+                                    LEFT JOIN teacher_newsfeed_likes tnl ON tnl.teacher_newsfeed_id = tn.id
                                     LEFT JOIN teachers t ON t.id = tn.teacher_id
-                                    WHERE tn.teacher_id = $teachers_id 
                                     GROUP BY tn.id ORDER BY tn.id DESC"));
+                                    //WHERE tn.teacher_id = $teachers_id 
                                     // GROUP_CONCAT(DISTINCT test_score
                                     // ORDER BY test_score DESC SEPARATOR ' ')
-        return response()->json($data);
+        // teacher_newsfeed_comments
+        $comments_result = DB::select(DB::raw("SELECT 
+                                                    tnc.*,
+                                                    coalesce(t.lastname, s.lastname) as lastname,
+                                                    coalesce(t.firstname, s.firstname) as firstname,
+                                                    coalesce(t.email, s.email) as email,
+                                                    t.rate_per_hr,
+                                                    tncu.is_like as usefull_like,
+                                                    tncl.is_like
+                                                FROM teacher_newsfeed_comments tnc
+                                                LEFT JOIN teacher_newsfeed_com_usefull tncu ON tncu.teacher_newsfeed_com_id = tnc.id
+                                                LEFT JOIN teacher_newsfeed_com_likes tncl ON tncl.teacher_newsfeed_com_id = tnc.id
+                                                LEFT JOIN teachers t ON t.id = tnc.teachers_id
+                                                LEFT JOIN students s ON s.id = tnc.students_id
+                                                GROUP BY tnc.id ORDER BY tnc.id ASC"));
+        $c = [];
+        foreach ($comments_result as $r) { $c[$r->teacher_newsfeed_id][] = $r; }
+        // $q = [];
+        // foreach ($question as $k => $v) { $d[$k] = $v; }
+        // dd($c[14]);
+        return response()->json(['question' => $question, 'comments' => $c]);
     }
+
+    public function postLikes(Request $request){
+        // $request->type;
+        // $request->user_id;
+        // $request->is_students;
+        // $request->is_like;
+        if ($request->type == 'like-question') {
+            /**
+             * Post Like Question
+             */
+            if ($request->is_students == 0) {
+                DB::table('teacher_newsfeed_likes')
+                    ->updateOrInsert(
+                        [ 'teacher_newsfeed_id' => $request->feeds_id, 'teachers_id' => $request->user_id ],
+                        [ 'is_like' => $request->is_like, 'created_at' => date('Y-m-d H:i:s') ],
+                    );
+            } else {
+                DB::table('teacher_newsfeed_likes')
+                    ->updateOrInsert(
+                        [ 'teacher_newsfeed_id' => $request->feeds_id, 'students_id' => $request->user_id ],
+                        [ 'is_like' => $request->is_like, 'created_at' => date('Y-m-d H:i:s') ],
+                    );
+            }
+        } elseif($request->type == 'usefull-comments'){
+            if ($request->is_students == 0) {
+                DB::table('teacher_newsfeed_com_usefull')
+                    ->updateOrInsert(
+                        [ 'teacher_newsfeed_com_id' => $request->feeds_id, 'teachers_id' => $request->user_id ],
+                        [ 'is_like' => $request->is_like, 'created_at' => date('Y-m-d H:i:s') ],
+                    );
+            } else {
+                DB::table('teacher_newsfeed_com_usefull')
+                    ->updateOrInsert(
+                        [ 'teacher_newsfeed_com_id' => $request->feeds_id, 'students_id' => $request->user_id ],
+                        [ 'is_like' => $request->is_like, 'created_at' => date('Y-m-d H:i:s') ],
+                    );
+            }
+        } else {
+            /**
+             * Post Like Comment in Question
+             * type = like-comments
+             */
+            if ($request->is_students == 0) {
+                DB::table('teacher_newsfeed_com_likes')
+                    ->updateOrInsert(
+                        [ 'teacher_newsfeed_com_id' => $request->feeds_id, 'teachers_id' => $request->user_id ],
+                        [ 'is_like' => $request->is_like, 'created_at' => date('Y-m-d H:i:s') ],
+                    );
+            } else {
+                DB::table('teacher_newsfeed_com_likes')
+                    ->updateOrInsert(
+                        [ 'teacher_newsfeed_com_id' => $request->feeds_id, 'students_id' => $request->user_id ],
+                        [ 'is_like' => $request->is_like, 'created_at' => date('Y-m-d H:i:s') ],
+                    );
+            }
+        }
+    }
+
+    public function postComments(Request $request){
+        if ($request->type == 'comment-comments') {
+            /**
+             * Post Answer to Question
+             */
+            if ($request->is_students == 0) {
+                DB::table('teacher_newsfeed_comments')
+                    ->insert(['teacher_newsfeed_id' => $request->feeds_id, 
+                                'teachers_id' => $request->user_id, 
+                                'comments' => $request->comments,
+                                'created_at' => date('Y-m-d H:i:s') ]);
+            } else {
+                DB::table('teacher_newsfeed_comments')
+                    ->insert(['teacher_newsfeed_id' => $request->feeds_id, 
+                                'students_id' => $request->user_id, 
+                                'comments' => $request->comments,
+                                'created_at' => date('Y-m-d H:i:s') ]);
+            }
+        } else {
+           
+        }
+    }
+
+    
 
 
 

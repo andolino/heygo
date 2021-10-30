@@ -85,11 +85,11 @@
               <div class="cicle-active"></div>
               <div class="row">
                 <div class="col-lg-7">
-                  <span class="ml-4" style="font-size: 23px;"> 
+                  <span class="ml-3 font-14"> 
                    {{ pfd.lastname.toUpperCase() }}, {{ pfd.firstname.toUpperCase() }}</span>
                 </div>
                 <div class="col-lg-5">
-                  <span class="ml-3" style="float: right;">
+                  <span class="ml-3 font-14" style="float: right;">
                     {{ moment(new Date(pfd.created_at)).format('LLL') }}
                   </span>
                 </div>
@@ -119,34 +119,75 @@
         </div>
         <div class="card-footer">
           <div class="row cont-count-feeds">
-            <div class="col-lg-1 text-right pl-1 pr-1 offset-lg-9 count-feeds-like">
-              <i class="fas fa-heart"></i>
-              <span class="font-12">100</span>
+            <div class="col-lg-4 text-center font-weight-normal pr-1 count-feeds-like">
+              <span class="font-12 cursor" :class="{ 'text-primary' : pfd.is_like }" data-loc="like-question" :data-id="pfd.id" v-on:click="likeCmnt"><i class="fas fa-thumbs-up"></i> Like</span>
             </div>
-            <div class="col-lg-1 text-center pl-1 pr-1 count-feeds-comment">
-              <i class="fas fa-eye"></i>
-              <span class="font-12">100</span>
-            </div>
-            <div class="col-lg-1 text-left pl-1 pr-1 count-feeds-dislikes">
-              <i class="fas fa-minus-square"></i>
-              <span class="font-12">100</span>
+            <!-- <div class="col-lg-4 text-center font-weight-normal pr-1 count-feeds-comment">
+              <span class="font-12 cursor"><i class="far fa-check-circle"></i> This helpfull me</span>
+            </div> -->
+            <div class="col-lg-4 offset-lg-4 text-center font-weight-normal pr-1 count-feeds-dislikes">
+              <span class="font-12 cursor text-secondary" v-on:click="showComments(pfd.id)"><i class="fas fa-comment"></i> Show Answers</span>
             </div>
           </div>
           <hr>
+
+          <div class="d-none" :id="'comments'+pfd.id">
+            <div class="row"  v-for="cmnts in comments[pfd.id]" :key="cmnts.id">
+              <div class="col-lg-1 pr-0">
+                <img :src="asset + 'images/ellipse.png'" alt="" width="100%">
+              </div>
+              <div class="col-lg-8">
+                <div class="rounded-cmnt-content font-12">
+                  <div class="row mb-1">
+                    <div class="col-lg-8 font-weight-bold">{{ $helpers.capFirstLetter(cmnts.lastname) }}, {{ $helpers.capFirstLetter(cmnts.firstname) }}</div>
+                    <div class="col-lg-4">
+                      <div class="time-cmnt font-12 text-right">{{ moment(new Date(cmnts.created_at)).fromNow() }}</div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="msg-cmnt font-12">
+                        {{ cmnts.comments }}
+                      </div>
+                    </div>
+                    <div class="col-lg-12">
+                      <div class="row mt-3">
+                        <div class="col-lg-2 font-weight-normal pr-1 count-feeds-like">
+                          <span class="font-12 cursor" :class="{ 'text-primary' : cmnts.is_like }" data-loc="like-comments" :data-id="cmnts.id" v-on:click="likeCmnt"><i class="fas fa-thumbs-up"></i> Like</span>
+                        </div>
+                        <div class="col-lg-4 font-weight-normal pr-1 count-feeds-comment">
+                          <span class="font-12 cursor" :class="{ 'text-primary' : cmnts.usefull_like }" data-loc="usefull-comments" :data-id="cmnts.id" v-on:click="likeCmnt"><i class="far fa-check-circle"></i> This helpfull me</span>
+                        </div>
+                        <div class="col-lg-4 font-weight-normal pr-1 count-feeds-dislikes">
+                          <span class="font-12 cursor"><i class="fas fa-comment"></i> Show Comments</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
           <div class="row">
             <div class="col-lg-1 pl-1 text-right">
               <img :src="asset + 'images/ellipse.png'" alt="">
             </div>
-            <!-- <div class="col-lg-10 text-right pl-1 pr-1 count-feeds-like">
-              <input type="text" class="form-control form-control-sm font-12">
-            </div> -->
-            <div class="col-lg-1 text-left pr-1 count-feeds-comment">
-              <a href="#" class="text-black-50"><i class="fas fa-paper-plane text-warning" style="position: relative;
-                                                                                                  right: 56px;
-                                                                                                  font-size: 12px;
-                                                                                                  top: 2px;"></i></a>
+            <div class="col-lg-10 text-right pl-1 pr-1 count-feeds-like">
+              <input type="text" class="form-control form-control-lg rounded-pill font-12" data-loc="comment-comments" :data-id="pfd.id" v-on:keyup.enter="onEnterCmnts">
             </div>
-            
+            <div class="col-lg-1 text-left pr-1 count-feeds-comment">
+              <a href="#" class="text-black-50"><img :src="baseurl+'/public/images/arrow-left-ico.png'" 
+                                                      style="position: relative;
+                                                      right: 56px;
+                                                      font-size: 12px;
+                                                      top: 5px;" alt="" width="18"></a>
+            </div>
+            <!-- position: relative;
+            right: 56px;
+            font-size: 12px;
+            top: 2px; -->
           </div>
         </div>
       </div>
@@ -160,6 +201,7 @@
 <script>
 import moment from 'moment';
 import vue2Dropzone from 'vue2-dropzone';
+import axios from 'axios';
 export default {
   name: 'TeacherFeeds',
   components: {
@@ -182,6 +224,7 @@ export default {
       baseurl: document.querySelector('meta[name="base-url"]').getAttribute('content'),
       asset: document.querySelector('meta[name="url-asset"]').getAttribute('content'),
       user_id: document.querySelector('meta[name="user-id"]').getAttribute('content'),
+      user_type: document.querySelector('meta[name="user-type"]').getAttribute('content'),
       dropzoneOptions: {
         url: document.querySelector('meta[name="base-url"]').getAttribute('content') + '/api/post-teacher-feeds', // 'https://httpbin.org/post',
         thumbnailWidth: 150,
@@ -196,6 +239,10 @@ export default {
       },
       post_msg: '',
       postedFeedsData: '',
+      comments: {
+        type: Array,
+        default: []
+      },
       moment: moment,
       dataAttachments: {
         type: Array,
@@ -212,19 +259,18 @@ export default {
     },
     displayTeacherFeeds(){
       axios.post(process.env.MIX_BASE_URL+'/display-teacher-feeds', { 'teachers_id' : this.user_id }).then((res) => {
-          this.postedFeedsData = res.data;
-          // console.log(this.postedFeedsData);
+          this.postedFeedsData = res.data.question;
+          this.comments = res.data.comments;
         }).catch((error) => {
           console.log(error);
       });
     },
     afterUploadComplete: async function(response){
-      console.log(response);
       if (response.status =="success") {
         Swal.fire({
           position: 'top-end',
           icon: 'success',
-          title: 'Updaload successfully',
+          title: 'Posted successfully',
           showConfirmButton: false,
           timer: 2000
         }).then((result) => {
@@ -237,7 +283,7 @@ export default {
         Swal.fire({
           position: 'top-end',
           icon: 'warning',
-          title: 'Updaload failure',
+          title: 'Upload failure',
           showConfirmButton: false,
           timer: 1500
         });
@@ -248,13 +294,76 @@ export default {
       formData.append('teacher_id', this.user_id);
     },
     postTeacherFeed: async function(){
-      this.$refs.myVueDropzone.processQueue();
+      if (typeof this.$refs.myVueDropzone.processQueue() === 'undefined') {
+        axios.post(process.env.MIX_BASE_URL+'/api/post-teacher-feeds', 
+            { 'feed_body': this.post_msg, 'teacher_id': this.user_id 
+        }).then((res) => {
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: res.data.message,
+            showConfirmButton: false,
+            timer: 2000
+          }).then((result) => {
+            /* Read more about handling dismissals below */
+            if (result.dismiss === Swal.DismissReason.timer) {
+              window.location.reload();
+            }
+          });
+        }).catch((error) => {
+            console.log(error);
+        });
+      } else {
+        this.$refs.myVueDropzone.processQueue();
+      }
+    },
+    likeCmnt(e){
+      // console.log();
+      e.target.classList.toggle('text-primary');
+      var type = e.target.getAttribute('data-loc');
+      var feeds_id = e.target.getAttribute('data-id');
+      axios.post(process.env.MIX_BASE_URL+'/api/post-likes', 
+          { 'type' : type, 
+            'feeds_id' : feeds_id, 
+            'user_id' : this.user_id, 
+            'is_students' : (this.user_type == 'teachers' ? 0 : 1),
+            'is_like' : (e.target.classList.contains('text-primary') ? 1 : 0)
+      }).then((res) => {
+        
+      }).catch((error) => {
+          console.log(error);
+      });
+    },
+    showComments(id){
+      var el = document.getElementById('comments'+id);
+      if (el.classList.contains("d-none")) {
+        el.classList.remove('d-none');
+      } else {
+        el.classList.add('d-none');
+      }
     },
     displayAttachments(f){
       if (typeof f !== 'object') {
         var arr = f.split('==');
         this.dataAttachments = arr; 
       }
+    },
+    onEnterCmnts(e){
+      var cmnt = e.target.value;
+      var feeds_id = e.target.getAttribute('data-id');
+      var type = e.target.getAttribute('data-loc');
+      axios.post(process.env.MIX_BASE_URL+'/api/post-comments', 
+        { 
+          'type' : type,
+          'user_id' : this.user_id, 
+          'comments' : cmnt,
+          'feeds_id' : feeds_id,
+          'is_students' : (this.user_type == 'teachers' ? 0 : 1),
+      }).then((res) => {
+        this.displayTeacherFeeds();
+      }).catch((error) => {
+          console.log(error);
+      });
     }
   },
   mounted() {
@@ -270,5 +379,12 @@ export default {
 }
 .modal-footer {
     border-top: 0px !important;
+}
+.rounded-cmnt-content {
+    padding: 15px;
+    background: #f7f2e9;
+    margin-bottom: 15px;
+    border-left: 3px solid #fcb017;
+    box-shadow: 2px 2px 0px 0px #eee;
 }
 </style>
