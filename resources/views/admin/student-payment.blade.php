@@ -1,6 +1,6 @@
 @extends('layouts.app-admin')
 @section('content')
-      <main>
+      {{-- <main> --}}
           <div class="container-fluid px-4">
               <h1 class="mt-4">Students Payments</h1>
               <ol class="breadcrumb mb-4">
@@ -62,6 +62,6 @@
                   </div>
               </div>
           </div>
-      </main>
+      {{-- </main> --}}
       
 @endsection

@@ -104,7 +104,7 @@
                     {{ strtoupper($data->email) }}
                   </a>
                   <hr>
-                  <a class="dropdown-item l-h-1p4" href="#">
+                  <a class="dropdown-item l-h-1p4" href="{{ url('teachers-profile-main') }}">
                     Your Profile
                   </a>
                   <a class="dropdown-item l-h-1p4" href="#">

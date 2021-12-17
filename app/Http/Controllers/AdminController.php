@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 // use Illuminate\Http\Request;
-use Request;
+use Illuminate\Http\Request;
 use App\Models\Admins;
+use App\Models\Teachers;
 use Auth;
 use DB;
 use Cartalyst\Stripe\Laravel\Facades\Stripe;
@@ -13,7 +14,8 @@ class AdminController extends Controller{
     
     public function adminsDashboard(){
         $data = DB::table('admins')->where('id', '=', Auth::id())->first();
-        return view('admin-dashboard', [ 'data' => $data ]);
+        $link_url = request()->segment(1);
+        return view('admin-dashboard', [ 'data' => $data, 'link' => $link_url]);
     }
 
     public function studentPayment(){
@@ -53,5 +55,65 @@ class AdminController extends Controller{
                                                     LEFT JOIN teachers t on t.id = ls.teachers_id
                                                     LEFT JOIN students s on s.id = ls.students_id"));
         return view('admin.teachers-wallet', [ 'data' => $data, 'paymentTransaction' => $paymentTransaction ]);
+    }
+
+    public function badgeList(Request $request){
+        $columns = ['title', 'image', 'created_at'];
+        $length = $request->length;
+        $column = $request->column;
+        $dir = $request->dir;
+        $searchValue = $request->search;
+        $q = DB::table('badges')->select('id', 'title', 'image', 'created_at')->orderBy($columns[$column], $dir);
+
+        if ($searchValue) {
+            $q->where(function($q) use ($searchValue) {
+                $q->where('title', 'like', '%' . $searchValue . '%')
+                    ->orWhere('image', 'like', '%' . $searchValue . '%');
+            });
+        }
+
+        $badge = $q->paginate($length);
+        return ['data' => $badge, 'draw' => $request->draw];
+    }
+
+    public function teachersListSetup(Request $request){
+        // $data = Admins::getTeachersSetup()->get();
+        // return ['data'=>$data];
+        $columns = ['lastname', 'firstname', 'middlename', 'rate_per_hr', 'contact_no', 'picture', 'number_of_lesson', 'title'];
+        $length = $request->length;
+        $column = $request->column;
+        $dir = $request->dir;
+        $searchValue = $request->search;
+        $q = Teachers::leftJoin('lesson_schedule', 'teachers.id', '=', 'lesson_schedule.teachers_id')
+                    ->leftJoin('lesson_plan', 'lesson_plan.id', '=', 'lesson_schedule.lesson_plan_id')
+                    ->select('teachers.*', DB::raw('count(lesson_schedule.id) as number_of_lesson'), 'lesson_plan.title')
+                    ->orderBy($columns[$column], $dir)
+                    ->groupBy('teachers.id');
+                    // select 
+                    //     t.*, 
+                    //     count(ls.id) as number_of_lesson, 
+                    //     lp.title from teachers t
+                    // left join lesson_schedule ls on t.id = ls.teachers_id
+                    // left join lesson_plan lp on ls.lesson_plan_id = lp.id
+                    // group by t.id, lp.id;
+        if ($searchValue) {
+            $q->where(function($q) use ($searchValue) {
+                $q->where('teachers.lastname', 'like', '%' . $searchValue . '%')
+                    ->orWhere('teachers.firstname', 'like', '%' . $searchValue . '%')
+                    ->orWhere('teachers.email', 'like', '%' . $searchValue . '%');
+            });
+        }
+        $badge = $q->paginate($length);
+        return ['data' => $badge, 'draw' => $request->draw];
+    }
+
+    public function getLessonAndBadge(Request $request){
+        $q = Teachers::leftJoin('lesson_schedule', 'teachers.id', '=', 'lesson_schedule.teachers_id')
+                    ->leftJoin('lesson_plan', 'lesson_plan.id', '=', 'lesson_schedule.lesson_plan_id')
+                    ->leftJoin('students', 'students.id', '=', 'lesson_schedule.students_id')
+                    ->select('lesson_schedule.id', DB::raw("count(lesson_schedule.id) as no_of_lesson"), DB::raw("concat(students.lastname, ', ', students.firstname) as student_name"), 'lesson_plan.title')
+                    ->where('teachers.id', $request->id)
+                    ->groupBy('teachers.id', 'lesson_plan.id')->get();
+        return ['data' => $q];
     }
 }

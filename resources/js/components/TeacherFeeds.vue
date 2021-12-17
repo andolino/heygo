@@ -74,9 +74,9 @@
       </div>
     </div>
 
-    <div class="mb-3" v-for="pfd in postedFeedsData" :key="pfd.id">
+    <div class="mb-3 cursor" v-for="pfd in postedFeedsData" :key="pfd.id">
       <div class="card rounded-11px">
-        <div class="card-body mt-1">
+        <div class="card-body mt-1" @click="goToProfile(pfd.id)">
           <div class="row">
             <div class="col-lg-2 text-center mt-3 pr-1">
               <img :src="asset + 'images/ellipse-1.png'" alt="">
@@ -139,7 +139,7 @@
               <div class="col-lg-8">
                 <div class="rounded-cmnt-content font-12">
                   <div class="row mb-1">
-                    <div class="col-lg-8 font-weight-bold">{{ $helpers.capFirstLetter(cmnts.lastname) }}, {{ $helpers.capFirstLetter(cmnts.firstname) }}</div>
+                    <div class="col-lg-8 font-weight-bold text-secondary">{{ $helpers.capFirstLetter(cmnts.lastname) }}, {{ $helpers.capFirstLetter(cmnts.firstname) }}</div>
                     <div class="col-lg-4">
                       <div class="time-cmnt font-12 text-right">{{ moment(new Date(cmnts.created_at)).fromNow() }}</div>
                     </div>
@@ -165,8 +165,43 @@
                     </div>
                   </div>
                 </div>
+
+                <div class="rounded-sub-cmnt-content font-12" v-for="sb_cmnts in sub_comments[cmnts.id]" :key="sb_cmnts.id">
+                  <div class="row">
+                    <div class="col-lg-7 font-weight-bold text-secondary">{{ $helpers.capFirstLetter(sb_cmnts.lastname) }}, {{ $helpers.capFirstLetter(sb_cmnts.firstname) }}</div>
+                    <div class="col-lg-5"><div class="time-cmnt font-12 text-right">{{ moment(new Date(sb_cmnts.created_at)).fromNow() }}</div></div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-12">
+                      {{ sb_cmnts.comments }}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="sub-comment-inpt">
+                  <div class="row">
+                    <div class="col-lg-12"></div>
+                    <div class="col-lg-1 pr-0 offset-lg-2 pl-1 text-right">
+                      <img :src="asset + 'images/ellipse.png'" alt="">
+                    </div>
+                    <div class="col-lg-8 text-right pr-0 count-feeds-like mb-3">
+                      <input type="text" class="form-control form-control-sm rounded-pill font-12" data-loc="comment-comments-sub" :data-id="cmnts.id" v-on:keyup.enter="onEnterCmnts">
+                    </div>
+                    <div class="col-lg-1 text-left pr-1 pl-0 count-feeds-comment">
+                      <a href="#" class="text-black-50"><img :src="baseurl+'/public/images/arrow-left-ico.png'" 
+                                                              style="position: relative;
+                                                                      right: 24px;
+                                                                      top: 1px;" alt="" width="14"></a>
+                    </div>
+                  </div>
+                </div>
+
               </div>
+              
+
             </div>
+
+            
           </div>
 
 
@@ -184,10 +219,6 @@
                                                       font-size: 12px;
                                                       top: 5px;" alt="" width="18"></a>
             </div>
-            <!-- position: relative;
-            right: 56px;
-            font-size: 12px;
-            top: 2px; -->
           </div>
         </div>
       </div>
@@ -208,12 +239,9 @@ export default {
     vueDropzone: vue2Dropzone
   },
   // props: [ 'base_url' ],
-  // props: {
-  //   findtutor: {
-  //     type: Array,
-  //     default: [],
-  //   }
-  // },
+  props: {
+    feeds_id: ''
+  },
   data(){ 
     return{
       form: new Form({
@@ -243,6 +271,10 @@ export default {
         type: Array,
         default: []
       },
+      sub_comments: {
+        type: Array,
+        default: []
+      },
       moment: moment,
       dataAttachments: {
         type: Array,
@@ -258,9 +290,10 @@ export default {
       alert('oowa');
     },
     displayTeacherFeeds(){
-      axios.post(process.env.MIX_BASE_URL+'/display-teacher-feeds', { 'teachers_id' : this.user_id }).then((res) => {
+      axios.post(process.env.MIX_BASE_URL+'/display-teacher-feeds', { 'teachers_id' : this.user_id, 'feeds_id' : this.feeds_id }).then((res) => {
           this.postedFeedsData = res.data.question;
           this.comments = res.data.comments;
+          this.sub_comments = res.data.sub_comments;
         }).catch((error) => {
           console.log(error);
       });
@@ -361,9 +394,13 @@ export default {
           'is_students' : (this.user_type == 'teachers' ? 0 : 1),
       }).then((res) => {
         this.displayTeacherFeeds();
+        e.target.value = '';
       }).catch((error) => {
           console.log(error);
       });
+    },
+    goToProfile(feeds_id){
+      window.location.href = process.env.MIX_BASE_URL+'/profile-feeds/'+this.user_id+'/'+feeds_id;
     }
   },
   mounted() {
@@ -386,5 +423,21 @@ export default {
     margin-bottom: 15px;
     border-left: 3px solid #fcb017;
     box-shadow: 2px 2px 0px 0px #eee;
+}
+.rounded-sub-cmnt-content {
+    background: #f0f0f0;
+    padding: 15px;
+    float: right;
+    width: 88%;
+    margin-bottom: 13px;
+    border-radius: 18px;
+    box-shadow: 1px 1px 1px 0px #ddd;
+}
+.sub-comment-inpt {
+    float: right;
+    width: 88%;
+    margin-bottom: 15px;
+    border-radius: 18px;
+    width: 89%;
 }
 </style>

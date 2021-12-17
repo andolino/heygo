@@ -51,7 +51,7 @@ class HomeController extends Controller {
     public function teachersDashboard(){
         $data = DB::table('teachers')->where('id', '=', Auth::id())->first();
         
-        return view('teachers', ['data' => $data]);
+        return view('teachers', ['data' => $data, 'teachersProfileMain' => 'test']);
     }
 
     public function getTeachersDetails(){
@@ -193,6 +193,21 @@ class HomeController extends Controller {
     
     public function getStudentsInformation($students_id){
         $res = Students::where('id', $students_id)->first();
+        return response()->json($res);
+    }
+    
+    public function getTeacherSchedule(){
+        $teachers_id = Request::post('teachers_id');
+        $res = DB::select(DB::raw("SELECT 
+                                    ls.students_id, 
+                                    ls.teachers_id, 
+                                    DATE_FORMAT(lsd.lesson_date, '%Y-%m-%d') as d_week,	
+                                    GROUP_CONCAT(DISTINCT lsd.lesson_date
+                                    ORDER BY lsd.lesson_date DESC SEPARATOR ',') as l_date 
+                                FROM lesson_schedule ls
+                                LEFT JOIN lesson_schedule_details lsd ON lsd.lesson_schedule_id = ls.id
+                                WHERE ls.teachers_id = $teachers_id
+                                GROUP BY ls.id"));
         return response()->json($res);
     }
 
@@ -534,6 +549,11 @@ class HomeController extends Controller {
             //                     ->get();
         }
         return view('students', ['data' => $data, 'teachers' => $teachers]);
+    }
+    public function studentFeeds(){
+        $student_id = Auth::id();
+        $data = Students::find($student_id);
+        return view('students', ['data' => $data, 'studentFeeds' => true]);
     }
     public function studentsAccountSettings(){
         $data = DB::table('students')->where('id', '=', Auth::id())->first();

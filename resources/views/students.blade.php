@@ -2,10 +2,13 @@
 
 @section('content')
 <div class="w-100 h-100 d-flex flex-column justify-content-center align-items-center">
-    <div class="row w-100 p-4">
+    <div class="row w-100 pl-4 pr-4 pb-4 pt-0">
         {{-- left content --}}
+        <div class="col-lg-3">
+            <a href="<?php echo url('student-feeds'); ?>" class="btn btn-default w-100 mb-3 font-12 text-center btn-dashboard">View Feeds</a>
+        </div>
+        <div class="col-lg-12"></div>
         <div class="col-lg-3 pr-0">
-			
             <div class="cont-upcoming-lesson">
                 <div class="head-upcoming-lesson bg-dark mb-0 pb-2 pt-3 pl-3"><h5 class="font-weight-regular">Today's Schedule <span class="float-right pr-2" style="line-height: 1.5"><i class="fas fa-chevron-right"></i></span></h5></div>
                 <div class="body-upcoming-lesson p-3">
@@ -72,7 +75,7 @@
             @elseif (!empty($messageDisplay))
                 <chat-panel :messageDisplay="{{ $messageDisplay }}" :teachers-id="{{ $teachers_id ?? 0 }}" :students-id="{{ $students_id ?? 0 }}"></chat-panel>
             @else
-                <fetch-feeds :teachersdata="{{ $teachersprofile }}"></fetch-feeds>
+                <student-feeds :teachersdata="{{ $studentFeeds }}"></student-feeds>
             @endif
         </div>
 

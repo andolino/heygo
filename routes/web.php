@@ -69,10 +69,19 @@ Route::get('/email/{email}', function($email){
 
 
 Route::group(['middleware' => 'auth:admins'], function () {
+    // Route::get('/admins', [AdminController::class, 'adminsDashboard']);
+    // Route::get('/admins/student-payments', [AdminController::class, 'studentPayment']);
+    // Route::get('/admins/heygo-wallet', [AdminController::class, 'heygoWallet']);
+    // Route::get('/admins/teacher-wallet', [AdminController::class, 'teacherWallet']);
+    Route::get('/admins/badge-list', [AdminController::class, 'badgeList']);
+    Route::get('/admins/teachers-list-setup', [AdminController::class, 'teachersListSetup']);
+    Route::post('/get-lesson-and-badges', [AdminController::class, 'getLessonAndBadge']);
+
+    // Route::get('/settings-panel', [AdminController::class, 'adminsDashboard']);
+    // Route::get('/admin/{any}', [AdminController::class, 'adminsDashboard'])->where('any', '.*');
     Route::get('/admins', [AdminController::class, 'adminsDashboard']);
-    Route::get('/admins/student-payments', [AdminController::class, 'studentPayment']);
-    Route::get('/admins/heygo-wallet', [AdminController::class, 'heygoWallet']);
-    Route::get('/admins/teacher-wallet', [AdminController::class, 'teacherWallet']);
+    Route::get('/admins/{any}', [AdminController::class, 'adminsDashboard'])->where('any', '.*');
+
 });
 
 
@@ -100,12 +109,15 @@ Route::group(['middleware' => 'auth:students'], function () {
     Route::get('/start-chat-students/{any}', [ChatController::class, 'startChat']);
     Route::post('/messages-students', [ChatController::class, 'message']);
     Route::post('/get-conversation-students', [ChatController::class, 'getConversation']);
+    Route::get('/student-feeds', [HomeController::class, 'studentFeeds']);
+    Route::post('/display-student-feeds', [FeedsController::class, 'displayStudentFeeds']);
 });
 
 Route::group(['middleware' => 'auth:teachers'], function () {
     // Route::view('/teachers', 'teachers');
     Route::get('/teachers', [HomeController::class, 'teachersDashboard']);
     Route::get('/teachers-account-settings', [HomeController::class, 'teachersAccountSettings']);
+    Route::get('/teachers-profile-main', [HomeController::class, 'teachersDashboard']);
     Route::get('/get-lesson-type-rate', [HomeController::class, 'getLessonTypeRate']);
     Route::get('/get-lesson-plan', [HomeController::class, 'getLessonPlan']);
     Route::get('/get-curreny-rate', [HomeController::class, 'getCurrenyRate']);
@@ -120,6 +132,9 @@ Route::group(['middleware' => 'auth:teachers'], function () {
     Route::post('/messages-teachers', [ChatController::class, 'message']);
     Route::post('/get-conversation-teachers', [ChatController::class, 'getConversation']);
     Route::post('/update-default-dp', [UploadController::class, 'updateDefaultDp']);
+    Route::get('/profile-feeds/{any}/{feeds_id}', [FeedsController::class, 'profileFeeds']);
+    Route::post('/get-teacher-schedule', [HomeController::class, 'getTeacherSchedule']);
+
 });
 
 Route::get('logout', [LoginController::class,'logout']);

@@ -14,6 +14,7 @@ import SignupFormStudent from './components/SignupFormStudent.vue';
 import TeacherAcctSettings from './components/TeacherAcctSettings.vue';
 import StudentAcctSettings from './components/StudentAcctSettings.vue';
 import TeacherFeeds from './components/TeacherFeeds.vue';
+import StudentFeeds from './components/StudentFeeds.vue';
 import FetchFeeds from './components/FetchFeeds.vue';
 import TeachersProfile from './components/TeachersProfile.vue';
 import StudentHomework from './components/StudentHomework.vue';
@@ -26,10 +27,25 @@ import TeachersLibrary from './components/TeachersLibrary.vue';
 import TeachersCalendar from './components/TeachersCalendar.vue';
 import TeachersPurchaseHistory from './components/TeachersPurchaseHistory.vue';
 import ChatPanel from './components/ChatPanel.vue';
+import TeacherInformation from './components/TeacherInformation.vue';
+import WorkbookShop from './components/WorkbookShop.vue';
+import DashboardPanel from './components/admin/DashboardPanel.vue';
+import Navigation from './components/admin/Navigation.vue';
+import StudentsPayment from './components/admin/StudentsPayment.vue';
+import TeachersSetup from './components/admin/TeachersSetup.vue';
+
 import { BootstrapVue, IconsPlugin, BCard } from 'bootstrap-vue';
 import VueSweetalert2 from 'vue-sweetalert2';
 import swal from 'sweetalert2';
 import helpers from './helpers';
+import VueBootstrapToasts from "vue-bootstrap-toasts";
+import VueRouter from 'vue-router';
+
+import SettingsPanel from './components/admin/SettingsPanel.vue';
+import UpperNavigation from './components/admin/UpperNavigation.vue';
+import BadgesSetup from './components/admin/settings-panel/BadgesSetup.vue';
+import TeacherInformationMain from './components/TeacherInformationMain.vue';
+
 
 
 // Import Bootstrap an BootstrapVue CSS files (order is important)
@@ -66,9 +82,27 @@ Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(VueSweetalert2)
 Vue.use(plugin)
+Vue.use(VueBootstrapToasts)
+Vue.use(VueRouter)
 Vue.component('BCard', BCard)
 Vue.component('todo-component', require('./components/TodoComponent.vue').default );
 // Vue.component('b-carousel', '');
+
+
+const routes = [
+	//admin router
+	{ path: '/', name: 'dashboard', component: DashboardPanel },
+	{ path: '/teachers-setup', name: 'teachers-setup', component: TeachersSetup },
+	{ path: '/students-payment', name: 'students-payment', component: StudentsPayment },
+	{ path: '/settings-panel', name: 'settings-panel', component: SettingsPanel },
+	{ path: '/badges', name: 'badges-panel', component: BadgesSetup },
+	// { path: '/admins/badges', name: 'badges-panel', component: BadgesSetup }
+];
+
+const router = new VueRouter({
+	routes,
+	// mode: 'history'
+});
 
 Vue.filter('toCurrency', function (value) {
 	if (typeof value !== "number") {
@@ -91,6 +125,7 @@ Vue.filter('toCurrency', function (value) {
 
 const app = new Vue({
 	el: '#app',
+	router: router,
 	components: {
 		// 'todo-component':
 		'home-slider'							  : HomeSlider,
@@ -111,8 +146,16 @@ const app = new Vue({
 		'teachers-library' 			 	  : TeachersLibrary,
 		'teachers-calendar' 			  : TeachersCalendar,
 		'teachers-purchase-history' : TeachersPurchaseHistory,
-		'chat-panel'                : ChatPanel
-	}
+		'chat-panel'                : ChatPanel,
+		'teacher-information'				: TeacherInformation,
+		'workbook-shop'							: WorkbookShop,
+		'student-feeds'							: StudentFeeds,
+		'dashboard-panel'						: DashboardPanel,
+		// 'settings-panel'						: SettingsPanel,
+		'navigation'								: Navigation,
+		'upper-navigation'					: UpperNavigation,
+		'teacher-information-main'	: TeacherInformationMain
+	},
 });
 
 

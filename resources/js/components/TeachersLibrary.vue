@@ -12,7 +12,7 @@
       <div class="card-group mt-1 cursor" v-b-modal.modal-1>
         <div class="card">
           <div class="card-body">
-            <p class="card-text">Interecative Worksheet.</p>
+            <p class="card-text">Teachers Lobby</p>
           </div>
         </div>
       </div>

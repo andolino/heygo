@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 // use Request;
 use App\Models\Students;
 use App\Models\Teachers;
+use App\Models\Badges;
 use Auth;
 use DB;
 use Image;
@@ -99,10 +100,49 @@ class UploadController extends Controller {
         return response()->json($input);
    }
 
+   public function uploadBadge(Request $request){
+        $req['data'] = json_decode($request['data']);
+        $this->validate($request, [
+            // 'photo' => 'required|image|mimes:jpg,jpeg,png,svg,gif|max:2048',
+        ]);
+        if ($request->file('image') != null) {
+            $image = $request->file('image');
+            $input['image'] = time().'.'.$image->extension();
+            /**
+             * Move thumb into thumb folder
+             */
+            $filePath = public_path('/images/badge');
+            $img = Image::make($image->path());
+            $img->fit(135, 135, function ($const) {
+                // $const->aspectRatio();
+            })->save($filePath.'/'.$input['image']);
+            /**
+             * Move actual size into main folder students
+             */
+            $filePath = public_path('/images/badge');
+            $image->move($filePath, $input['image']);
+            Badges::updateOrCreate(
+                ['id' => $request->id],
+                ['image' => $input['image'], 'title' => $req['data']->title],
+            );
+        } else {
+            Badges::updateOrCreate(
+                ['id' => $request->id],
+                ['image' => '', 'title' => $req['data']->title],
+            );
+        }
+        
+        return response()->json(['msg' => 'Saved']);
+    }
+
     public function updateDefaultDp(Request $request){
         $teacher = Teachers::find(Auth::id());
         $teacher->display_status = $request->display_status;
         $teacher->save();
+    }
+
+    public function removeBadge(Request $request){
+        Badges::where('id', $request->id)->delete();
     }
 
 
