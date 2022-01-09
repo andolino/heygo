@@ -17,16 +17,18 @@
         </div>
       </div>
     </div>
-    <b-modal id="modal-1" size="xl" class="m-0" hide-footer="true" title="< Dashboard">
+    <b-modal id="modal-1" size="xl" class="m-0" hide-footer="true" title="Teachers Lobby">
       <b-container class="bv-example-row">
         <b-row>
-          <b-col>
-            <b-button variant="warning" class="font-12 w-100 mb-2">Create Worksheet</b-button>
-            <b-button variant="warning" class="font-12 w-100 mb-2">View Own Worksheet</b-button>
+          <b-col cols="2">
+            <b-button variant="warning" class="font-12 w-100 mb-2">Dashboard</b-button>
+            <b-button variant="warning" class="font-12 w-100 mb-2" v-on:click="showFrmAddStrat = false;">Bookmarks</b-button>
+            <b-button variant="warning" class="font-12 w-100 mb-2" v-on:click="showFrmAddStrat = true;">Add</b-button>
+            <!-- <b-button variant="warning" class="font-12 w-100 mb-2">View Own Worksheet</b-button>
             <b-button variant="warning" class="font-12 w-100 mb-2">Booked Worksheet</b-button>
-            <b-button variant="warning" class="font-12 w-100">Check Student's Workshee</b-button>
+            <b-button variant="warning" class="font-12 w-100">Check Student's Workshee</b-button> -->
           </b-col>
-          <b-col cols="9">
+          <b-col cols="10">
             <b-row>
               <b-col>
                 <b-input-group
@@ -41,7 +43,9 @@
               </b-col>
               <b-col cols="7"></b-col>
             </b-row>
-            <b-card
+              <TeachingStrategiesFrm v-if="showFrmAddStrat"/>
+              <TeachingStrategies v-else/>
+            <!-- <b-card
                 title=""
                 img-src=""
                 img-alt="Image"
@@ -49,26 +53,20 @@
                 tag="article"
                 style=""
                 class="mb-2"
-              >
-                <div class="flexbox">
-                  <Board id="board-1">
-                    <Card id="card-1" draggable="true">
-                      <p>Card one</p>
-                    </Card>
-                  </Board>
-
-                  <Board id="board-2">
-                    <Card id="card-2" draggable="true">
-                      <p>Card two</p>
-                    </Card>
-                  </Board>
-                </div>
+              >  -->
+                <!-- <div class="row">
+                  <div class="col-lg-4">
+                    <div class="flexbox">
+                  
+                    </div>
+                  </div>
+                </div> -->
                 
-                <b-card-text>
+                <!-- <b-card-text>
                   
                 </b-card-text>
 
-              </b-card>
+              </b-card> -->
           </b-col>
         </b-row>
       </b-container>
@@ -78,21 +76,22 @@
 
 <script>
 import moment from 'moment';
-import Board from './Board';
-import Card from './Card';
+import TeachingStrategies from '../Display/Modal/TeachingStrategies.vue';
+import TeachingStrategiesFrm from '../Display/Modal/TeachingStrategyForm.vue';
   export default {
     props: {},
     name: 'TeachersLibrary',
     components: {
-      Board,
-      Card
+      TeachingStrategies,
+      TeachingStrategiesFrm
     },
     data(){
       return {
         csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
         baseurl: document.querySelector('meta[name="base-url"]').getAttribute('content'),
         asset: document.querySelector('meta[name="url-asset"]').getAttribute('content'),
-        user_id: document.querySelector('meta[name="user-id"]').getAttribute('content')
+        user_id: document.querySelector('meta[name="user-id"]').getAttribute('content'),
+        showFrmAddStrat: false
       }
     },
     methods: {
@@ -198,5 +197,8 @@ import Card from './Card';
   .modal-header{
     margin: 0 !important;
     width: 100% !important;
+  }
+  .font-11 {
+    font-size: 11px;
   }
 </style>
