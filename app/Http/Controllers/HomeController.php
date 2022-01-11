@@ -50,8 +50,8 @@ class HomeController extends Controller {
     */
     public function teachersDashboard(){
         $data = DB::table('teachers')->where('id', '=', Auth::id())->first();
-        
-        return view('teachers', ['data' => $data, 'teachersProfileMain' => 'test']);
+        return view('teachers', ['data' => $data]);
+        // , 'teachersProfileMain' => 'test'
     }
 
     public function getTeachersDetails(){
