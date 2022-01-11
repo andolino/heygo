@@ -331,6 +331,27 @@ class FeedsController extends Controller{
         return view('teachers-profile', ['data' => $data, 'teachers_id' => $teachers_id, 'feeds_id' => $feeds_id]);
     }
 
+    public function getLessonPlan(){
+        $tol = DB::table('type_of_lesson')->select('*')->get();
+        $obj = array();
+        foreach ($tol as $trow) {
+            $dlp = [];
+            $lp = DB::table('lesson_plan')->where('type_of_lesson_id', '=', $trow->id)->get();
+            if (!empty($lp)) {
+                $dlp['label'] = $trow->lesson_type;
+                foreach ($lp as $lprow) {
+                    $dlp['options'][] = array(
+                        'value'=>$lprow->id,
+                        'text'=>$lprow->body
+                    );
+                }
+                
+            }
+            array_push($obj, $dlp);
+        }
+        return response()->json($obj);
+    }
+
     
 
 

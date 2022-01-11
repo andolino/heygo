@@ -1,74 +1,93 @@
 <template>
   <div>
     <div>
-    <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-      <b-form-group
-        id="input-group-1"
-        label="Title"
-        label-for="input-1"
-        description="Lesson Plan"
-      >
-        <b-form-input
-          id="input-1"
-          v-model="form.email"
-          type="email"
-          placeholder="Enter email"
-          required
-        ></b-form-input>
-      </b-form-group>
-
-      <b-form-group id="input-group-2" label="Your Name:" label-for="input-2">
-        <b-form-input
-          id="input-2"
-          v-model="form.name"
-          placeholder="Enter name"
-          required
-        ></b-form-input>
-      </b-form-group>
-
-      <b-form-group id="input-group-3" label="Food:" label-for="input-3">
-        <b-form-select
-          id="input-3"
-          v-model="form.food"
-          :options="foods"
-          required
-        ></b-form-select>
-      </b-form-group>
-
-      <b-form-group id="input-group-4" v-slot="{ ariaDescribedby }">
-        <b-form-checkbox-group
-          v-model="form.checked"
-          id="checkboxes-4"
-          :aria-describedby="ariaDescribedby"
+      <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+        <b-form-group id="input-group-2" class="font-12" label="Name:" label-for="input-2">
+          <b-form-input
+            id="input-2"
+            v-model="form.name"
+            placeholder="Enter name"
+            size="sm"
+            class="font-12"
+            required
+          ></b-form-input>
+        </b-form-group>
+        <b-form-group
+          id="input-group-1"
+          label="Title"
+          label-for="input-1"
+          description="Lesson Plan"
+          class="font-12"
         >
-          <b-form-checkbox value="me">Check me out</b-form-checkbox>
-          <b-form-checkbox value="that">Check that out</b-form-checkbox>
-        </b-form-checkbox-group>
-      </b-form-group>
+          <b-form-input
+            id="input-1"
+            v-model="form.title"
+            type="text"
+            placeholder="Enter title"
+            size="sm"
+            class="font-12"
+            required
+          ></b-form-input>
+        </b-form-group>
+        <!-- <b-form-group id="input-group-3" class="font-12" label="Category:" label-for="input-3">
+          <b-form-select
+            id="input-3"
+            v-model="form.category"
+            :options="category"
+            required
+            size="sm"
+            class="font-12"
+          ></b-form-select>
+        </b-form-group> -->
+        <b-form-select v-model="selected" :options="options"></b-form-select>
+        <div class="mt-3">Selected: <strong>{{ selected }}</strong></div>
 
-      <b-button type="submit" variant="primary">Submit</b-button>
-      <b-button type="reset" variant="danger">Reset</b-button>
-    </b-form>
-    <b-card class="mt-3" header="Form Data Result">
-      <pre class="m-0">{{ form }}</pre>
-    </b-card>
-  </div>
+        <!-- <b-button type="submit" variant="primary">Submit</b-button> -->
+        <!-- <b-button type="reset" variant="danger">Reset</b-button> -->
+      </b-form>
+      <b-card class="mt-3" header="Form Data Result">
+        <pre class="m-0">{{ form }}</pre>
+        
+      </b-card>
+
+      
+
+    </div>
   </div>
 </template>
 
 <script>
+
+import * as api from '../api.js';
+
 export default {
   name: 'TeachingStrategyForm',
   data() {
       return {
         form: {
-          email: '',
           name: '',
-          food: null,
+          title: '',
+          category: [],
           checked: []
         },
-        foods: [{ text: 'Select One', value: null }, 'Carrots', 'Beans', 'Tomatoes', 'Corn'],
-        show: true
+        category: '',
+        show: true,
+        selected: null,
+        options: [
+          {
+            label: 'Label 1',
+            options: [
+              {
+                value: 1,
+                text: "label 1.1",
+              },
+              {
+                value: 2,
+                text: "label 1.2",
+              },
+            ]
+          }
+        ]
       }
     },
     methods: {
@@ -79,16 +98,26 @@ export default {
       onReset(event) {
         event.preventDefault()
         // Reset our form values
-        this.form.email = ''
         this.form.name = ''
-        this.form.food = null
+        this.form.title = ''
+        this.form.category = null
         this.form.checked = []
         // Trick to reset/clear native browser form validation state
         this.show = false
         this.$nextTick(() => {
           this.show = true
         })
+      },
+      getCategory(){
+        this.category = api.getLessonCategory();
+        // this.options = api.getLessonCategory();
+        
       }
+    },
+    mounted(){
+      this.getCategory();
+      console.log(this.category);
+// console.log(this.options);
     }
 }
 </script>

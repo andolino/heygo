@@ -335,6 +335,10 @@ class HomeController extends Controller {
         }
         return response()->json($obj);
     }
+    
+    
+
+
     public function getCurrenyRate(){
         $data = DB::table('currency_rate')
                     ->select('*')
