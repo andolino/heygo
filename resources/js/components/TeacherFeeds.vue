@@ -36,8 +36,9 @@
               <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                 <form>
                   <div class="form-group mt-3">
-                    <textarea v-model="post_msg" class="form-control font-14" rows="6" id="message-post" placeholder="Create you question"></textarea>
+                    <textarea :class="{ errbox: isActive }"  v-model="post_msg" class="form-control font-14" rows="6" id="message-post" placeholder="Create you question"></textarea>
                   </div>
+                  <span  :class="{ alert: isActive, 'alert-danger': isActive }"> {{ validationfail}}</span>
                 </form>
               </div>
               <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
@@ -54,8 +55,9 @@
                   @vdropzone-sending-multiple="sendTeacherFeeds"></vue-dropzone>
                 <form>
                   <div class="form-group mt-3">
-                    <textarea v-model="post_msg" class="form-control font-14" rows="6" id="message-post" placeholder="Create you post"></textarea>
+                    <textarea :class="{ errbox: isActive }" v-model="post_msg" class="form-control font-14" rows="6" id="message-post" placeholder="Create you post"></textarea>
                   </div>
+                  <span :class="{ alert: isActive, 'alert-danger': isActive }"> {{ validationfail}}</span>
                 </form>
               </div>
             </div>
@@ -279,10 +281,15 @@ export default {
       dataAttachments: {
         type: Array,
         default: [],
-      }
+      },
+      isActive : false,
+      validationfail : ''
     }
   },
+
   methods: {
+   
+
     showModalPost(){
       $('#modalWriteAPost').modal('show')
     },
@@ -300,6 +307,7 @@ export default {
     },
     afterUploadComplete: async function(response){
       if (response.status =="success") {
+        
         Swal.fire({
           position: 'top-end',
           icon: 'success',
@@ -331,18 +339,30 @@ export default {
         axios.post(process.env.MIX_BASE_URL+'/api/post-teacher-feeds', 
             { 'feed_body': this.post_msg, 'teacher_id': this.user_id 
         }).then((res) => {
-          Swal.fire({
-            position: 'top-end',
-            icon: 'success',
-            title: res.data.message,
-            showConfirmButton: false,
-            timer: 2000
-          }).then((result) => {
-            /* Read more about handling dismissals below */
-            if (result.dismiss === Swal.DismissReason.timer) {
-              window.location.reload();
-            }
-          });
+
+          if(res.data.validationfail){
+            this.validationfail = res.data.validationfail;
+           
+            this.isActive = true;
+            return false;
+          }else{
+              Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: res.data.message,
+              showConfirmButton: false,
+              timer: 2000
+            }).then((result) => {
+              /* Read more about handling dismissals below */
+              if (result.dismiss === Swal.DismissReason.timer) {
+                // window.location.reload();
+              }
+            });
+          }
+          
+        
+
+          
         }).catch((error) => {
             console.log(error);
         });
@@ -439,5 +459,8 @@ export default {
     margin-bottom: 15px;
     border-radius: 18px;
     width: 89%;
+}
+.errbox{
+  border: 2px solid red !important;
 }
 </style>

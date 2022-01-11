@@ -18,6 +18,17 @@ class FeedsController extends Controller{
 
     public function postTeacherFeeds(Request $request){
         // return response()->json(['message'=>'route reached'], 200);
+        $content = $request->feed_body;
+
+
+
+        
+
+        //custom validate
+        if($content == null){
+            return response()->json(['validationfail' => 'Post content is required']);
+        }
+
 
         if ($request->file('file')) {
             /**
