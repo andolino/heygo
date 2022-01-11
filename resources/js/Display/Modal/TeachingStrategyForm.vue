@@ -53,9 +53,34 @@
           id="input-group-2"
           label="Level"
           label-for="select-2"
-          class="font-12 mb-1"
+          class="font-12 mb-3"
         >
           <b-form-select id="select-2" v-model="form.student_level" :options="student_level" size="sm" class="font-12"></b-form-select>
+        </b-form-group>
+
+        <b-form-textarea
+          id="textarea"
+          v-model="description"
+          placeholder="Description..."
+          rows="3"
+          max-rows="6"
+          class="font-12 mb-3"
+        ></b-form-textarea>
+
+        <b-form-group label="Videos:" label-cols-sm="1" class="font-12" label-size="sm">
+          <b-form-file id="file-small" v-model="video" class="font-12" size="sm"></b-form-file>
+        </b-form-group>
+        
+        <b-form-group label="Links:" label-cols-sm="1" class="font-12" label-size="sm">
+          <b-form-input
+            id="input-3"
+            v-model="form.links"
+            type="text"
+            placeholder="Links"
+            size="sm"
+            class="font-12"
+            required
+          ></b-form-input>
         </b-form-group>
 
         <b-card class="mt-3" header="Form Data Result">
@@ -82,7 +107,10 @@ export default {
           name: '',
           title: '',
           lesson_plan: null,
-          student_level: null
+          student_level: null,
+          description: '',
+          video: '',
+          links: ''
         },
         lesson_plan: '',
         student_level: '',
