@@ -351,6 +351,18 @@ class FeedsController extends Controller{
         }
         return response()->json($obj);
     }
+    
+    public function getStudentsLevel(){
+        $sl = DB::table('students_level')->select('*')->get();
+        $obj = array();
+        foreach ($sl as $row) {
+            array_push($obj, array(
+                'value' => $row->id,
+                'text' => $row->level
+            ));
+        }
+        return response()->json($obj);
+    }
 
     
 

@@ -121,6 +121,7 @@ Route::group(['middleware' => 'auth:teachers'], function () {
     Route::get('/get-lesson-type-rate', [HomeController::class, 'getLessonTypeRate']);
     Route::get('/get-lesson-plan', [HomeController::class, 'getLessonPlan']);
     Route::get('/teacher-lobby-lesson-plan', [FeedsController::class, 'getLessonPlan']);
+    Route::get('/students-level', [FeedsController::class, 'getStudentsLevel']);
     Route::get('/get-curreny-rate', [HomeController::class, 'getCurrenyRate']);
     Route::post('/get-student-booked-lesson', [HomeController::class, 'getStudentBookedLesson']);
     Route::get('/teachers-payment-methods', [HomeController::class, 'teachersPaymentMethods']);
