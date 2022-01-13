@@ -17,3 +17,12 @@ export const getStudentsLevel = async (fnc) => {
           console.error(error);
       }
 };
+
+export const saveTeachingStrategy = async (data, config) => {
+      try {
+          const res = await axios.post('save-teaching-strategy', data, config);
+          return [];
+      } catch (error) {
+          console.error(error);
+      }
+};

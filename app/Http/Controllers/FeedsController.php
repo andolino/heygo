@@ -363,6 +363,37 @@ class FeedsController extends Controller{
         }
         return response()->json($obj);
     }
+    
+    public function saveTeachingStrategy(Request $request){
+        $request->validate([
+            'video' => 'required|mimes:jpg,jpeg,png,csv,txt,xlx,xls,pdf|max:2048'
+         ]);
+ 
+         $fileUpload = new FileUpload;
+ 
+         if($request->file()) {
+             $file_name = time().'_'.$request->file->getClientOriginalName();
+             $file_path = $request->file('file')->storeAs('uploads', $file_name, 'public');
+ 
+             $fileUpload->name = time().'_'.$request->file->getClientOriginalName();
+             $fileUpload->path = '/storage/' . $file_path;
+             $fileUpload->save();
+ 
+             return response()->json(['success'=>'File uploaded successfully.']);
+         }
+
+
+        return response()->json($request);
+        // $sl = DB::table('students_level')->select('*')->get();
+        // $obj = array();
+        // foreach ($sl as $row) {
+        //     array_push($obj, array(
+        //         'value' => $row->id,
+        //         'text' => $row->level
+        //     ));
+        // }
+        // return response()->json($obj);
+    }
 
     
 

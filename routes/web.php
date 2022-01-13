@@ -136,6 +136,7 @@ Route::group(['middleware' => 'auth:teachers'], function () {
     Route::post('/update-default-dp', [UploadController::class, 'updateDefaultDp']);
     Route::get('/profile-feeds/{any}/{feeds_id}', [FeedsController::class, 'profileFeeds']);
     Route::post('/get-teacher-schedule', [HomeController::class, 'getTeacherSchedule']);
+    Route::post('/save-teaching-strategy', [FeedsController::class, 'saveTeachingStrategy']);
 
 });
 
