@@ -53,6 +53,11 @@ class HomeController extends Controller {
         return view('teachers', ['data' => $data]);
         // , 'teachersProfileMain' => 'test'
     }
+    public function teachersDashboardProfile(){
+        $data = DB::table('teachers')->where('id', '=', Auth::id())->first();
+        return view('teachers', ['data' => $data, 'teachersProfileMain' => 'test']);
+        // , 
+    }
 
     public function getTeachersDetails(){
         return Teachers::where('id', '=', Request::post('user_id'))->get();

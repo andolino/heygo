@@ -83,9 +83,9 @@
           ></b-form-input>
         </b-form-group>
 
-        <b-card class="mt-3" header="Form Data Result">
+        <!-- <b-card class="mt-3" header="Form Data Result">
           <pre class="m-0">{{ form }}</pre>
-        </b-card>
+        </b-card> -->
 
         <b-button type="submit" size="sm" class="float-right ml-2" variant="warning">Save</b-button>
         <b-button type="reset" size="sm" class="float-right" variant="default">Reset</b-button>
