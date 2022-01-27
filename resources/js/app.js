@@ -45,6 +45,7 @@ import SettingsPanel from './components/admin/SettingsPanel.vue';
 import UpperNavigation from './components/admin/UpperNavigation.vue';
 import BadgesSetup from './components/admin/settings-panel/BadgesSetup.vue';
 import TeacherInformationMain from './components/TeacherInformationMain.vue';
+import TeachingStrategies from './components/TeachingStrategies.vue';
 
 
 
@@ -154,7 +155,8 @@ const app = new Vue({
 		// 'settings-panel'						: SettingsPanel,
 		'navigation'								: Navigation,
 		'upper-navigation'					: UpperNavigation,
-		'teacher-information-main'	: TeacherInformationMain
+		'teacher-information-main'	: TeacherInformationMain,
+		'teaching-strategies'	      : TeachingStrategies
 	},
 });
 

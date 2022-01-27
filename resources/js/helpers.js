@@ -13,5 +13,8 @@ export default {
     } else {
         return true;
     }
+  },
+  limitText(string) {
+    return string.substring(0,34) + '...';
   }
 };

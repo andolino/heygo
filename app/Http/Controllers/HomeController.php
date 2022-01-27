@@ -48,15 +48,12 @@ class HomeController extends Controller {
     /*
     * teachers *
     */
-    public function teachersDashboard(){
+    public function teachersDashboard($uri = null){
         $data = DB::table('teachers')->where('id', '=', Auth::id())->first();
-        return view('teachers', ['data' => $data]);
-        // , 'teachersProfileMain' => 'test'
-    }
-    public function teachersDashboardProfile(){
-        $data = DB::table('teachers')->where('id', '=', Auth::id())->first();
-        return view('teachers', ['data' => $data, 'teachersProfileMain' => 'test']);
-        // , 
+        if ($uri == 'teacher-lobby') {
+            return view('teacher-lobby', ['data' => $data]);
+        }
+        return view('teachers', ['data' => $data, 'uri' => $uri]);
     }
 
     public function getTeachersDetails(){

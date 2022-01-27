@@ -24,7 +24,30 @@
 			{{-- mid content --}}
 
 			<div class="col-lg-5 justify-content-center col-md-5 pr-2 pl-4">
-				@if(!empty($messageDisplay))
+				@switch($uri)
+						@case('chat')
+							<chat-panel :messageDisplay="{{ $messageDisplay }}" :teachers-id="{{ $teachers_id ?? 0 }}" :students-id="{{ $students_id ?? 0 }}"></chat-panel>
+							@break
+						@case('profile')
+							<div class="body-upcoming-lesson p-3 rounded-md">
+								<div class="upcoming-lesson-list custom-scrollbar-css p-2 mCustomScrollbar" data-mcs-theme="minimal-dark">
+									<teacher-information-main teachers-id="{{ Auth::id() }}"></teacher-information-main>
+								</div>
+							</div>
+							@break
+						@case('teacher-lobby')
+							<div class="body-upcoming-lesson p-3 rounded-md">
+								<div class="upcoming-lesson-list custom-scrollbar-css p-2 mCustomScrollbar" data-mcs-theme="minimal-dark">
+									<teacher-information-main teachers-id="{{ Auth::id() }}"></teacher-information-main>
+								</div>
+							</div>
+							@break
+						@default
+							{{-- feeds --}}
+							<teacher-feeds></teacher-feeds>
+				@endswitch
+
+				{{-- @if(!empty($messageDisplay))
 					<chat-panel :messageDisplay="{{ $messageDisplay }}" :teachers-id="{{ $teachers_id ?? 0 }}" :students-id="{{ $students_id ?? 0 }}"></chat-panel>
 				@elseif(!empty($teachersProfileMain))
 				<div class="body-upcoming-lesson p-3 rounded-md">
@@ -33,8 +56,8 @@
 					</div>
 				</div>
 				@else
-					<teacher-feeds></teacher-feeds>
-				@endif
+				<teacher-feeds></teacher-feeds>
+				@endif --}}
 			</div>
 
 

@@ -338,14 +338,13 @@ class FeedsController extends Controller{
             $dlp = [];
             $lp = DB::table('lesson_plan')->where('type_of_lesson_id', '=', $trow->id)->get();
             if (!empty($lp)) {
-                $dlp['label'] = $trow->lesson_type;
+                $dlp['language'] = $trow->lesson_type;
                 foreach ($lp as $lprow) {
-                    $dlp['options'][] = array(
-                        'value'=>$lprow->id,
-                        'text'=>$lprow->body
+                    $dlp['libs'][] = array(
+                        'name'=>$lprow->body,
+                        'id'=>$lprow->id
                     );
                 }
-                
             }
             array_push($obj, $dlp);
         }
@@ -365,40 +364,95 @@ class FeedsController extends Controller{
     }
     
     public function saveTeachingStrategy(Request $request){
-        $request->validate([
-            'video' => 'required|mimes:jpg,jpeg,png,csv,txt,xlx,xls,pdf|max:2048'
-         ]);
- 
-         $fileUpload = new FileUpload;
- 
-         if($request->file()) {
-             $file_name = time().'_'.$request->file->getClientOriginalName();
-             $file_path = $request->file('file')->storeAs('uploads', $file_name, 'public');
- 
-             $fileUpload->name = time().'_'.$request->file->getClientOriginalName();
-             $fileUpload->path = '/storage/' . $file_path;
-             $fileUpload->save();
- 
-             return response()->json(['success'=>'File uploaded successfully.']);
-         }
+        $title          = $request->title;
+        $lesson_type    = $request->lesson_type;
+        $student_level  = $request->student_level;
+        $description    = $request->description;
+        $video_links    = $request->video_links;
+        $material_links = $request->material_links;
+        $value_category = $request->value_category;
 
-
-        return response()->json($request);
-        // $sl = DB::table('students_level')->select('*')->get();
-        // $obj = array();
-        // foreach ($sl as $row) {
-        //     array_push($obj, array(
-        //         'value' => $row->id,
-        //         'text' => $row->level
-        //     ));
-        // }
-        // return response()->json($obj);
+        $id = DB::table('teaching_strategy')->insertGetId([
+            'lesson_type' => $lesson_type,
+            'title' => $title,
+            'students_level_id' => $student_level,
+            'description' => $description,
+            'created_at' => date('Y-m-d H:i:s'),
+            'teachers_id' => Auth::id()
+        ]);
+        $subquery=false;
+        if ($id) {
+            $data = [];
+            if ($video_links != '') {
+                $subquery = DB::table('teaching_strategy_videos')->insert([
+                    'teaching_strategy_id' => $id,
+                    'videos' => $video_links
+                ]);
+            }
+            if ($material_links != '') {
+                $subquery = DB::table('teaching_strategy_materials')->insert([
+                    'teaching_strategy_id' => $id,
+                    'materials' => $material_links
+                ]);
+            }
+            if (count($value_category) > 0) {
+                foreach ($value_category as $row) {
+                    array_push($data, array(
+                        'lesson_plan_id' => $row['id'],
+                        'teaching_strategy_id' => $id,
+                        'created_at' => date('Y-m-d H:i:s')
+                    ));
+                }
+                $subquery = DB::table('teaching_strategy_lesson_plan')->insert($data);
+            }
+        }
+        if ($subquery) {
+            return response()->json(['msg'=>'Successfully Added','status'=>1]);
+        } else {
+            return response()->json(['msg'=>'Error','status'=>0]);
+        }
+    }
+    
+    public function getLessonStrategyPlan($type){
+        $data = DB::table('teaching_strategy')->select('teaching_strategy.id', 
+                            DB::raw("(case when teaching_strategy.lesson_type = 1 then 'Lesson Plan' else 'Teaching Strategy' end) as lesson_type"), 
+                            'teaching_strategy.title', 
+                            'teaching_strategy.description', 
+                            'teaching_strategy.created_at', 
+                            'teaching_strategy_materials.materials', 
+                            DB::raw("GROUP_CONCAT(teaching_strategy_ratings.rate, ', ') as rate"), 
+                            'students_level.level',
+                            'teaching_strategy_videos.videos')
+                        // ->leftJoin('teaching_strategy_lesson_plan', 'teaching_strategy_lesson_plan.teaching_strategy_id', '=', 'teaching_strategy.id')
+                        ->leftJoin('teaching_strategy_materials', 'teaching_strategy_materials.teaching_strategy_id', '=', 'teaching_strategy.id')
+                        ->leftJoin('teaching_strategy_ratings', 'teaching_strategy_ratings.teaching_strategy_id', '=', 'teaching_strategy.id')
+                        ->leftJoin('teaching_strategy_videos', 'teaching_strategy_videos.teaching_strategy_id', '=', 'teaching_strategy.id')
+                        ->leftJoin('students_level', 'students_level.id', '=', 'teaching_strategy.students_level_id');
+        if ($type == 'bookmark'){
+            $data = $data->where('teaching_strategy.teachers_id', Auth::id());
+        }
+        if ($type == 'view'){
+            $data = $data->where('teaching_strategy.id', request()->id);
+        }
+        $data = $data->groupBy('teaching_strategy.id')->get();
+        return response()->json($data);
     }
 
-    
+    public function saveRatingsPerStratPlan(Request $request){
+        $ratings = DB::table('teaching_strategy_ratings')->insert([
+            'rate' => $request->ratings,
+            'students_id' => $request->user_type == 'students' ? $request->user_id : null,
+            'teachers_id' => $request->user_type == 'teachers' ? $request->user_id : null,
+            'teaching_strategy_id' => $request->teaching_strategy_id,
+            'created_at' => date('Y-m-d H:i:s')
+        ]);
 
+        if ($ratings) {
+            return response()->json(['msg'=>'Rate Successfully','status'=>1]);
+        } else {
+            return response()->json(['msg'=>'Error','status'=>0]);
+        }
 
-
-
+    }
 
 }
