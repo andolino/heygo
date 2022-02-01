@@ -126,9 +126,16 @@ export default {
     components: {
       Multiselect,
     },
+    props: {
+      edit_id: {
+        type: Number,
+        default: 0
+      }
+    },
     data() {
       return {
         form: {
+          id: this.edit_id,
           title: '',
           lesson_type: null,
           student_level: null,
@@ -184,12 +191,42 @@ export default {
         }
         this.option_category.push(tag)
         this.form.value_category.push(tag)
+      },
+      viewCardPerStrat(data){
+        const lesson_category = data[0].lesson_category;
+        const lesson_plan_id = data[0].lesson_plan_id;
+        var explLessonCat=[];
+        var explLessonId=[];
+        if (typeof lesson_category === 'string') {
+          var explLessonCat = lesson_category.split(',');
+        }
+        if (typeof lesson_plan_id === 'string') {
+          var explLessonId = lesson_plan_id.split(',');
+        }
+        var catId = [];
+        for (let i = 0; i < explLessonId.length; i++) {
+          catId.push({
+            name: explLessonCat[i],
+            id: explLessonId[i]
+          })
+        }
+        this.form.title = data[0].title;
+        this.form.lesson_type = data[0].id_lesson_type;
+        this.form.student_level = data[0].students_level_id;
+        this.form.description = data[0].description;
+        this.form.video_links = data[0].videos;
+        this.form.material_links = data[0].materials;
+        this.form.value_category = catId;
+        console.log(this.form);
       }
     },
     mounted(){
       api.getLessonCategory(this.getLessonPlanfn);
       api.getStudentsLevel(this.getStudentLevelfn);
       // console.log('this is here')
+      if (this.edit_id > 0) {
+        api.getTeachingStrategyView(this.viewCardPerStrat, this.edit_id);
+      }
     }
 }
 </script>

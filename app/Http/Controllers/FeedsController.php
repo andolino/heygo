@@ -371,39 +371,76 @@ class FeedsController extends Controller{
         $video_links    = $request->video_links;
         $material_links = $request->material_links;
         $value_category = $request->value_category;
-
-        $id = DB::table('teaching_strategy')->insertGetId([
-            'lesson_type' => $lesson_type,
-            'title' => $title,
-            'students_level_id' => $student_level,
-            'description' => $description,
-            'created_at' => date('Y-m-d H:i:s'),
-            'teachers_id' => Auth::id()
-        ]);
+        $update_id      = $request->id;
+        if ($update_id == 0) {
+            $id = DB::table('teaching_strategy')->insertGetId([
+                'lesson_type' => $lesson_type,
+                'title' => $title,
+                'students_level_id' => $student_level,
+                'description' => $description,
+                'created_at' => date('Y-m-d H:i:s'),
+                'teachers_id' => Auth::id()
+            ]);
+        } else {
+            $id = DB::table('teaching_strategy')->where('id', $update_id)->update([
+                'lesson_type' => $lesson_type,
+                'title' => $title,
+                'students_level_id' => $student_level,
+                'description' => $description,
+                'created_at' => date('Y-m-d H:i:s'),
+                'teachers_id' => Auth::id()
+            ]);
+        }
         $subquery=false;
         if ($id) {
             $data = [];
             if ($video_links != '') {
-                $subquery = DB::table('teaching_strategy_videos')->insert([
-                    'teaching_strategy_id' => $id,
-                    'videos' => $video_links
-                ]);
+                if ($update_id == 0) {
+                    $subquery = DB::table('teaching_strategy_videos')->insert([
+                        'teaching_strategy_id' => $id,
+                        'videos' => $video_links
+                    ]);
+                } else {
+                    $subquery = DB::table('teaching_strategy_videos')->where('teaching_strategy_id', $update_id)->update([
+                        'teaching_strategy_id' => $update_id,
+                        'videos' => $video_links
+                    ]);
+                }
             }
             if ($material_links != '') {
-                $subquery = DB::table('teaching_strategy_materials')->insert([
-                    'teaching_strategy_id' => $id,
-                    'materials' => $material_links
-                ]);
+                if ($update_id == 0) {
+                    $subquery = DB::table('teaching_strategy_materials')->insert([
+                        'teaching_strategy_id' => $id,
+                        'materials' => $material_links
+                    ]);
+                } else {
+                    $subquery = DB::table('teaching_strategy_materials')->where('teaching_strategy_id', $update_id)->update([
+                        'teaching_strategy_id' => $update_id,
+                        'materials' => $material_links
+                    ]);
+                }
             }
             if (count($value_category) > 0) {
-                foreach ($value_category as $row) {
-                    array_push($data, array(
-                        'lesson_plan_id' => $row['id'],
-                        'teaching_strategy_id' => $id,
-                        'created_at' => date('Y-m-d H:i:s')
-                    ));
+                if ($update_id == 0) {
+                    foreach ($value_category as $row) {
+                        array_push($data, array(
+                            'lesson_plan_id' => $row['id'],
+                            'teaching_strategy_id' => $id,
+                            'created_at' => date('Y-m-d H:i:s')
+                        ));
+                    }
+                    $subquery = DB::table('teaching_strategy_lesson_plan')->insert($data);
+                } else {
+                    foreach ($value_category as $row) {
+                        array_push($data, array(
+                            'lesson_plan_id' => $row['id'],
+                            'teaching_strategy_id' => $update_id,
+                            'created_at' => date('Y-m-d H:i:s')
+                        ));
+                    }
+                    DB::table('teaching_strategy_lesson_plan')->where('teaching_strategy_id', $update_id)->delete();
+                    $subquery = DB::table('teaching_strategy_lesson_plan')->insert($data);
                 }
-                $subquery = DB::table('teaching_strategy_lesson_plan')->insert($data);
             }
         }
         if ($subquery) {
@@ -413,26 +450,46 @@ class FeedsController extends Controller{
         }
     }
     
-    public function getLessonStrategyPlan($type){
-        $data = DB::table('teaching_strategy')->select('teaching_strategy.id', 
-                            DB::raw("(case when teaching_strategy.lesson_type = 1 then 'Lesson Plan' else 'Teaching Strategy' end) as lesson_type"), 
-                            'teaching_strategy.title', 
-                            'teaching_strategy.description', 
-                            'teaching_strategy.created_at', 
-                            'teaching_strategy_materials.materials', 
-                            DB::raw("GROUP_CONCAT(teaching_strategy_ratings.rate, ', ') as rate"), 
-                            'students_level.level',
-                            'teaching_strategy_videos.videos')
-                        // ->leftJoin('teaching_strategy_lesson_plan', 'teaching_strategy_lesson_plan.teaching_strategy_id', '=', 'teaching_strategy.id')
-                        ->leftJoin('teaching_strategy_materials', 'teaching_strategy_materials.teaching_strategy_id', '=', 'teaching_strategy.id')
-                        ->leftJoin('teaching_strategy_ratings', 'teaching_strategy_ratings.teaching_strategy_id', '=', 'teaching_strategy.id')
-                        ->leftJoin('teaching_strategy_videos', 'teaching_strategy_videos.teaching_strategy_id', '=', 'teaching_strategy.id')
-                        ->leftJoin('students_level', 'students_level.id', '=', 'teaching_strategy.students_level_id');
+    public function getLessonStrategyPlan($type, Request $request){
+        $data = DB::table('teaching_strategy')
+                    ->select('teaching_strategy.id', 
+                        'teaching_strategy.teachers_id', 
+                        DB::raw("(case when teaching_strategy.lesson_type = 1 then 'Lesson Plan' else 'Teaching Strategy' end) as lesson_type"), 
+                        DB::raw("teaching_strategy.lesson_type as id_lesson_type"), 
+                        DB::raw("teaching_strategy.lesson_type as id_lesson_type"), 
+                        'teaching_strategy.title', 
+                        'teaching_strategy.description', 
+                        'teaching_strategy.created_at', 
+                        'teaching_strategy_materials.materials',
+                        DB::raw("count(NULLIF(teaching_strategy_ratings.rate, '')) as count_rate"), 
+                        DB::raw("sum(NULLIF(teaching_strategy_ratings.rate, 0)) as sum_rate"), 
+                        'students_level.level',
+                        'teaching_strategy.students_level_id',
+                        'teaching_strategy_videos.videos',
+                        DB::raw("GROUP_CONCAT(NULLIF(teaching_strategy_bookmark.teachers_id, '')) as bookmarked_by_teachers"),
+                        DB::raw("GROUP_CONCAT(NULLIF(teaching_strategy_bookmark.students_id, '')) as bookmarked_by_students"),
+                        DB::raw("GROUP_CONCAT(NULLIF(lesson_plan.title, ' ')) as lesson_category"),
+                        DB::raw("GROUP_CONCAT(NULLIF(lesson_plan.id, ' ')) as lesson_plan_id"))
+                    ->leftJoin('teaching_strategy_lesson_plan', 'teaching_strategy_lesson_plan.teaching_strategy_id', '=', 'teaching_strategy.id')
+                    ->leftJoin('lesson_plan', 'lesson_plan.id', '=', 'teaching_strategy_lesson_plan.lesson_plan_id')
+                    ->leftJoin('teaching_strategy_materials', 'teaching_strategy_materials.teaching_strategy_id', '=', 'teaching_strategy.id')
+                    ->leftJoin('teaching_strategy_ratings', 'teaching_strategy_ratings.teaching_strategy_id', '=', 'teaching_strategy.id')
+                    ->leftJoin('teaching_strategy_videos', 'teaching_strategy_videos.teaching_strategy_id', '=', 'teaching_strategy.id')
+                    ->leftJoin('students_level', 'students_level.id', '=', 'teaching_strategy.students_level_id')
+                    ->leftJoin('teaching_strategy_bookmark', 'teaching_strategy_bookmark.teaching_strategy_id', '=', 'teaching_strategy.id');
         if ($type == 'bookmark'){
             $data = $data->where('teaching_strategy.teachers_id', Auth::id());
+            $data = $data->orWhere('teaching_strategy_bookmark.teachers_id', Auth::id());
         }
         if ($type == 'view'){
             $data = $data->where('teaching_strategy.id', request()->id);
+        }
+        if (isset($request->filter)) {
+            $filtered_category = [];
+            foreach ($request->filter as $row) {
+                $filtered_category[] = $row['id'];
+            }
+            $data = $data->whereIn('lesson_plan.id', $filtered_category);
         }
         $data = $data->groupBy('teaching_strategy.id')->get();
         return response()->json($data);
@@ -453,6 +510,29 @@ class FeedsController extends Controller{
             return response()->json(['msg'=>'Error','status'=>0]);
         }
 
+    }
+
+    public function saveBookmark(Request $request){
+        if ($request->isBooked == false) {
+            if ($request->user_type == 'teachers') {
+                $ratings = DB::table('teaching_strategy_bookmark')->where([
+                    'teachers_id' => $request->user_id,
+                    'teaching_strategy_id' => $request->teaching_strategy_id
+                ])->delete();
+            }
+        } else {
+            $ratings = DB::table('teaching_strategy_bookmark')->insert([
+                'students_id' => $request->user_type == 'students' ? $request->user_id : null,
+                'teachers_id' => $request->user_type == 'teachers' ? $request->user_id : null,
+                'teaching_strategy_id' => $request->teaching_strategy_id,
+                'created_at' => date('Y-m-d H:i:s')
+            ]);
+        }
+        if ($ratings) {
+            return response()->json(['msg'=>'Bookmark Successfully','status'=>1]);
+        } else {
+            return response()->json(['msg'=>'Error','status'=>0]);
+        }
     }
 
 }

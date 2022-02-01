@@ -46,6 +46,8 @@ import UpperNavigation from './components/admin/UpperNavigation.vue';
 import BadgesSetup from './components/admin/settings-panel/BadgesSetup.vue';
 import TeacherInformationMain from './components/TeacherInformationMain.vue';
 import TeachingStrategies from './components/TeachingStrategies.vue';
+import StrategyFilter from './Display/Functions/StrategyFilter.vue';
+import Embed from 'v-video-embed';
 
 
 
@@ -85,6 +87,7 @@ Vue.use(VueSweetalert2)
 Vue.use(plugin)
 Vue.use(VueBootstrapToasts)
 Vue.use(VueRouter)
+Vue.use(Embed)
 Vue.component('BCard', BCard)
 Vue.component('todo-component', require('./components/TodoComponent.vue').default );
 // Vue.component('b-carousel', '');
@@ -156,7 +159,8 @@ const app = new Vue({
 		'navigation'								: Navigation,
 		'upper-navigation'					: UpperNavigation,
 		'teacher-information-main'	: TeacherInformationMain,
-		'teaching-strategies'	      : TeachingStrategies
+		'teaching-strategies'	      : TeachingStrategies,
+		'strategy-filter'	      : StrategyFilter,
 	},
 });
 

@@ -62,3 +62,13 @@ export const saveRatingsPerStratPlan = async (payload) => {
       console.error(error);
   }
 };
+
+
+export const saveBookmark = async (payload) => {
+  try {
+      const res = await axios.post(process.env.MIX_BASE_URL+'/save-bookmark', payload);
+      console.log(res);
+  } catch (error) {
+      console.error(error);
+  }
+};

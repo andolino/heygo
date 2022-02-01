@@ -16,5 +16,13 @@ export default {
   },
   limitText(string) {
     return string.substring(0,34) + '...';
+  },
+  fnCompRate(sum, count){
+    var x = [];
+    var f = parseInt((sum / count));
+    for (let i = 0; i < f; i++) {
+      x.push(i);
+    }
+    return x;
   }
 };

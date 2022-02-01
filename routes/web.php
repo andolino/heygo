@@ -140,7 +140,7 @@ Route::group(['middleware' => 'auth:teachers'], function () {
     Route::post('/save-teaching-strategy', [FeedsController::class, 'saveTeachingStrategy']);
     Route::post('/get-teaching-strategy/{any}', [FeedsController::class, 'getLessonStrategyPlan']);
 });
-
+Route::post('/save-bookmark', [FeedsController::class, 'saveBookmark']);
 Route::post('/save-ratings-per-strat-plan', [FeedsController::class, 'saveRatingsPerStratPlan']);
 
 

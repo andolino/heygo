@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-export const getTeachingStrategy = async (fnc) => {
+export const getTeachingStrategy = async (fnc, payload) => {
   try {
-      const res = await axios.post(process.env.MIX_BASE_URL+'/get-teaching-strategy/all');
+      const res = await axios.post(process.env.MIX_BASE_URL+'/get-teaching-strategy/all', payload);
       // console.log(res.data);
       return fnc(res.data);
     //   if (res.data.status == 1) {

@@ -13,9 +13,9 @@
             <b-button variant="warning" class="font-12 w-100">Check Student's Workshee</b-button> -->
           </b-col>
           <b-col cols="9" v-if="showFrmAddStrat==3">
-            <TeachingStrategyForm />
+            <TeachingStrategyForm :edit_id="editId" />
           </b-col>
-          <b-col cols="9" v-if="showFrmAddStrat==4">
+          <b-col cols="9" v-else-if="showFrmAddStrat==4">
             <TeachingStrategyView :teaching_strategy_id="viewPanel.id" />
           </b-col>
           <b-col cols="9" v-else>
@@ -54,15 +54,12 @@
                   </b-row>
                   <b-row class="mb-2">
                     <b-col class="font-12">
-                      {{ $helpers.limitText(dsl.description) }}
+                      {{ $helpers.limitText(dsl.description)}}
                     </b-col>
                   </b-row>
                   <b-row class="mb-0">
                     <b-col class="font-12">
-                      <i class="fas fa-star font-11 text-warning"></i>
-                      <i class="fas fa-star font-11 text-warning"></i>
-                      <i class="fas fa-star font-11 text-warning"></i>
-                      <i class="fas fa-star font-11 text-warning"></i>
+                      <i class="fas fa-star font-11 text-warning" v-for="d in $helpers.fnCompRate(dsl.sum_rate, dsl.count_rate)" :key="d"></i>
                     </b-col>
                   </b-row>
                   <a href="#" class="card-link font-11 text-muted">Like</a>
@@ -95,11 +92,12 @@ export default {
     },
     data() {
       return {
-        showFrmAddStrat: 1,//1 = dashboard, 2 = lobby, 3 = forms, 4 = viewing
+        showFrmAddStrat: 1,//1 = dashboard, 2 = Bookmarks, 3 = forms, 4 = viewing
         dataStrategyList: '',
         viewPanel: {
           id: ''
-        }
+        },
+        editId: 0,
       }
     },
     methods: {
@@ -117,10 +115,21 @@ export default {
       fetchTeachingStrategyLobby(){
         api.getTeachingStrategyBookmark(this.fetchTeachingStrategy);
         this.showFrmAddStrat = 1;
+      },
+      dispatchFilterCategory(data){
+        api.getTeachingStrategy(this.fetchTeachingStrategy, {'filter': data});
+        console.log(data)
+      },
+      updateStrategyPlan(id){
+        this.editId=id;
+        this.showFrmAddStrat = 3
       }
     },
     mounted(){
-      api.getTeachingStrategy(this.fetchTeachingStrategy);
+      api.getTeachingStrategy(this.fetchTeachingStrategy, {});
+    },
+    created(){
+      this.$root.$refs.Stf = this;
     }
 }
 </script>
