@@ -21,7 +21,7 @@
             Declined
           </small>
           <h6 class="card-title font-weight-bold">{{ ul.title }}</h6>
-          <p class="card-text">{{ ul.objective_text }}</p>
+          <p class="card-text">{{ $helpers.limitTextFlex(ul.objective_text, 150) }}</p>
         </div>
         <div class="card-footer">
           <img :src="asset + 'images/ellipse.png'" alt="">
@@ -221,8 +221,8 @@ export default {
   props: [ 'base_url' ],
   data(){
     return {
-      bgImgStepper: 'public/images/stepper-left.png',
-      bgImgStudentView: 'public/images/feedback-1.png',
+      bgImgStepper: './public/images/stepper-left.png',
+      bgImgStudentView: './public/images/feedback-1.png',
       showStepper1: true,
       joinClassPanel: true,
       showStepper2: false,

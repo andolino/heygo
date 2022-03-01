@@ -31,7 +31,8 @@
 						@case('profile')
 							<div class="body-upcoming-lesson p-3 rounded-md">
 								<div class="upcoming-lesson-list custom-scrollbar-css p-2 mCustomScrollbar" data-mcs-theme="minimal-dark">
-									<teacher-information-main teachers-id="{{ Auth::id() }}"></teacher-information-main>
+									{{-- <teacher-information-main teachers-id="{{ Auth::id() }}"></teacher-information-main> --}}
+									<teacher-main-profile teachers-id="{{ Auth::id() }}"></teacher-main-profile>
 								</div>
 							</div>
 							@break
@@ -45,7 +46,7 @@
 						@case('profile-details')
 							<div class="body-upcoming-lesson p-3 rounded-md">
 								<div class="upcoming-lesson-list custom-scrollbar-css p-2 mCustomScrollbar" data-mcs-theme="minimal-dark">
-									<teacher-information-main teachers-id="{{ Auth::id() }}"></teacher-information-main>
+									<teacher-main-profile teachers-id="{{ $teachers_id }}"></teacher-main-profile>
 								</div>
 							</div>
 							@break
@@ -108,9 +109,9 @@
 						</div>
 					</div>
 				</div>
-				<div class="cont-home-works mt-4">
+				{{-- <div class="cont-home-works mt-4">
 					<teachers-library></teachers-library>
-				</div>
+				</div> --}}
 				{{-- <div class="cont-home-works mt-4">
 					<div class="head-upcoming-lesson bg-dark mb-0 pb-2 pt-3 pl-3"><h5 class="font-weight-regular">Library <span class="float-right pr-2" style="line-height: 1.5"><i class="fas fa-chevron-right"></i></span></h5></div>
 					<div class="homework-list custom-scrollbar-css p-2 mCustomScrollbar" data-mcs-theme="minimal-dark">

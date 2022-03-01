@@ -24,7 +24,7 @@
             {{ timeReminder(ul.start_date, ul.end_date) }}
           </small> -->
           <h6 class="card-title font-weight-bold">{{ ul.title }}</h6>
-          <p class="card-text">{{ ul.objective_text }}</p>
+          <p class="card-text font-14">{{ $helpers.definedLimitText(ul.objective_text, 60) }}</p>
         </div>
         <div class="card-footer">
           <img :src="asset + 'images/ellipse.png'" alt="">

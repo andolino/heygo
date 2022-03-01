@@ -107,32 +107,32 @@
                   <a class="dropdown-item l-h-1p4" href="{{ url('teachers/profile') }}">
                     Your Profile
                   </a>
-                  <a class="dropdown-item l-h-1p4" href="#">
+                  {{-- <a class="dropdown-item l-h-1p4" href="#">
                     Edit Profile
-                  </a>
+                  </a> --}}
                   <a class="dropdown-item l-h-1p4" href="{{ url('teachers/teacher-lobby') }}">
                     Your Lobby
                   </a>
                   <hr>
                   <a class="dropdown-item l-h-1p4" href="{{ url('display-teacher-calendar') }}">
-                    Calendar
+                    Schedule
                   </a>
-                  <a class="dropdown-item l-h-1p4" href="#">
+                  {{-- <a class="dropdown-item l-h-1p4" href="#">
                     Notifications
-                  </a>
+                  </a> --}}
                   <a class="dropdown-item l-h-1p4" href="#">
                     Messages
                   </a>
-                  <a class="dropdown-item l-h-1p4" href="#">
+                  {{-- <a class="dropdown-item l-h-1p4" href="#">
                     Favorites
-                  </a>
+                  </a> --}}
                   <hr>
                   <a class="dropdown-item l-h-1p4" href="{{ url('teachers-account-settings') }}">
                     Account Settings
                   </a>
-                  <a class="dropdown-item l-h-1p4" href="{{ url('teachers-payment-methods') }}">
+                  {{-- <a class="dropdown-item l-h-1p4" href="{{ url('teachers-payment-methods') }}">
                     Payment Methods
-                  </a>
+                  </a> --}}
                   <a class="dropdown-item l-h-1p4" href="#">
                     Heygo Credits
                   </a>

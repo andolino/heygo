@@ -16,12 +16,12 @@
               <datetime format="YYYY-MM-DD H:i:s" width="" v-model="form.time_start"></datetime>  
             </b-col>
           </b-row>
-          <b-row>
+          <!-- <b-row>
             <b-col>
               <label for="" class="font-12">Time End</label>
               <datetime format="YYYY-MM-DD H:i:s" width="" v-model="form.time_end"></datetime>
             </b-col>
-          </b-row>
+          </b-row> -->
           <b-row>
             <b-col>
               <label for="" class="font-12" data-tooltip="test">Status</label>
@@ -115,7 +115,11 @@
           dayMaxEvents: true, // allow "more" link when too many events
           expandRows: true,
           contentHeight: '4000px',
-          events: [],
+          events: [
+            {
+              time_start: this.time_start
+            }
+          ],
           // eventColor: '#fff',
           eventContent: function (arg, createElement){
             let ht = '';
@@ -142,6 +146,18 @@
               // this.form.lesson_plan_id = calEvent.event.extendedProps.lesson_plan_id;
             }
           },
+          dateClick: function(info) {
+              console.log(info.event.extendedProps.status);
+              // console.log(moment(info.date).format('YYYY-MM-DD HH:mm:ss'));
+              // this.addAvailDateTime = false;
+              // this.form.teacher_availability_id = calEvent.event.id;
+              // this.assignStartData(moment(info.date).format('YYYY-MM-DD HH:mm:ss'));
+
+              // console.log(moment(info.date).format('YYYY-MM-DD HH:mm:ss'));
+              // this.form.time_start = moment(info.date).format('YYYY-MM-DD HH:mm:ss');
+              // this.form.time_end = moment(calEvent.event.end).format('YYYY-MM-DD HH:mm:ss');
+              // this.form.selected_status = calEvent.event.extendedProps.status;
+          },
         },
         csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
         baseurl: document.querySelector('meta[name="base-url"]').getAttribute('content'),
@@ -162,6 +178,9 @@
           this.lessonPlan = res.data;
         }).catch((error) => {});
       },
+      assignStartData(start_date){
+        this.form.time_start = start_date;
+      },
       saveAddTeacherAvailability(){
         Swal.fire({
           title: 'Adding this to your availability?',
@@ -175,6 +194,7 @@
           if (result.isConfirmed) {
             axios.post(process.env.MIX_BASE_URL+'/save-teacher-availability', this.form ).then((res) => {
               this.calendarOptions.events = res.data[0];
+              console.log(res);
               // this.$refs.calendar.$emit('rerenderEvents');
               }).catch((error) => {
                 console.log(error);
@@ -185,7 +205,6 @@
         });
       }
     },
-
     mounted(){
       this.form.user_id = this.user_id;
       this.getLessonPlan();

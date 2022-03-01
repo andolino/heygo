@@ -53,7 +53,7 @@ class HomeController extends Controller {
         if ($uri == 'teacher-lobby') {
             return view('teacher-lobby', ['data' => $data]);
         }
-        return view('teachers', ['data' => $data, 'uri' => $uri]);
+        return view('teachers', [ 'data' => $data, 'uri' => $uri, 'teachers_id' => request()->id ]);
     }
 
     public function getTeachersDetails(){
@@ -142,7 +142,7 @@ class HomeController extends Controller {
     }
 
     public function saveTeacherAvailability(){
-        
+        // dd(request()->all());
         $q = DB::table('teacher_availability')->updateOrInsert([
                 'teacher_id' => Request::post('user_id'),
                 'id' => Request::post('teacher_availability_id'),
@@ -150,7 +150,7 @@ class HomeController extends Controller {
                 'teacher_id' => Request::post('user_id'),
                 'lesson_plan_id' => Request::post('lesson_plan_id'),
                 'start_time' => date('Y-m-d H:i:s', strtotime(Request::post('time_start'))),
-                'end_time' => date('Y-m-d H:i:s', strtotime(Request::post('time_end'))),
+                // 'end_time' => date('Y-m-d H:i:s', strtotime(Request::post('time_end'))),
                 'status' => Request::post('selected_status')
             ]);
         if ($q) {
@@ -168,7 +168,7 @@ class HomeController extends Controller {
                 $dlp[] = array(
                     'title'=>$trow->body,
                     'start'=>str_replace(' ', 'T', date('Y-m-d H:i:s', strtotime($trow->start_time))),
-                    'end'=>str_replace(' ', 'T', date('Y-m-d H:i:s', strtotime($trow->end_time))),
+                    // 'end'=>str_replace(' ', 'T', date('Y-m-d H:i:s', strtotime($trow->end_time))),
                     'id'=>$trow->id,
                     'status'=>$trow->status,
                     'lesson_plan_id'=>$trow->lesson_plan_id,

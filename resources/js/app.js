@@ -33,6 +33,7 @@ import DashboardPanel from './components/admin/DashboardPanel.vue';
 import Navigation from './components/admin/Navigation.vue';
 import StudentsPayment from './components/admin/StudentsPayment.vue';
 import TeachersSetup from './components/admin/TeachersSetup.vue';
+import TeacherMainProfile from './Display/Content/TeacherMainProfile.vue';
 
 import { BootstrapVue, IconsPlugin, BCard } from 'bootstrap-vue';
 import VueSweetalert2 from 'vue-sweetalert2';
@@ -48,6 +49,7 @@ import TeacherInformationMain from './components/TeacherInformationMain.vue';
 import TeachingStrategies from './components/TeachingStrategies.vue';
 import StrategyFilter from './Display/Functions/StrategyFilter.vue';
 import Embed from 'v-video-embed';
+import VCalendar from 'v-calendar';
 
 
 
@@ -90,6 +92,7 @@ Vue.use(VueRouter)
 Vue.use(Embed)
 Vue.component('BCard', BCard)
 Vue.component('todo-component', require('./components/TodoComponent.vue').default );
+Vue.use(VCalendar);
 // Vue.component('b-carousel', '');
 
 
@@ -161,6 +164,7 @@ const app = new Vue({
 		'teacher-information-main'	: TeacherInformationMain,
 		'teaching-strategies'	      : TeachingStrategies,
 		'strategy-filter'	      : StrategyFilter,
+		'teacher-main-profile'	      : TeacherMainProfile,
 	},
 });
 

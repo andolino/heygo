@@ -72,3 +72,17 @@ export const saveBookmark = async (payload) => {
       console.error(error);
   }
 };
+
+export const getTeachersSched = async (payload, fnc) => {
+  try {
+      const res = await axios.get(process.env.MIX_BASE_URL+'/get-teachers-availability', payload);
+      // axios.get(process.env.MIX_BASE_URL+'/get-teachers-availability', { 'teachers_id' : this.user_id }).then((res) => {
+        //     this.calendarOptions.events = res.data[0];
+        //   }).catch((error) => {
+        //     console.log(error);
+        // });
+        return fnc(res);
+  } catch (error) {
+      console.error(error);
+  }
+};

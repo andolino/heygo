@@ -15,11 +15,11 @@
                     <label class="text-center w-100 font-weight-bold"><?php echo date('l, F, j, Y'); ?></label>
                     <p class="text-center"><?php echo date('H:i A'); ?></p>
                 </div>
-                <div class="upcoming-lesson-list custom-scrollbar-css p-2 mCustomScrollbar" data-mcs-theme="minimal-dark">
+                {{-- custom-scrollbar-css p-2 mCustomScrollbar --}}
+                <div class="upcoming-lesson-list p-2" >
                     <student-upcoming-lesson></student-upcoming-lesson>
                 </div>
             </div>
-            
             <div class="cont-upcoming-lesson mt-4">
                 <student-homework></student-homework>
             </div>
@@ -71,7 +71,12 @@
                 </div>
                <fetch-feeds :findtutor="{{ $teachers }}"></fetch-feeds>
             @elseif (!empty($teachersprofile))
-                <teachers-profile :teachersdata="{{ $teachersprofile }}"></teachers-profile>
+                {{-- <teachers-profile :teachersdata="{{ $teachersprofile }}"></teachers-profile> --}}
+                <div class="body-upcoming-lesson p-3 rounded-md">
+                    <div class="upcoming-lesson-list custom-scrollbar-css p-2 mCustomScrollbar" data-mcs-theme="minimal-dark">
+                        <teacher-main-profile :teachers-id="{{ $teachersprofile[0]->id }}"></teacher-main-profile>
+                    </div>
+                </div>
             @elseif (!empty($messageDisplay))
                 <chat-panel :messageDisplay="{{ $messageDisplay }}" :teachers-id="{{ $teachers_id ?? 0 }}" :students-id="{{ $students_id ?? 0 }}"></chat-panel>
             @else

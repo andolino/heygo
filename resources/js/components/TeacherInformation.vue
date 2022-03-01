@@ -66,7 +66,7 @@
                         class="btn btn-default float-left btn-dashboard mb-3 font-12 pl-3 pr-3"  
                         data-apptype="confirm">Book A Lesson</button>
                         <!-- + this.teachersData.id -->
-              <a :href="baseurl + '/teachers/profile-details'"
+              <a :href="baseurl + '/teachers/profile-details?id='+teachersData.id"
                         class="btn btn-default float-right btn-dashboard mb-3 font-12"  
                         data-apptype="confirm">See Profile</a>
             </div>

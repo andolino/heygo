@@ -41,6 +41,7 @@
         "moment": "^2.29.1",
         "pusher-js": "^7.0.3",
         "sweetalert2": "^11.1.7",
+        "v-calendar": "^2.4.1",
         "v-video-embed": "^1.0.8",
         "vue-bootstrap-toasts": "^1.0.7",
         "vue-multiselect": "^2.1.6",
