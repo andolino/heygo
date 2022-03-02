@@ -13,5 +13,27 @@ export default {
     } else {
         return true;
     }
+  },
+  limitText(string) {
+    return string.substring(0,34) + '...';
+  },
+  limitTextFlex(string, limit) {
+    return string.substring(0,limit) + '...';
+  },
+  definedLimitText(string, limit=60) {
+    return string.substring(0,limit) + '...';
+  },
+  fnCompRate(sum, count){
+    var x = [];
+    var f = parseInt((sum / count));
+    for (let i = 0; i < f; i++) {
+      x.push(i);
+    }
+    return x;
+  },
+  exactLimitText(t, count){
+    if (typeof t !== 'undefined') {
+      return t.slice(0, count) + (t.length > count ? "..." : "");
+    }
   }
 };

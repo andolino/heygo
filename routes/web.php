@@ -116,6 +116,7 @@ Route::group(['middleware' => 'auth:students'], function () {
 Route::group(['middleware' => 'auth:teachers'], function () {
     // Route::view('/teachers', 'teachers');
     Route::get('/teachers', [HomeController::class, 'teachersDashboard']);
+    Route::get('/teachers/{any}', [HomeController::class, 'teachersDashboard']);
     Route::get('/teachers-account-settings', [HomeController::class, 'teachersAccountSettings']);
     Route::get('/teachers-profile-main', [HomeController::class, 'teachersDashboard']);
     Route::get('/get-lesson-type-rate', [HomeController::class, 'getLessonTypeRate']);
@@ -136,7 +137,14 @@ Route::group(['middleware' => 'auth:teachers'], function () {
     Route::post('/update-default-dp', [UploadController::class, 'updateDefaultDp']);
     Route::get('/profile-feeds/{any}/{feeds_id}', [FeedsController::class, 'profileFeeds']);
     Route::post('/get-teacher-schedule', [HomeController::class, 'getTeacherSchedule']);
-
+    Route::post('/save-teaching-strategy', [FeedsController::class, 'saveTeachingStrategy']);
+    Route::post('/get-teaching-strategy/{any}', [FeedsController::class, 'getLessonStrategyPlan']);
 });
+Route::post('/save-bookmark', [FeedsController::class, 'saveBookmark']);
+Route::post('/save-ratings-per-strat-plan', [FeedsController::class, 'saveRatingsPerStratPlan']);
+
+
+// Route::post('/get-teaching-strategy', [FeedsController::class, 'getLessonStrategyPlan']);
+
 
 Route::get('logout', [LoginController::class,'logout']);

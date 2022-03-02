@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}"><head>
     <meta charset="utf-8">
@@ -101,6 +102,17 @@
                             </div>
                         </li>
                     @endguest
+                    @if (Auth::guard('teachers')->check())
+                        <li class="nav-item mr-3">
+                            <a href="{{ url('/teachers'); }}" class="nav-link btn-white font-14 rounded"><i class="fas fa-home"></i></a>
+                        </li>
+                    @elseif (Auth::guard('students')->check())
+                        <li class="nav-item mr-3">
+                            <a href="{{ url('/students'); }}" class="nav-link btn-white font-14 rounded"><i class="fas fa-home"></i></a>
+                        </li>
+                    @else
+                    @endif
+                    
                 </ul>
             </div>
         </div>
@@ -109,9 +121,14 @@
         @isset($is_verified)
             @if ($is_verified)
                 <div class="verified-container d-none">{{ $msg }}</div>
+                
             @endif
         @endisset
         @yield('content')
+
+        
+        
+
     </main>
     <div id="app">
         {{-- Modal Teacher Signup--}}
@@ -274,7 +291,6 @@
             }, 3000);
         });
     }
-
 </script>
 </body>
 <style>

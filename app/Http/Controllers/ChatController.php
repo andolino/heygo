@@ -45,7 +45,7 @@ class ChatController extends Controller{
             $messageDisplay = DB::table('teachers')->where('id', '=', Auth::id())->get();
             $teachers_id = null;
             $students_id = $id;
-            return view('teachers', ['data' => $data, 'messageDisplay' => $messageDisplay, 'teachers_id' => $teachers_id, 'students_id' => $students_id ]);
+            return view('teachers', ['data' => $data, 'uri' => 'chat', 'messageDisplay' => $messageDisplay, 'teachers_id' => $teachers_id, 'students_id' => $students_id ]);
         } else {
             $data = DB::table('students')->where('id', '=', Auth::id())->first();
             $messageDisplay = DB::table('students')->where('id', '=', Auth::id())->get();

@@ -49,5 +49,6 @@ Route::post('/upload-badge', [UploadController::class, 'uploadBadge']);
 Route::post('/remove-badge', [UploadController::class, 'removeBadge']);
 Route::post('/post-likes', [FeedsController::class, 'postLikes']);
 Route::post('/post-comments', [FeedsController::class, 'postComments']);
+Route::post('/get-teaching-strategy', [FeedsController::class, 'getLessonStrategyPlan']);
 
 // Route::get('/todo', [TodoController::class, 'index']);

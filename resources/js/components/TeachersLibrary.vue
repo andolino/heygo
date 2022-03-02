@@ -9,7 +9,8 @@
           </div>
         </div>
       </div>
-      <div class="card-group mt-1 cursor" v-b-modal.modal-1>
+      <!-- v-b-modal.modal-1 -->
+      <div class="card-group mt-1 cursor" >
         <div class="card">
           <div class="card-body">
             <p class="card-text">Teachers Lobby</p>
@@ -21,9 +22,9 @@
       <b-container class="bv-example-row">
         <b-row>
           <b-col cols="2">
-            <b-button variant="warning" class="font-12 w-100 mb-2">Dashboard</b-button>
+            <b-button variant="warning" class="font-12 w-100 mb-2" v-on:click="gotoDashboardProfile">Dashboard</b-button>
             <b-button variant="warning" class="font-12 w-100 mb-2" v-on:click="showFrmAddStrat = false;">Bookmarks</b-button>
-            <b-button variant="warning" class="font-12 w-100 mb-2" v-on:click="showFrmAddStrat = true;">Add</b-button>
+            <b-button variant="warning" class="font-12 w-100 mb-2" v-on:click="showFrmAddStrat = true;">Add Strategy</b-button>
             <!-- <b-button variant="warning" class="font-12 w-100 mb-2">View Own Worksheet</b-button>
             <b-button variant="warning" class="font-12 w-100 mb-2">Booked Worksheet</b-button>
             <b-button variant="warning" class="font-12 w-100">Check Student's Workshee</b-button> -->
@@ -95,7 +96,9 @@ import TeachingStrategiesFrm from '../Display/Modal/TeachingStrategyForm.vue';
       }
     },
     methods: {
-      
+      gotoDashboardProfile(){
+          window.location.href=process.env.MIX_BASE_URL+'/teachers-dashboard-profile';
+      }
     },
     mounted(){
       // Get the element with id="defaultOpen" and click on it

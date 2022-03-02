@@ -27,9 +27,9 @@
               <li class="nav-item" role="presentation">
                 <a class="nav-link border-0 active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Post a Question</a>
               </li>
-              <li class="nav-item" role="presentation">
+              <!-- <li class="nav-item" role="presentation">
                 <a class="nav-link border-0" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Post a Lesson Plan</a>
-              </li>
+              </li> -->
             </ul>
 
             <div class="tab-content" id="myTabContent">
@@ -65,8 +65,8 @@
           </div>
           <div class="modal-footer">
             <div class="row mr-auto text-light post-feed-icon">
-              <div class="col-lg-1 mr-2"><a href="" class="text-light"><i class="fas fa-paperclip"></i></a></div>
-              <div class="col-lg-1"><a href="" class="text-light"><i class="fas fa-camera"></i></a></div>
+              <!-- <div class="col-lg-1 mr-2"><a href="" class="text-light"><i class="fas fa-paperclip"></i></a></div>
+              <div class="col-lg-1"><a href="" class="text-light"><i class="fas fa-camera"></i></a></div> -->
             </div>
             <button type="button" @click="postTeacherFeed" class="btn btn-default mb-3 font-14">Post</button>
           </div>
