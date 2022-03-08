@@ -12,6 +12,7 @@ import AvailableLesson from './components/AvailableLesson.vue';
 import SignupFormTeacher from './components/SignupFormTeacher.vue';
 import SignupFormStudent from './components/SignupFormStudent.vue';
 import TeacherAcctSettings from './components/TeacherAcctSettings.vue';
+import TeacherProfileSettings from './Display/Content/TeacherProfileSettings.vue';
 import StudentAcctSettings from './components/StudentAcctSettings.vue';
 import TeacherFeeds from './components/TeacherFeeds.vue';
 import StudentFeeds from './components/StudentFeeds.vue';
@@ -141,6 +142,7 @@ const app = new Vue({
 		'signup-form-teacher'   	  : SignupFormTeacher,
 		'student-acct-settings' 	  : StudentAcctSettings,
 		'teacher-acct-settings' 	  : TeacherAcctSettings,
+		'teacher-profile-settings' 	: TeacherProfileSettings,
 		'fetch-feeds'							  : FetchFeeds,
 		'teacher-feeds'						  : TeacherFeeds,
 		'student-homework'				  : StudentHomework,

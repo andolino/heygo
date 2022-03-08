@@ -2,214 +2,9 @@
   <div>
     <form @submit.prevent="submitTeachersAcctSettings">
       <div class="row mt-5">
-        <div class="col-lg-5 text-center">
-            <div class="img-card">
-              <h5 class="text-left font-14">Profile Pic</h5>
-              <div class="img-container mb-3">
-                <img :src="this.defaultImg" ref="prof_display" class="rounded-circle" alt="">
-                <input type="file" class="d-none" ref="uploadImg" @change="selectFileUploadImg">
-                <div class="overlay">
-                  <a href="javascript:void(0);" @click="$refs.uploadImg.click()" class="icon" title="User Profile">
-                    <i class="fa fa-upload"></i>
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div class="img-card">
-              <h5 class="text-left font-14">Short Video</h5>
-              <div class="vid-container">
-                <!-- <img :src="this.defaultVid" ref="prof_display" class="rounded-circle" alt=""> -->
-                <video ref="videoRef" src="" id="video-container" width="100%" height="100%" controls></video>
-                <input type="file" class="d-none" ref="uploadVideo" @change="selectFileUploadVid">
-                <div class="overlay">
-                  <div class="row w-100 m-auto">
-                    <div class="col-sm-4">
-                      <a href="javascript:void(0);" @click="$refs.uploadVideo.click()" class="icon" title="User Profile">
-                        <i class="fas fa-upload"></i>
-                      </a>
-                    </div>
-                    <div class="col-sm-4">
-                      <a href="javascript:void(0);" @click="$refs.videoRef.play();" class="icon" title="User Profile">
-                        <i class="fas fa-play"></i>
-                      </a>
-                    </div>
-                    <div class="col-sm-4">
-                      <a href="javascript:void(0);" @click="$refs.videoRef.pause();" class="icon" title="User Profile">
-                        <i class="fa fa-pause"></i>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-lg-12">
-                <b-form-group label="Choose you want to display in profile" class="font-12" v-slot="{ ariaDescribedby }">
-                  <b-form-radio-group
-                    id="btn-radios-1"
-                    v-model="vp_selected"
-                    :options="options"
-                    size="sm"
-                    :aria-describedby="ariaDescribedby"
-                    name="radios-btn-default"
-                    buttons
-                    @change="setDisplayTeacher"
-                  ></b-form-radio-group>
-                </b-form-group>
-              </div>
-            </div>
-            <div class="row up-trial-ctrl p-4">
-              <div class="col-lg-12">
-                <label for="">Trial Lesson</label>
-              </div>
-              <div class="col-lg-12 mb-2">
-                <!-- <label for="" class="font-12">30 Minutes Free Lesson</label> -->
-                <select class="form-control form-control-sm font-12" name="" id="">
-                  <option value="Yes" selected>Yes</option>
-                  <option value="No">No</option>
-                </select>
-              </div>
-              <div class="col-lg-12 mb-2">
-                <label for="currency_rate_id" class="font-12">Currency Rate</label>
-                <select 
-                  class="form-control form-control-sm font-12" 
-                  name="currency_rate_id" 
-                  id="currency_rate_id"
-                  v-model="form.currency_rate_id"
-                  :class="{'is-invalid' : form.errors.has('currency_rate_id')}">
-                  <option value="" selected hidden>--</option>
-                  <option v-for="cr in currencyRate"
-                          :key="cr.id"
-                          :value="cr.id" >
-                    {{ cr.currency }} - {{ cr.rate }}
-                  </option>
-                </select>
-              </div>
-              <!-- <div class="col-lg-12">
-                <label class="switch">
-                  <input type="checkbox" id="togBtn">
-                  <div class="slider round">
-                    <span class="off">No</span>
-                    <span class="on">Yes</span>
-                  </div>
-                </label>
-              </div> -->
-              <div class="col-lg-12">
-                <label for="" class="font-12">Trial Lesson Rate</label>
-                <div class="form-check form-check-inline w-100" v-for="lrt in lessonTypeRate" :key="lrt.id">
-                  <input class="form-check-input" 
-                        type="radio" 
-                        name="lesson_rate_type_id" 
-                        :id="lrt.id" 
-                        :value="lrt.id" 
-                        v-model="form.lesson_rate_type_id"
-                        :class="{'is-invalid' : form.errors.has('lesson_rate_type_id')}">
-                  <label class="form-check-label font-12" :for="lrt.id">{{ lrt.type }}</label>
-                </div>
-              </div>
-            </div>
-            <div class="row up-trial-ctrl p-4">
-              <div class="col-lg-12">
-                <label class="font-12" for="lesson_plan_id">Type of Lesson</label>
-                  <!-- <label for="" class="font-12">30 Minutes Free Lesson</label> -->
-                  <!-- <select class="form-control form-control-sm font-12" name="lesson_plan_id" id="lesson_plan_id">
-                    <option value="" selected="" hidden="">--</option>
-                    <option :value="lp.id" v-for="lp in lessonPlan" :key="lp.id">
-                      {{ lp.body }}
-                    </option>
-                  </select> -->
-                  <label for="" class="font-12">30 Minutes Free Lesson</label>
-                  <select 
-                    class="form-control form-control-sm font-12" 
-                    name="lesson_plan_id" 
-                    id="lesson_plan_id"
-                    v-model="form.lesson_plan_id" 
-                    :class="{'is-invalid' : form.errors.has('lesson_plan_id')}">
-                    <optgroup v-for="(group, name) in lessonPlan" :label="name" :key="group.id">
-                      <option v-for="option in group" :value="option.id" :key="option.id">
-                        {{ option.body }}
-                      </option>
-                    </optgroup>
-                  </select>
-                <!-- <div class="value">5</div>
-                <input 
-                  type="range" 
-                  min="0" 
-                  max="10" 
-                  step="0" 
-                  value="5" 
-                  name="age_pref"
-                  v-model="form.age_pref"> -->
-              </div>
-            </div>
-        </div>
-
-        <div class="col-lg-5 offset-lg-1">
-          <div class="m-auto">
-            <label for="" class="text-left w-100">First Name</label>
-            <div class="form-group input-group mb-0">
-                <input 
-                  type="text" 
-                  v-model="form.firstname" 
-                  :class="{'is-invalid' : form.errors.has('firstname')}" 
-                  class="form-control text-center input-custom font-14 mb-3" 
-                  id="firstname" 
-                  name="firstname">
-            </div>
-            <p class="text-danger text-center" v-if="form.errors.has('firstname')" v-text="form.errors.get('firstname')"></p>
-
-            <label for="" class="text-left w-100">Last Name</label>
-            <div class="form-group input-group mb-0">
-                <input 
-                  type="text" 
-                  v-model="form.lastname" 
-                  :class="{'is-invalid' : form.errors.has('lastname')}" 
-                  class="form-control text-center input-custom font-14 mb-3" 
-                  id="lastname" 
-                  name="lastname">
-            </div>
-            <p class="text-danger text-center" v-if="form.errors.has('lastname')" v-text="form.errors.get('lastname')"></p>
-
-            <label for="" class="text-left w-100">Contact</label>
-            <div class="form-group input-group mb-0">
-                <input 
-                  type="text" 
-                  v-model="form.contact_no" 
-                  :class="{'is-invalid' : form.errors.has('contact_no')}" 
-                  class="form-control text-center input-custom font-14 mb-3" 
-                  id="contact_no" 
-                  name="contact_no">
-            </div>
-            <p class="text-danger text-center" v-if="form.errors.has('contact_no')" v-text="form.errors.get('contact_no')"></p>
-
-            <label for="" class="text-left w-100">Rate Per Hour</label>
-            <div class="form-group input-group mb-0">
-                <input 
-                  type="text" 
-                  v-model="form.rate_per_hr" 
-                  :class="{'is-invalid' : form.errors.has('rate_per_hr')}" 
-                  class="form-control text-center input-custom font-14 mb-3" 
-                  id="rate_per_hr" 
-                  name="rate_per_hr">
-            </div>
-            <p class="text-danger text-center" v-if="form.errors.has('rate_per_hr')" v-text="form.errors.get('rate_per_hr')"></p>
-
-            <label for="" class="text-left w-100">Location</label>
-            <div class="form-group input-group mb-0">
-                  <select name="country_id" 
-                          id="country_id" 
-                          :class="[{'is-invalid' : form.errors.has('country_id')}, selectCountryClass]" 
-                          v-model="form.country_id" 
-                          :required="true">
-                          <option 
-                            :value="t.id"
-                            v-for="(t, i) in countries" 
-                            :key="i">{{ t.country_name }}</option>
-                  </select>
-            </div>
-            <p class="text-danger text-center" v-if="form.errors.has('country_id')" v-text="form.errors.get('country_id')"></p>
-
-            <label for="" class="text-left w-100">Email Address</label>
+        <div class="col-lg-7 m-auto">
+          <div class="">
+            <label for="" class="text-left w-100">Email</label>
             <div class="form-group input-group mb-0">
                 <input 
                   type="text" 
@@ -219,34 +14,23 @@
                   id="email" 
                   name="email">
             </div>
-            <p class="text-danger text-center mb-3" v-if="form.errors.has('email')" v-text="form.errors.get('email')"></p>
-
-            <label for="" class="text-left w-100">Objective Title</label>
+            <p class="text-danger text-center" v-if="form.errors.has('email')" v-text="form.errors.get('email')"></p>
+            <label for="" class="text-left w-100">Account Type</label>
             <div class="form-group input-group mb-0">
-                <input 
-                  type="text" 
-                  v-model="form.objective_title" 
-                  :class="{'is-invalid' : form.errors.has('objective_title')}" 
-                  class="form-control text-center input-custom font-14 mb-3" 
-                  id="objective_title" 
-                  name="objective_title">
+                  <select name="account_type" 
+                          id="account_type" 
+                          :class="[{'is-invalid' : form.errors.has('account_type')}, selectCountryClass]" 
+                          v-model="form.account_type" 
+                          :required="true">
+                          <option 
+                            :value="t.id"
+                            v-for="(t, i) in countries" 
+                            :key="i">{{ t.country_name }}</option>
+                  </select>
             </div>
-            <p class="text-danger text-center mb-3" v-if="form.errors.has('objective_title')" v-text="form.errors.get('objective_title')"></p>
-            <label for="" class="text-left w-100">Objective Description</label>
-
-            <div class="form-group input-group mb-0">
-                <textarea 
-                  id="objective_text" 
-                  name="objective_text" 
-                  v-model="form.objective_text" 
-                  class="form-control input-custom font-14 mb-3"
-                  :class="{'is-invalid' : form.errors.has('objective_text')}" 
-                  cols="30" rows="10"></textarea>
-            </div>
-            <p class="text-danger text-center mb-3" v-if="form.errors.has('objective_text')" v-text="form.errors.get('objective_text')"></p>
-            
-            <button type="submit" class="btn btn-default font-14 float-right text-center btn-cust-radius pr-4 pl-4 mt-4 mb-4">Okay</button>
-            
+            <p class="text-danger text-center" v-if="form.errors.has('account_type')" v-text="form.errors.get('account_type')"></p>
+            <button type="submit" class="btn btn-default font-14 float-right text-center btn-cust-radius pr-4 pl-4 mt-4 mb-4">Reset Password</button>
+            <button type="submit" class="btn btn-default font-14 float-right text-center btn-cust-radius pr-4 pl-4 mt-4 mb-4 mr-2">Okay</button>
           </div>
         </div>
         <div class="col-lg-5 offset-lg-6">
@@ -254,12 +38,29 @@
         </div>
       </div>
     </form>
+
+
+    <div>
+      <!-- v-for="user in users" :key="user.id" -->
+        <div>
+            <forgot-password-modal
+                :show="showModal(1)" 
+                @close="toggleModal(1)" />
+            <a class="text-sm" href="#" @click.stop="toggleModal(1)">Show</a>
+        </div>
+    </div>
+
+
   </div>
+  
 </template>
 
 <script>
+      import ForgotPasswordModal from '../Display/Modal/AccountSettings/ForgotPasswordModal.vue'
+
     export default {
       name: "TeacherAcctSettings",
+      components:{ ForgotPasswordModal },
       props: [ 'base_url' ],
 			data(){
 				return{
@@ -300,8 +101,11 @@
           options: [
             { text: 'Display Picture', value: '0' },
             { text: 'Diplay Video', value: '1' }
-          ]
+          ],
           // defaultVid: document.querySelector('meta[name="url-asset"]').getAttribute('content') + 'images/ellipse-4.png',
+
+
+          activeModal: 0,
 				}
 			},
 			methods: {
@@ -402,6 +206,17 @@
         },
         setDisplayTeacher(){
           axios.post(process.env.MIX_BASE_URL+"/update-default-dp", { 'display_status' : this.vp_selected }).then((res) => {});
+        },
+
+        showModal: function(id) {
+          return this.activeModal === id 
+        },
+        toggleModal: function (id) {
+          if(this.activeModal !== 0) {
+              this.activeModal = 0
+              return false
+          }
+          this.activeModal = id
         }
 			},
 			mounted() { 

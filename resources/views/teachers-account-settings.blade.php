@@ -8,6 +8,7 @@
         </div>
         <div class="p-3">
             <teacher-acct-settings></teacher-acct-settings>
+            
         </div>
       </div>
 		</div>
