@@ -21,6 +21,7 @@
                             <label for="re_typ_newpassword" class="form-label font-12">Re-Type New Password</label>
                             <input type="password" name="re_typ_newpassword" class="form-control" id="re_typ_newpassword">
                         </div>
+                        
                     </form>
                     <button type="button" class="btn btn-warning float-right font-12 ml-1">Save</button>
                     <button type="button" @click="close" class="btn btn-warning float-right font-12">Close</button>
