@@ -29,7 +29,10 @@
                   </select>
             </div>
             <p class="text-danger text-center" v-if="form.errors.has('account_type')" v-text="form.errors.get('account_type')"></p>
-            <button type="submit" class="btn btn-default font-14 float-right text-center btn-cust-radius pr-4 pl-4 mt-4 mb-4">Reset Password</button>
+            <button 
+              type="button" 
+              class="btn btn-default font-14 float-right text-center btn-cust-radius pr-4 pl-4 mt-4 mb-4" 
+              @click.stop="toggleModal('forgotpassword')">Reset Password</button>
             <button type="submit" class="btn btn-default font-14 float-right text-center btn-cust-radius pr-4 pl-4 mt-4 mb-4 mr-2">Okay</button>
           </div>
         </div>
@@ -44,9 +47,9 @@
       <!-- v-for="user in users" :key="user.id" -->
         <div>
             <forgot-password-modal
-                :show="showModal(1)" 
-                @close="toggleModal(1)" />
-            <a class="text-sm" href="#" @click.stop="toggleModal(1)">Show</a>
+                :show="showModal('forgotpassword')" 
+                @close="toggleModal('forgotpassword')" />
+            <!-- <a class="text-sm" href="#" @click.stop="toggleModal(1)">Show</a> -->
         </div>
     </div>
 
@@ -56,7 +59,7 @@
 </template>
 
 <script>
-      import ForgotPasswordModal from '../Display/Modal/AccountSettings/ForgotPasswordModal.vue'
+    import ForgotPasswordModal from '../Display/Modal/AccountSettings/ForgotPasswordModal.vue'
 
     export default {
       name: "TeacherAcctSettings",
