@@ -11,15 +11,15 @@
                         </div>
                         <div class="mb-3">
                             <label for="current_password" class="form-label font-12">Current Password</label>
-                            <input type="password" autocomplete="off" value="" name="current_password" class="form-control" id="current_password">
+                            <input type="password" v-model="forms.current_password" autocomplete="off" value="" name="current_password" class="form-control" id="current_password">
                         </div>
                         <div class="mb-3">
                             <label for="newpassword" class="form-label font-12">New Password</label>
-                            <input type="password" name="newpassword" class="form-control" id="newpassword">
+                            <input type="password" v-model="forms.newpassword" name="newpassword" class="form-control" id="newpassword">
                         </div>
                         <div class="mb-3">
                             <label for="re_typ_newpassword" class="form-label font-12">Re-Type New Password</label>
-                            <input type="password" name="re_typ_newpassword" class="form-control" id="re_typ_newpassword">
+                            <input type="password" v-model="forms.re_typ_newpassword" name="re_typ_newpassword" class="form-control" id="re_typ_newpassword">
                         </div>
                         
                     </form>
@@ -36,9 +36,19 @@
     export default {
         props: ['show'],
         components: { Modal },
+        data(){
+            return {
+                forms: {
+                    current_password: '',
+                    newpassword: '',
+                    re_typ_newpassword: ''
+                }
+            }
+        },
         methods: {
             close: function() {
-                this.$emit('close')
+                this.$emit('close');
+                console.log(this.forms);
             }
         }
     }

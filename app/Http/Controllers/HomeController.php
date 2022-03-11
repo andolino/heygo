@@ -1172,7 +1172,15 @@ class HomeController extends Controller {
     }
 
    
+    public function forgotPassword(){
+        $request->validate([
+            'current_password' => 'required',
+            'newpassword' => 'required|string|min:6|confirmed',
+            're_typ_newpassword' => 'required'
+        ]);
 
+        
+    }
 
 
 }
