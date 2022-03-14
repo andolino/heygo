@@ -46,7 +46,7 @@
     <div>
       <!-- v-for="user in users" :key="user.id" -->
         <div>
-            <forgot-password-modal
+            <reset-password-modal
                 :show="showModal('forgotpassword')" 
                 @close="toggleModal('forgotpassword')" />
             <!-- <a class="text-sm" href="#" @click.stop="toggleModal(1)">Show</a> -->
@@ -59,11 +59,11 @@
 </template>
 
 <script>
-    import ForgotPasswordModal from '../Display/Modal/AccountSettings/ForgotPasswordModal.vue'
+    import ResetPasswordModal from '../Display/Modal/AccountSettings/ResetPasswordModal.vue'
 
     export default {
       name: "TeacherAcctSettings",
-      components:{ ForgotPasswordModal },
+      components:{ ResetPasswordModal },
       props: [ 'base_url' ],
 			data(){
 				return{

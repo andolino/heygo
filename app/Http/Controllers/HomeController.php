@@ -13,6 +13,7 @@ use DB;
 use Cartalyst\Stripe\Laravel\Facades\Stripe;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\RegisterMail;
+use Illuminate\Validation\Rules\Password;
 
 
 class HomeController extends Controller {
@@ -1172,14 +1173,42 @@ class HomeController extends Controller {
     }
 
    
-    public function forgotPassword(){
-        $request->validate([
-            'current_password' => 'required',
-            'newpassword' => 'required|string|min:6|confirmed',
-            're_typ_newpassword' => 'required'
-        ]);
+    public function saveForgotPassword(){
+        // Request::validate([
+        //     'current_password' => 'required',
+        //     'newpassword' => 'required|string|min:6|confirmed',
+        //     'newpassword_confirmation' => 'required'
+        // ]);
 
         
+        $rules = array(
+            'current_password' => 'required',
+            'newpassword' => [
+                'required',
+                'string',
+                Password::min(8)
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised()
+            ],
+            'newpassword_confirmation' => 'required|same:newpassword'
+        );
+        // do the validation
+        // validate against the inputs from our form
+        $validator = \Validator::make(Request::all(), $rules);
+
+        if ($validator->fails()) {
+            // get the error messages from the validator
+            $messages = $validator->messages();
+            return response()->json($messages);
+        } else {
+            $data = [];
+            $msg = [];
+            return response()->json(['newpassword' => ['Wrong Old Password']]);
+            // return response()->json($msg);
+        }
+
     }
 
 
