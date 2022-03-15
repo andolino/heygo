@@ -35,6 +35,7 @@ import Navigation from './components/admin/Navigation.vue';
 import StudentsPayment from './components/admin/StudentsPayment.vue';
 import TeachersSetup from './components/admin/TeachersSetup.vue';
 import TeacherMainProfile from './Display/Content/TeacherMainProfile.vue';
+import TeachersWorkbooks from './Display/Content/TeachersWorkbooks.vue';
 
 import { BootstrapVue, IconsPlugin, BCard } from 'bootstrap-vue';
 import VueSweetalert2 from 'vue-sweetalert2';
@@ -167,6 +168,7 @@ const app = new Vue({
 		'teaching-strategies'	      : TeachingStrategies,
 		'strategy-filter'	      : StrategyFilter,
 		'teacher-main-profile'	      : TeacherMainProfile,
+		'teachers-workbooks'	      : TeachersWorkbooks
 	},
 });
 

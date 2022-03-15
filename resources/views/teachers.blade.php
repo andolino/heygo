@@ -51,6 +51,13 @@
 								</div>
 							</div>
 							@break
+						@case('teachers-workbooks')
+							<div class="body-upcoming-lesson p-3 rounded-md">
+								<div class="upcoming-lesson-list custom-scrollbar-css p-2 mCustomScrollbar" data-mcs-theme="minimal-dark">
+									<teachers-workbooks teachers-id="{{ $teachers_id }}"></teachers-workbooks>
+								</div>
+							</div>
+							@break
 						@default
 							{{-- feeds --}}
 							<teacher-feeds></teacher-feeds>
