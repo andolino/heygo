@@ -68,6 +68,7 @@ class HomeController extends Controller {
     
     public function teachersAccountSettings(){
         $data = DB::table('teachers')->where('id', '=', Auth::id())->first();
+        $data = DB::table('teachers')->where('id', '=', Auth::id())->first();
         return view('teachers-account-settings', ['data' => $data]);
     }
     
@@ -1175,7 +1176,6 @@ class HomeController extends Controller {
 
    
     public function teachersResetPassword(){
-        
         $rules = array(
             'current_password' => 'required',
             'newpassword' => [
@@ -1192,7 +1192,6 @@ class HomeController extends Controller {
         // do the validation
         // validate against the inputs from our form
         $validator = \Validator::make(Request::all(), $rules);
-
         if ($validator->fails()) {
             // get the error messages from the validator
             $messages = $validator->messages();
@@ -1206,7 +1205,7 @@ class HomeController extends Controller {
                 DB::table('teachers')->where('id', Auth::id())->update(['password' => $hashed]);
                 return response()->json(['newpassword' => ['Success']]);
             }
-            return response()->json(['newpassword' => ['Wrong Old Password']]);
+            return response()->json(['newpassword' => ['Wrong Current Password']]);
         }
 
     }
