@@ -14,6 +14,7 @@ use Cartalyst\Stripe\Laravel\Facades\Stripe;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\RegisterMail;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\Hash;
 
 
 class HomeController extends Controller {
@@ -1173,13 +1174,7 @@ class HomeController extends Controller {
     }
 
    
-    public function saveForgotPassword(){
-        // Request::validate([
-        //     'current_password' => 'required',
-        //     'newpassword' => 'required|string|min:6|confirmed',
-        //     'newpassword_confirmation' => 'required'
-        // ]);
-
+    public function teachersResetPassword(){
         
         $rules = array(
             'current_password' => 'required',
@@ -1205,8 +1200,13 @@ class HomeController extends Controller {
         } else {
             $data = [];
             $msg = [];
+            $teachers = DB::table('teachers')->where('id', Auth::id())->first();
+            if (Hash::check(Request::post('current_password'), $teachers->password)) {
+                $hashed = Hash::make(Request::post('newpassword_confirmation'));
+                DB::table('teachers')->where('id', Auth::id())->update(['password' => $hashed]);
+                return response()->json(['newpassword' => ['Success']]);
+            }
             return response()->json(['newpassword' => ['Wrong Old Password']]);
-            // return response()->json($msg);
         }
 
     }

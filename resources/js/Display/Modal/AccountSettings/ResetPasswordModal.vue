@@ -4,7 +4,7 @@
         <modal :show="show" >
             <div class="row">
                 <div class="col-lg-12">
-                    <h5 class=""></h5>
+                    <h5 class="mb-3">Reset Password</h5>
                     <form autocomplete="off">
                         <div class="d-none">
                             <input type="password"/>
@@ -28,6 +28,13 @@
                 </div>
             </div>
         </modal>
+          <Toasts
+            :show-progress="true"
+            :rtl="false"
+            :max-messages="5"
+            :time-out="10000"
+            :closeable="true"
+          ></Toasts>
     </div>
 </template>
 
@@ -52,9 +59,23 @@
                 this.$emit('close');
             },
             resetPasswordCallback(res){
-                Object.keys(res.data).map((item, d) => {
-                    console.log(d[item].toString().split(', '));
-                });
+                for (var key in res.data) {
+                    if (res.data.hasOwnProperty(key)) {
+                        let exp = res.data[key].toString().split(',');
+                        for (let i = 0; i < exp.length; i++) {
+                            if (exp[i] === 'Success') {
+                                this.$toast.success(exp[i]);
+                                this.$emit('close');
+                                this.forms.current_password = '';
+                                this.forms.newpassword = '';
+                                this.forms.newpassword_confirmation = '';
+                            } else {
+                                this.$toast.error(exp[i]);
+                            }
+                            console.log(exp[i]);
+                        }
+                    }
+                }
             },
             submitPasswordReset: function(){
                 Swal.fire({
@@ -68,13 +89,12 @@
                     confirmButtonText: 'Yes'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        api.savePasswordReset(this.forms, this.resetPasswordCallback);
+                        api.savePasswordResetTeacher(this.forms, this.resetPasswordCallback);
                         // setTimeout(function(){
                         //     res.forEach(e => {
                         //         console.log(e);
                         //     });
                         // }, 500)
-                        this.$toast.success('your message');
                     }
                 });
             }

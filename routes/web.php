@@ -139,7 +139,7 @@ Route::group(['middleware' => 'auth:teachers'], function () {
     Route::post('/get-teacher-schedule', [HomeController::class, 'getTeacherSchedule']);
     Route::post('/save-teaching-strategy', [FeedsController::class, 'saveTeachingStrategy']);
     Route::post('/get-teaching-strategy/{any}', [FeedsController::class, 'getLessonStrategyPlan']);
-    Route::post('/save-forgot-password', [HomeController::class, 'saveForgotPassword']);
+    Route::post('/teachers-reset-password', [HomeController::class, 'teachersResetPassword']);
 });
 Route::post('/save-bookmark', [FeedsController::class, 'saveBookmark']);
 Route::post('/save-ratings-per-strat-plan', [FeedsController::class, 'saveRatingsPerStratPlan']);
