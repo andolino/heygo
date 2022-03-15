@@ -32,7 +32,8 @@
 							<div class="body-upcoming-lesson p-3 rounded-md">
 								<div class="upcoming-lesson-list custom-scrollbar-css p-2 mCustomScrollbar" data-mcs-theme="minimal-dark">
 									{{-- <teacher-information-main teachers-id="{{ Auth::id() }}"></teacher-information-main> --}}
-									<teacher-main-profile teachers-id="{{ Auth::id() }}"></teacher-main-profile>
+									{{-- <teacher-main-profile teachers-id="{{ Auth::id() }}"></teacher-main-profile> --}}
+									<teacher-profile-settings></teacher-profile-settings>
 								</div>
 							</div>
 							@break

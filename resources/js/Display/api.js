@@ -86,3 +86,18 @@ export const getTeachersSched = async (payload, fnc) => {
       console.error(error);
   }
 };
+
+
+export const savePasswordResetTeacher = async (payload, fnc) => {
+  try {
+      // const res = await axios.get(process.env.MIX_BASE_URL+'/get-teachers-availability', payload);
+      const res = await axios.post(process.env.MIX_BASE_URL+'/teachers-reset-password', payload).then((res) => {
+      return fnc(res);
+      }).catch((error) => {
+        console.log(error);
+      });
+        // return fnc(res);
+  } catch (error) {
+      console.error(error);
+  }
+};

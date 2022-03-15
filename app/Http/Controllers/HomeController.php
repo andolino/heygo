@@ -13,6 +13,8 @@ use DB;
 use Cartalyst\Stripe\Laravel\Facades\Stripe;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\RegisterMail;
+use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\Hash;
 
 
 class HomeController extends Controller {
@@ -65,6 +67,7 @@ class HomeController extends Controller {
     }
     
     public function teachersAccountSettings(){
+        $data = DB::table('teachers')->where('id', '=', Auth::id())->first();
         $data = DB::table('teachers')->where('id', '=', Auth::id())->first();
         return view('teachers-account-settings', ['data' => $data]);
     }
@@ -1172,7 +1175,40 @@ class HomeController extends Controller {
     }
 
    
+    public function teachersResetPassword(){
+        $rules = array(
+            'current_password' => 'required',
+            'newpassword' => [
+                'required',
+                'string',
+                Password::min(8)
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised()
+            ],
+            'newpassword_confirmation' => 'required|same:newpassword'
+        );
+        // do the validation
+        // validate against the inputs from our form
+        $validator = \Validator::make(Request::all(), $rules);
+        if ($validator->fails()) {
+            // get the error messages from the validator
+            $messages = $validator->messages();
+            return response()->json($messages);
+        } else {
+            $data = [];
+            $msg = [];
+            $teachers = DB::table('teachers')->where('id', Auth::id())->first();
+            if (Hash::check(Request::post('current_password'), $teachers->password)) {
+                $hashed = Hash::make(Request::post('newpassword_confirmation'));
+                DB::table('teachers')->where('id', Auth::id())->update(['password' => $hashed]);
+                return response()->json(['newpassword' => ['Success']]);
+            }
+            return response()->json(['newpassword' => ['Wrong Current Password']]);
+        }
 
+    }
 
 
 }
