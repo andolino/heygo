@@ -68,8 +68,8 @@ class HomeController extends Controller {
     
     public function teachersAccountSettings(){
         $data = DB::table('teachers')->where('id', '=', Auth::id())->first();
-        $data = DB::table('teachers')->where('id', '=', Auth::id())->first();
-        return view('teachers-account-settings', ['data' => $data]);
+        $account_types = DB::table('account_types')->get();
+        return view('teachers-account-settings', ['data' => $data, 'account_types' => $account_types]);
     }
     
     public function displayTeacherCalendar(){
