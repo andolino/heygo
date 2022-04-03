@@ -35,5 +35,10 @@ export default {
     if (typeof t !== 'undefined') {
       return t.slice(0, count) + (t.length > count ? "..." : "");
     }
+  },
+  numberFormat(amount){
+    if (typeof amount === 'number') {
+      return amount.toLocaleString('en');
+    }
   }
 };

@@ -68,8 +68,8 @@ class HomeController extends Controller {
     
     public function teachersAccountSettings(){
         $data = DB::table('teachers')->where('id', '=', Auth::id())->first();
-        $data = DB::table('teachers')->where('id', '=', Auth::id())->first();
-        return view('teachers-account-settings', ['data' => $data]);
+        $account_types = DB::table('account_types')->get();
+        return view('teachers-account-settings', ['data' => $data, 'account_types' => $account_types]);
     }
     
     public function displayTeacherCalendar(){
@@ -227,7 +227,8 @@ class HomeController extends Controller {
             'lesson_rate_type_id'      => 'required',
             'currency_rate_id'      => 'required',
             'objective_title' => 'required|string',
-            'objective_text'  => 'required|string'
+            'objective_text'  => 'required|string',
+            'objective_text'  => 'required'
         ]);
         $teachers = Teachers::find(Request::post('user_id'));
         $teachers->email = Request::post('email');
@@ -241,6 +242,7 @@ class HomeController extends Controller {
         $teachers->currency_rate_id = Request::post('currency_rate_id');
         $teachers->objective_title = Request::post('objective_title');
         $teachers->objective_text  = Request::post('objective_text');
+        $teachers->account_types_id  = Request::post('account_types_id');
         $teachers->save();
         
         return redirect()->intended('teachers-account-settings');

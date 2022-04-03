@@ -33,6 +33,8 @@ import WorkbookShop from './components/WorkbookShop.vue';
 import DashboardPanel from './components/admin/DashboardPanel.vue';
 import Navigation from './components/admin/Navigation.vue';
 import StudentsPayment from './components/admin/StudentsPayment.vue';
+import TeachersPayment from './components/admin/TeachersPayment.vue';
+import HeygoWallet from './components/admin/HeygoWallet.vue';
 import TeachersSetup from './components/admin/TeachersSetup.vue';
 import TeacherMainProfile from './Display/Content/TeacherMainProfile.vue';
 
@@ -102,6 +104,8 @@ const routes = [
 	{ path: '/', name: 'dashboard', component: DashboardPanel },
 	{ path: '/teachers-setup', name: 'teachers-setup', component: TeachersSetup },
 	{ path: '/students-payment', name: 'students-payment', component: StudentsPayment },
+	{ path: '/teachers-payment', name: 'teachers-payment', component: TeachersPayment },
+	{ path: '/heygo-wallet', name: 'heygo-wallet', component: HeygoWallet },
 	{ path: '/settings-panel', name: 'settings-panel', component: SettingsPanel },
 	{ path: '/badges', name: 'badges-panel', component: BadgesSetup },
 	// { path: '/admins/badges', name: 'badges-panel', component: BadgesSetup }

@@ -1,7 +1,7 @@
 <template>
 <div>
     <div class="row view-panel-tbl">
-      <div class="tbl-cont p-4 col-lg-4">
+      <div class="tbl-cont p-4 col-lg-12">
         <h3>Students Payment</h3>
         <div class="controls mb-3">
           <!-- <button type="button" class="btn btn-default btn-md" @click="addBadge">Add Badge</button> -->
@@ -19,19 +19,26 @@
             </div>
           </div>
         </div> -->
-        <datatable class="font-14" :columns="columns" :sortKey="sortKey" :sortOrders="sortOrders" @sort="sortBy">
+        <datatable class="font-12" :columns="columns" :sortKey="sortKey" :sortOrders="sortOrders" @sort="sortBy">
           <tbody>
-            <tr v-for="b in badge" :key="b.id" class="cursor" @click="updateBadge(b.id, b.title, b.image)">
+            <!-- @click="updateBadge(b.id, b.title, b.image) -->
+            <tr v-for="b in paymentTransData" :key="b.id" class="cursor">
+              <td>{{ b.teacher_name }}</td>
+              <td>{{ b.student_name }}</td>
               <td>{{ b.title }}</td>
-              <td>{{ b.image }}</td>
-              <td>{{ b.created_at }}</td>
-              
+              <td>{{ b.response_date }}</td>
+              <td>{{ b.user_id }}</td>
+              <td>{{ b.charge_id }}</td>
+              <td>{{ $helpers.numberFormat(b.amount) }}</td>
+              <td>{{ $helpers.numberFormat(b.refund_amount) }}</td>
+              <td>{{ b.currency }}</td>
+              <td>{{ b.trans_type }}</td>
             </tr>
           </tbody>
         </datatable>
         <pagination :pagination="pagination"
-                    @prev="getBadge(pagination.prevPageUrl)"
-                    @next="getBadge(pagination.nextPageUrl)">
+                    @prev="getPaymentTransData(pagination.prevPageUrl)"
+                    @next="getPaymentTransData(pagination.nextPageUrl)">
         </pagination>
       </div>
     </div>
@@ -94,19 +101,28 @@
 <script>
 import Datatable from './datatable/Datatable.vue';
 import Pagination from './datatable/Pagination.vue';
+import * as api from './api.js';
+
 export default {
   props: { },
   name: 'StudentsPayment',
   components: { datatable: Datatable, pagination: Pagination },
   created(){
-    this.getBadge();
+    this.getPaymentTransData();
   },
   data(){
     let sortOrders = {};
     let columns = [
-      {width: '33%', label: 'Title', name: 'title'},
-      {width: '33%', label: 'Image', name: 'image'},
-      {width: '33%', label: 'Data', name: 'created_at'}
+      {width: '10%', label: 'Teacher Name', name: 'teacher_name'},
+      {width: '10%', label: 'Student Name', name: 'student_name'},
+      {width: '10%', label: 'Lesson Type', name: 'lesson_type'},
+      {width: '10%', label: 'Date', name: 'date'},
+      {width: '10%', label: 'Transaction ID.', name: 'transaction_id'},
+      {width: '10%', label: 'Charge ID.', name: 'charge_id'},
+      {width: '10%', label: 'Amount', name: 'amount'},
+      {width: '10%', label: 'Refund Amount', name: 'refund_amount'},
+      {width: '10%', label: 'Currency', name: 'currency'},
+      {width: '10%', label: 'Transaction Type', name: 'transaction_type'}
     ];
     columns.forEach((column) => {
       sortOrders[column.name] = -1;
@@ -119,7 +135,7 @@ export default {
       fadeBool: false,
       toastCount: 0,
       //datatable
-      badge: [],
+      paymentTransData: [],
       columns: columns,
       sortKey: 'title',
       sortOrders: sortOrders,
@@ -130,7 +146,7 @@ export default {
       },
       tableData: {
         draw: 0,
-        length: 10,
+        length: 5,
         search: '',
         column: 0,
         dir: 'desc'
@@ -147,7 +163,7 @@ export default {
       },
       showModal: false,
       defaultImg: document.querySelector('meta[name="url-asset"]').getAttribute('content') + 'images/default.jpg',
-      formTitle: 'Add Badge'
+      formTitle: 'Add'
     }
   },
   methods: {
@@ -157,19 +173,16 @@ export default {
     makeToast(append = false) {
       this.$toast.success('your message');
     },
-    getBadge(url = process.env.MIX_BASE_URL+'/admins/badge-list'){
+    retrieveDataPaymentTransaction(res){
+      let data = res.data;
+      if (this.tableData.draw == data.draw) {
+        this.paymentTransData = data.data.data;
+        this.configPagination(data.data);
+      }
+    },
+    getPaymentTransData(end_point = process.env.MIX_BASE_URL+'/get-student-payment-transaction'){ //get-student-payment-transaction
       this.tableData.draw++;
-      axios.get(url, {params: this.tableData})
-          .then(response => {
-            let data = response.data;
-            if (this.tableData.draw == data.draw) {
-              this.badge = data.data.data;
-              this.configPagination(data.data);
-            }
-          })
-          .catch(errors => {
-            console.log(errors);
-          });
+      api.getPaymentTransactionStudent(end_point, {params: this.tableData}, this.retrieveDataPaymentTransaction);
     },
     configPagination(data){
       this.pagination.lastPage = data.last_page;
@@ -187,7 +200,7 @@ export default {
       this.sortOrders[key] = this.sortOrders[key] * -1;
       this.tableData.column = this.getIndex(this.columns, 'name', key);
       this.tableData.dir = this.sortOrders[key] === 1 ? 'asc' : 'desc';
-      this.getBadge();
+      this.getPaymentTransData();
     },
     getIndex(array, key, value){
       return array.findIndex(i => i[key] == value);
@@ -208,7 +221,7 @@ export default {
     removeBadge(){
       axios.post(process.env.MIX_BASE_URL+"/api/remove-badge", {id: this.form.id}).then((res) => {
         this.showModal = false;
-        this.getBadge();
+        this.getPaymentTransData();
       });
     },
     saveBadge(){
@@ -222,7 +235,7 @@ export default {
       axios.post(process.env.MIX_BASE_URL+"/api/upload-badge", data).then((res) => {
         this.defaultImg = this.baseurl + '/public/images/badge/' + res.data.image;
         this.showModal = false;
-        this.getBadge();
+        this.getPaymentTransData();
       });
     },
     selectFileUploadImg(event){

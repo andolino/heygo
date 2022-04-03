@@ -71,11 +71,14 @@ Route::get('/email/{email}', function($email){
 Route::group(['middleware' => 'auth:admins'], function () {
     // Route::get('/admins', [AdminController::class, 'adminsDashboard']);
     // Route::get('/admins/student-payments', [AdminController::class, 'studentPayment']);
-    // Route::get('/admins/heygo-wallet', [AdminController::class, 'heygoWallet']);
+    Route::get('/admins/heygo-wallet', [AdminController::class, 'heygoWallet']);
     // Route::get('/admins/teacher-wallet', [AdminController::class, 'teacherWallet']);
     Route::get('/admins/badge-list', [AdminController::class, 'badgeList']);
     Route::get('/admins/teachers-list-setup', [AdminController::class, 'teachersListSetup']);
     Route::post('/get-lesson-and-badges', [AdminController::class, 'getLessonAndBadge']);
+    Route::get('/get-student-payment-transaction', [AdminController::class, 'getPaymentTransactionStudent']);
+    Route::get('/get-teacher-payment-transaction', [AdminController::class, 'getPaymentTransactionTeacher']);
+    Route::get('/get-heygo-wallet', [AdminController::class, 'getHeygoWallet']);
 
     // Route::get('/settings-panel', [AdminController::class, 'adminsDashboard']);
     // Route::get('/admin/{any}', [AdminController::class, 'adminsDashboard'])->where('any', '.*');

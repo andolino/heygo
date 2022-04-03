@@ -17,15 +17,15 @@
             <p class="text-danger text-center" v-if="form.errors.has('email')" v-text="form.errors.get('email')"></p>
             <label for="" class="text-left w-100">Account Type</label>
             <div class="form-group input-group mb-0">
-                  <select name="account_type" 
-                          id="account_type" 
-                          :class="[{'is-invalid' : form.errors.has('account_type')}, selectCountryClass]" 
-                          v-model="form.account_type" 
+                  <select name="account_types_id" 
+                          id="account_types_id" 
+                          :class="[{'is-invalid' : form.errors.has('account_types_id')}, selectCountryClass]" 
+                          v-model="form.account_types_id" 
                           :required="true">
                           <option 
                             :value="t.id"
-                            v-for="(t, i) in countries" 
-                            :key="i">{{ t.country_name }}</option>
+                            v-for="(t, i) in account_types" 
+                            :key="i">{{ t.type }}</option>
                   </select>
             </div>
             <p class="text-danger text-center" v-if="form.errors.has('account_type')" v-text="form.errors.get('account_type')"></p>
@@ -53,6 +53,14 @@
         </div>
     </div>
 
+    <Toasts
+      :show-progress="true"
+      :rtl="false"
+      :max-messages="5"
+      :time-out="4000"
+      :closeable="true"
+    ></Toasts>
+
 
   </div>
   
@@ -64,7 +72,7 @@
     export default {
       name: "TeacherAcctSettings",
       components:{ ResetPasswordModal },
-      props: [ 'base_url' ],
+      props: [ 'base_url', 'account_types' ],
 			data(){
 				return{
           // selected: 'Selected Country',
@@ -85,7 +93,8 @@
             lesson_rate_type_id: '',
             objective_title: '',
             objective_text: '',
-            currency_rate_id: ''
+            currency_rate_id: '',
+            account_types_id: ''
 					}),
           csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
           baseurl: document.querySelector('meta[name="base-url"]').getAttribute('content'),
@@ -146,6 +155,7 @@
             this.form.currency_rate_id = res.data[0].currency_rate_id;
             this.form.objective_title = res.data[0].objective_title;
             this.form.objective_text = res.data[0].objective_text;
+            this.form.account_types_id = res.data[0].account_types_id;
             if (res.data[0].picture != null) {
               this.defaultImg = this.baseurl + '/public/images/profile/teachers/thumb/' + res.data[0].picture;
             }
@@ -167,11 +177,13 @@
 					data.append('currency_rate_id', this.form.currency_rate_id);
 					data.append('objective_title', this.form.objective_title);
 					data.append('objective_text', this.form.objective_text);
+					data.append('account_types_id', this.form.account_types_id);
 					data.append('user_id', this.user_id);
 					data.append('_token', this.csrf);
 					axios.post(process.env.MIX_BASE_URL+'/update-teacher-settings', data).then((res) => {
             if (typeof res.data.errors === 'undefined') {
-              window.location.reload();
+              this.$toast.success('Successfully Updated!');
+              // window.location.reload();
             }
 					}).catch((error) => {
             console.log(error);
