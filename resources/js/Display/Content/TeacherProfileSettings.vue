@@ -638,7 +638,7 @@
     left: 0;
     right: 0;
     height: 100%;
-    width: 73%;
+    width: 81%;
     opacity: 0;
     transition: .3s ease;
     background-color: rgba(79, 73, 73, 0.7);

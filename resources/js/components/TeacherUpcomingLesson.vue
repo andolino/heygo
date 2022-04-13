@@ -1,37 +1,45 @@
 <template>
   <div>
-
-    <div class="card-group b-bot-yellow mb-3 cursor" 
-        @click="fnAcceptingLesson(ul.start_date, ul.students_id, ul.lesson_id)" 
-        v-for="ul in upcomingLessonData" 
-        :key="ul.lesson_id">
-      <div class="card">
-        <div class="card-body">
-          <label class="card-title">{{ ul.time_sched }}</label>
-          <small class="float-right text-success" v-if="ul.status == 3">
-            {{ timeReminder(ul.start_date, ul.end_date) }}
-          </small>
-          <small class="float-right text-success" v-else-if="ul.status == 2">
-            {{ timeReminder(ul.start_date, ul.end_date) }}
-          </small>
-          <small class="float-right text-success" v-else-if="ul.status == 1">
-            For Approval
-          </small>
-          <small class="float-right text-danger" v-else>
-            Declined
-          </small>
-          <!-- <small class="float-right text-success">
-            {{ timeReminder(ul.start_date, ul.end_date) }}
-          </small> -->
-          <h6 class="card-title font-weight-bold">{{ ul.title }}</h6>
-          <p class="card-text font-14">{{ $helpers.definedLimitText(ul.objective_text, 60) }}</p>
-        </div>
-        <div class="card-footer">
-          <img :src="asset + 'images/ellipse.png'" alt="">
-          <small class="text-muted">{{ ul.fullname }}</small>
+    <div v-if="Object.keys(upcomingLessonData).length === 0">
+      <div class="b-bot-yellow mb-3 pt-2">
+        <h6 class="text-center">No Upcoming Lesson</h6>
+      </div>
+    </div>
+    <div v-else>
+      <div class="card-group b-bot-yellow mb-3 cursor" 
+          @click="fnAcceptingLesson(ul.start_date, ul.students_id, ul.lesson_id)" 
+          v-for="ul in upcomingLessonData" 
+          :key="ul.lesson_id">
+        <div class="card">
+          <div class="card-body">
+            <label class="card-title">{{ ul.time_sched }}</label>
+            <small class="float-right text-success" v-if="ul.status == 3">
+              {{ timeReminder(ul.start_date, ul.end_date) }}
+            </small>
+            <small class="float-right text-success" v-else-if="ul.status == 2">
+              {{ timeReminder(ul.start_date, ul.end_date) }}
+            </small>
+            <small class="float-right text-success" v-else-if="ul.status == 1">
+              For Approval
+            </small>
+            <small class="float-right text-danger" v-else>
+              Declined
+            </small>
+            <!-- <small class="float-right text-success">
+              {{ timeReminder(ul.start_date, ul.end_date) }}
+            </small> -->
+            <h6 class="card-title font-weight-bold">{{ ul.title }}</h6>
+            <p class="card-text font-14">{{ $helpers.definedLimitText(ul.objective_text, 60) }}</p>
+          </div>
+          <div class="card-footer">
+            <img :src="asset + 'images/ellipse.png'" alt="">
+            <small class="text-muted">{{ ul.fullname }}</small>
+          </div>
         </div>
       </div>
     </div>
+
+    
 
     <div class="modal fade bd-example-modal-lg" id="modalTeacherStartLesson" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
@@ -313,7 +321,7 @@ export default {
           msg += m + ' minutes ';
         }
       }
-      return 'Class starts in ' + msg;
+      return msg == 'Expired' ? 'Expired' : 'Class starts in ' + msg;
     },
     selectTimePreferred(event){
       const sorted_date = event.target.getAttribute('data-date');

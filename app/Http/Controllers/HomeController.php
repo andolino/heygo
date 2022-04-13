@@ -613,7 +613,7 @@ class HomeController extends Controller {
                                     LEFT JOIN lesson_rate_type lrt on lrt.id = t.lesson_rate_type_id
                                     LEFT JOIN lesson_plan lp on lp.id = t.lesson_plan_id
                                     LEFT JOIN students s on s.id = ls.students_id
-                                    WHERE t.id = $teachers_id
+                                    WHERE t.id = $teachers_id AND ls.students_id <> ''
                                     -- AND (ls.status = 1 OR ls.status = 3)
                                     GROUP BY ls.id
                                     ORDER BY ls.id desc"));

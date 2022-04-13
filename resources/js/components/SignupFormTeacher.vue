@@ -1,7 +1,7 @@
 <template>
 	<div >
 		<div v-if="showFormSignUp">
-			<h2 class="text-center pb-3 font-weight-bold">Sign Up</h2>
+			<h2 class="text-center pb-3 font-weight-bold">Teacher Sign Up</h2>
 			<form @submit.prevent="signupTeachers">
 				<div class="form-group input-group mb-0">
 						<input 
@@ -35,7 +35,7 @@
 		</div>
 		<div v-if="showFormLogin">
 			<TeacherLogin :base_url="base_url"/>
-			<p class="text-center mt-3">Create an account? <a href="javascript:void(0);" @click="showTeacherSignUp" class="text-warning">Signup</a></p>
+			<p class="text-center mt-3">Create an account? <a href="javascript:void(0);" @click="showTeacherSignUp" class="text-warning">Sign Up</a></p>
 		</div>
 
 		<Toasts

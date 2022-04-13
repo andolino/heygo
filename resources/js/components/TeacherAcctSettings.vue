@@ -20,6 +20,7 @@
                   <select name="account_types_id" 
                           id="account_types_id" 
                           :class="[{'is-invalid' : form.errors.has('account_types_id')}, selectCountryClass]" 
+                          v-on:change="handleAtInfo"
                           v-model="form.account_types_id" 
                           :required="true">
                           <option 
@@ -27,6 +28,26 @@
                             v-for="(t, i) in account_types" 
                             :key="i">{{ t.type }}</option>
                   </select>
+            </div>
+            <div class="card p-3" v-if="isTeacherAccount == '1'">
+              <small class="text-muted">
+                Inclusion:
+                <ul>
+                  <li>Can Upload max 3 workbooks</li>
+                  <li>Maximum of 50mb for (3 workbooks)</li>
+                  <li>25% Commission for workbooks sales</li>
+                </ul>
+              </small>
+            </div>
+            <div class="card p-3" v-if="isTeacherAccount == '2'">
+              <small class="text-muted">
+                Inclusion:
+                <ul>
+                  <li>No Limit for Workbooks</li>
+                  <li>15% commission for workbooks sales</li>
+                  <li>$5 monthly subscription</li>
+                </ul>
+              </small>
             </div>
             <p class="text-danger text-center" v-if="form.errors.has('account_type')" v-text="form.errors.get('account_type')"></p>
             <button 
@@ -115,9 +136,8 @@
             { text: 'Diplay Video', value: '1' }
           ],
           // defaultVid: document.querySelector('meta[name="url-asset"]').getAttribute('content') + 'images/ellipse-4.png',
-
-
           activeModal: 0,
+          isTeacherAccount: ''
 				}
 			},
 			methods: {
@@ -232,6 +252,10 @@
               return false
           }
           this.activeModal = id
+        },
+        handleAtInfo(e){
+          var val = e.target.value;
+          this.isTeacherAccount = val;
         }
 			},
 			mounted() { 

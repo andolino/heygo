@@ -46,17 +46,19 @@
                     <a href="" class="text-warning font-12">Post a Question</a> &nbsp; <a href="" class="text-dark font-12">Post a Lesson Plan</a>
                   </p>
                 </div> -->
-                <vue-dropzone 
+
+                <!-- <vue-dropzone 
                   ref="myVueDropzone" 
                   id="dropzone" 
                   :options="dropzoneOptions"
                   @vdropzone-complete="afterUploadComplete"
-                  @vdropzone-sending-multiple="sendTeacherFeeds"></vue-dropzone>
+                  @vdropzone-sending-multiple="sendTeacherFeeds"></vue-dropzone> -->
                 <form>
                   <div class="form-group mt-3">
                     <textarea v-model="post_msg" class="form-control font-14" rows="6" id="message-post" placeholder="Create you post"></textarea>
                   </div>
                 </form>
+
               </div>
             </div>
 
@@ -65,18 +67,17 @@
           </div>
           <div class="modal-footer">
             <div class="row mr-auto text-light post-feed-icon">
-              <div class="col-lg-1 mr-2"><a href="" class="text-light"><i class="fas fa-paperclip"></i></a></div>
-              <div class="col-lg-1"><a href="" class="text-light"><i class="fas fa-camera"></i></a></div>
+              <!-- <div class="col-lg-1 mr-2"><a href="" class="text-light"><i class="fas fa-paperclip"></i></a></div>
+              <div class="col-lg-1"><a href="" class="text-light"><i class="fas fa-camera"></i></a></div> -->
             </div>
             <button type="button" @click="postTeacherFeed" class="btn btn-default mb-3 font-14">Post</button>
           </div>
         </div>
       </div>
     </div>
-
     <div class="mb-3 cursor" v-for="pfd in postedFeedsData" :key="pfd.id">
       <div class="card rounded-11px">
-        <div class="card-body mt-1" @click="goToProfile(pfd.id)">
+        <div class="card-body mt-1" @click="goToProfile(pfd.teacher_id, pfd.id)">
           <div class="row">
             <div class="col-lg-2 text-center mt-3 pr-1">
               <img :src="asset + 'images/ellipse-1.png'" alt="">
@@ -399,8 +400,8 @@ export default {
           console.log(error);
       });
     },
-    goToProfile(feeds_id){
-      window.location.href = process.env.MIX_BASE_URL+'/profile-feeds/'+this.user_id+'/'+feeds_id;
+    goToProfile(teacher_id, feeds_id){
+      window.location.href = process.env.MIX_BASE_URL+'/profile-feeds/'+teacher_id+'/'+feeds_id;
     }
   },
   mounted() {

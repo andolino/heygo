@@ -145,7 +145,7 @@
             this.form.country_id = res.data[0].country_id;
             this.form.email = res.data[0].email;
             this.form.about_me = res.data[0].about_me;
-            if (res.data[0].picture != '') {
+            if (res.data[0].picture != null) {
               this.defaultImg = this.baseurl + '/public/images/profile/students/thumb/' + res.data[0].picture;
             }
             // console.log(this.defaultImg)
