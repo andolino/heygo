@@ -46,6 +46,7 @@ Route::post('/login/admins', [LoginController::class,'adminsLogin']);
 Route::post('/register/teachers', [RegisterController::class,'createTeachers']);
 Route::post('/register/students', [RegisterController::class,'createStudents']);
 Route::post('/update-teacher-settings', [HomeController::class,'updateTeacherSettings']);
+Route::post('/update-teacher-profile-settings', [HomeController::class,'updateTeacherProfileSettings']);
 Route::post('/update-student-settings', [HomeController::class,'updateStudentSettings']);
 Route::post('/get-teachers-details', [HomeController::class,'getTeachersDetails']);
 Route::post('/get-students-details', [HomeController::class,'getStudentsDetails']);

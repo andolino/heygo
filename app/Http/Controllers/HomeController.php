@@ -217,6 +217,19 @@ class HomeController extends Controller {
     public function updateTeacherSettings(){
         Request::validate([
             'email'           => 'required|string|email|max:255',
+            'account_types_id'  => 'required'
+        ]);
+        $teachers = Teachers::find(Request::post('user_id'));
+        $teachers->email = Request::post('email');
+        $teachers->account_types_id  = Request::post('account_types_id');
+        $teachers->save();
+        
+        return redirect()->intended('teachers-account-settings');
+    }
+    
+    public function updateTeacherProfileSettings(){
+        Request::validate([
+            'email'           => 'required|string|email|max:255',
             'lastname'        => 'required|string',
             'firstname'       => 'required|string',
             'country_id'      => 'required',
@@ -242,10 +255,12 @@ class HomeController extends Controller {
         $teachers->currency_rate_id = Request::post('currency_rate_id');
         $teachers->objective_title = Request::post('objective_title');
         $teachers->objective_text  = Request::post('objective_text');
-        $teachers->account_types_id  = Request::post('account_types_id');
         $teachers->save();
         
-        return redirect()->intended('teachers-account-settings');
+        // return response()->json([]);
+        // return redirect()->intended('teachers/profile');
+
+        
     }
     
     public function updateStudentSettings(){

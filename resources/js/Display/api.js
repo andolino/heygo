@@ -64,6 +64,27 @@ export const saveRatingsPerStratPlan = async (payload) => {
 };
 
 
+export const saveTeacherProfileSettings = async (payload, fnc) => {
+  try {
+      const res = await axios.post(process.env.MIX_BASE_URL+'/update-teacher-profile-settings', payload);
+      // console.log(res);
+      return fnc(res.data);
+  } catch (error) {
+      return fnc(error);
+  }
+};
+
+export const saveTeacherSettings = async (payload) => {
+  try {
+      const res = await axios.post(process.env.MIX_BASE_URL+'/update-teacher-settings', payload);
+      // console.log(res);
+      return res;
+  } catch (error) {
+      return error;
+  }
+};
+
+
 export const saveBookmark = async (payload) => {
   try {
       const res = await axios.post(process.env.MIX_BASE_URL+'/save-bookmark', payload);
