@@ -417,6 +417,7 @@
         this.getLessonPlan();
         this.getTeachersData();
         this.getCurrencyRate();
+        alert('test!');
         // var elem = document.querySelector('input[type="range"]');
         // var rangeValue = function(){
         //   var newValue = elem.value;
