@@ -1,15 +1,34 @@
 <template>
   <div>
-    <div class="card rounded-0 bg-transparent border-0">
+    <div class="card rounded-0 bg-transparent border-0 h-100">
       <div class="card-body pb-5">
-        <h1>Teacher Workbooks</h1>
-        <!-- <div class="col-lg-12 text-center pb-5 pt-5" v-if="teachersData.display_status == 0">
-          <img :src="this.defaultImg" ref="prof_display" class="rounded-circle" alt="" >
-        </div> -->
-        <!-- <div class="col-lg-12 text-center" @click="toggleModal" v-else>
-          <video ref="videoRef" src="" id="video-container" width="250" height="190" @mouseover="playVidsEvt(true)" @mouseleave="playVidsEvt(false)"></video>
-        </div> -->
-
+        <h5 class="mb-3">Books/Workbooks Shop</h5>
+        <div class="row h-100">
+          <div class="col-lg-3">
+            <div class="card h-100 p-4">
+              <button class="btn btn-warning btn-md mt-2"><i class="fas fa-angle-left"></i> Dashboard</button>
+            </div>
+          </div>
+          <div class="col-lg-9">
+            <div class="card h-100 p-4">
+              <h6>Title of the Book</h6>
+              <div class="row">
+                <div class="col">
+                  <button class="btn btn-default btn-md mt-2 w-100"><i class="fas fa-check font-24"></i> <br> Check Answers</button>
+                </div>
+                <div class="col">
+                  <button class="btn btn-default btn-md mt-2 w-100"><i class="fas fa-save font-24"></i> <br> Save Answers</button>
+                </div>
+                <div class="col">
+                  <button class="btn btn-default btn-md mt-2 w-100"><i class="fas fa-angle-left font-24"></i> <br> Link</button>
+                </div>
+                <div class="col">
+                  <button class="btn btn-default btn-md mt-2 w-100"><i class="fas fa-angle-left font-24"></i> <br> Link</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
       </div>
     </div>
@@ -38,5 +57,7 @@
 </script>
 
 <style>
-
+.font-24{
+  font-size: 24px;
+}
 </style>

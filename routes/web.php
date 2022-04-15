@@ -46,6 +46,7 @@ Route::post('/login/admins', [LoginController::class,'adminsLogin']);
 Route::post('/register/teachers', [RegisterController::class,'createTeachers']);
 Route::post('/register/students', [RegisterController::class,'createStudents']);
 Route::post('/update-teacher-settings', [HomeController::class,'updateTeacherSettings']);
+Route::post('/update-teacher-profile-settings', [HomeController::class,'updateTeacherProfileSettings']);
 Route::post('/update-student-settings', [HomeController::class,'updateStudentSettings']);
 Route::post('/get-teachers-details', [HomeController::class,'getTeachersDetails']);
 Route::post('/get-students-details', [HomeController::class,'getStudentsDetails']);
@@ -71,11 +72,14 @@ Route::get('/email/{email}', function($email){
 Route::group(['middleware' => 'auth:admins'], function () {
     // Route::get('/admins', [AdminController::class, 'adminsDashboard']);
     // Route::get('/admins/student-payments', [AdminController::class, 'studentPayment']);
-    // Route::get('/admins/heygo-wallet', [AdminController::class, 'heygoWallet']);
+    Route::get('/admins/heygo-wallet', [AdminController::class, 'heygoWallet']);
     // Route::get('/admins/teacher-wallet', [AdminController::class, 'teacherWallet']);
     Route::get('/admins/badge-list', [AdminController::class, 'badgeList']);
     Route::get('/admins/teachers-list-setup', [AdminController::class, 'teachersListSetup']);
     Route::post('/get-lesson-and-badges', [AdminController::class, 'getLessonAndBadge']);
+    Route::get('/get-student-payment-transaction', [AdminController::class, 'getPaymentTransactionStudent']);
+    Route::get('/get-teacher-payment-transaction', [AdminController::class, 'getPaymentTransactionTeacher']);
+    Route::get('/get-heygo-wallet', [AdminController::class, 'getHeygoWallet']);
 
     // Route::get('/settings-panel', [AdminController::class, 'adminsDashboard']);
     // Route::get('/admin/{any}', [AdminController::class, 'adminsDashboard'])->where('any', '.*');

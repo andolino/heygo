@@ -60,12 +60,17 @@ class LoginController extends Controller{
             'email'   => 'required|email',
             'password' => 'required|min:6'
         ]);
-        if (Auth::guard('teachers')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
+        if (Auth::guard('teachers')->attempt([
+                                        'email' => $request->email, 
+                                        'password' => $request->password,
+                                        'is_verified' => 1
+                                    ], $request->get('remember'))) {
             return redirect()->intended('/teachers');
         }
+        $teachers = Teachers::where('email', $request->email)->first();
         // return back()->withInput($request->only('email', 'remember'));
         return [ 'errors' => [
-            'email' => ['Invalid Credentials']
+            'email' => [(!empty($teachers) && $teachers->is_verified == 0 ? 'Your Account is not verified' : 'Invalid Credentials')]
         ]];
     }
 
@@ -119,7 +124,7 @@ class LoginController extends Controller{
         // return back()->withInput($request->only('email', 'remember'));
         $students = Students::where('email', $request->email)->first();
         return [ 'errors' => [
-            'email' => [($students->is_verified == 0 ? 'Your Account is not verified' : 'Invalid Credentials')]
+            'email' => [(!empty($students) && $students->is_verified == 0 ? 'Your Account is not verified' : 'Invalid Credentials')]
         ]];
     }
 }

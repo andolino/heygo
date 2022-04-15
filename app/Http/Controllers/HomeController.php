@@ -217,6 +217,19 @@ class HomeController extends Controller {
     public function updateTeacherSettings(){
         Request::validate([
             'email'           => 'required|string|email|max:255',
+            'account_types_id'  => 'required'
+        ]);
+        $teachers = Teachers::find(Request::post('user_id'));
+        $teachers->email = Request::post('email');
+        $teachers->account_types_id  = Request::post('account_types_id');
+        $teachers->save();
+        
+        return redirect()->intended('teachers-account-settings');
+    }
+    
+    public function updateTeacherProfileSettings(){
+        Request::validate([
+            'email'           => 'required|string|email|max:255',
             'lastname'        => 'required|string',
             'firstname'       => 'required|string',
             'country_id'      => 'required',
@@ -227,7 +240,8 @@ class HomeController extends Controller {
             'lesson_rate_type_id'      => 'required',
             'currency_rate_id'      => 'required',
             'objective_title' => 'required|string',
-            'objective_text'  => 'required|string'
+            'objective_text'  => 'required|string',
+            'objective_text'  => 'required'
         ]);
         $teachers = Teachers::find(Request::post('user_id'));
         $teachers->email = Request::post('email');
@@ -243,7 +257,10 @@ class HomeController extends Controller {
         $teachers->objective_text  = Request::post('objective_text');
         $teachers->save();
         
-        return redirect()->intended('teachers-account-settings');
+        // return response()->json([]);
+        // return redirect()->intended('teachers/profile');
+
+        
     }
     
     public function updateStudentSettings(){
@@ -611,7 +628,7 @@ class HomeController extends Controller {
                                     LEFT JOIN lesson_rate_type lrt on lrt.id = t.lesson_rate_type_id
                                     LEFT JOIN lesson_plan lp on lp.id = t.lesson_plan_id
                                     LEFT JOIN students s on s.id = ls.students_id
-                                    WHERE t.id = $teachers_id
+                                    WHERE t.id = $teachers_id AND ls.students_id <> ''
                                     -- AND (ls.status = 1 OR ls.status = 3)
                                     GROUP BY ls.id
                                     ORDER BY ls.id desc"));

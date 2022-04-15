@@ -263,6 +263,7 @@
 </template>
 
 <script>
+    import * as api from '../api.js';
     export default {
       name: "TeacherProfileSettings",
       props: [ 'base_url' ],
@@ -352,6 +353,14 @@
             this.$refs.videoRef.play();
           }).catch((error) => {});
         },
+        resSaveProfile(res){
+          if (res == '') {
+            //no error
+            window.location.reload();
+          } else {
+            this.form.errors.record(res.response.data.errors);
+          }
+        },
 				submitTeachersAcctSettings(){
 					let data = new FormData();
 					data.append('firstname', this.form.firstname);
@@ -367,14 +376,7 @@
 					data.append('objective_text', this.form.objective_text);
 					data.append('user_id', this.user_id);
 					data.append('_token', this.csrf);
-					axios.post(process.env.MIX_BASE_URL+'/update-teacher-settings', data).then((res) => {
-            if (typeof res.data.errors === 'undefined') {
-              window.location.reload();
-            }
-					}).catch((error) => {
-            console.log(error);
-						this.form.errors.record(error.response.data.errors);
-					});
+          api.saveTeacherProfileSettings(data, this.resSaveProfile);
 				},
         selectFileUploadImg(event){
           this.dataImage.photo = event.target.files[0];
@@ -415,6 +417,7 @@
         this.getLessonPlan();
         this.getTeachersData();
         this.getCurrencyRate();
+        
         // var elem = document.querySelector('input[type="range"]');
         // var rangeValue = function(){
         //   var newValue = elem.value;
@@ -638,7 +641,7 @@
     left: 0;
     right: 0;
     height: 100%;
-    width: 73%;
+    width: 81%;
     opacity: 0;
     transition: .3s ease;
     background-color: rgba(79, 73, 73, 0.7);

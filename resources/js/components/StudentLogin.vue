@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="text-center pb-3 font-weight-bold">Login In</h2>
+    <h2 class="text-center pb-3 font-weight-bold">Student Login In</h2>
       <form @submit.prevent="loginStudents">
         <div class="form-group input-group mb-0">
             <input 

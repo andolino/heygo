@@ -49,7 +49,7 @@
                 <li></li>
               </ul>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-4" v-if="teachersId != user_id">
               <div class="row">
                 <div class="col-lg-8">
                   <button type="button" 
@@ -162,6 +162,7 @@
         csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
         baseurl: document.querySelector('meta[name="base-url"]').getAttribute('content'),
         asset: document.querySelector('meta[name="url-asset"]').getAttribute('content'),
+        user_id: document.querySelector('meta[name="user-id"]').getAttribute('content'),
         teachersData: '',
         defaultImg: '',
         hover: false,

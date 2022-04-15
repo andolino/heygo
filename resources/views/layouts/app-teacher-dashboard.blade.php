@@ -107,6 +107,9 @@
                   <a class="dropdown-item l-h-1p4" href="{{ url('teachers/profile') }}">
                     Your Profile
                   </a>
+                  <a class="dropdown-item l-h-1p4" href="{{ url('teachers/profile-details?id=') . Auth::user()->id }}">
+                    Profile Summary
+                  </a>
                   {{-- <a class="dropdown-item l-h-1p4" href="#">
                     Edit Profile
                   </a> --}}

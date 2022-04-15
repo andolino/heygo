@@ -7,8 +7,7 @@
           <h5 class="font-weight-regular">Account Settings </h5>
         </div>
         <div class="p-3">
-            <teacher-acct-settings></teacher-acct-settings>
-            
+            <teacher-acct-settings :account_types="{{ $account_types }}"></teacher-acct-settings>
         </div>
       </div>
 		</div>

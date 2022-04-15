@@ -41,7 +41,8 @@ class AdminController extends Controller{
                                                     LEFT JOIN lesson_schedule ls on ls.id = spl.lesson_schedule_id
                                                     LEFT JOIN teachers t on t.id = ls.teachers_id
                                                     LEFT JOIN students s on s.id = ls.students_id"));
-        return view('admin.heygo-wallet', [ 'data' => $data, 'paymentTransaction' => $paymentTransaction ]);
+        return response()->json($paymentTransaction);
+        // return view('admin.heygo-wallet', [ 'data' => $data, 'paymentTransaction' => $paymentTransaction ]);
     }
     
     public function teacherWallet(){
@@ -115,5 +116,102 @@ class AdminController extends Controller{
                     ->where('teachers.id', $request->id)
                     ->groupBy('teachers.id', 'lesson_plan.id')->get();
         return ['data' => $q];
+    }
+    
+    public function getPaymentTransactionStudent(Request $request){
+        
+        $columns = ['title'];
+        $length = $request->length;
+        $column = $request->column;
+        $dir = $request->dir;
+        $searchValue = $request->search;
+        // dd($dir);
+        $q = DB::table('lesson_schedule')
+                ->select(DB::raw("concat(students.lastname, ', ', students.firstname) as student_name, 
+                                    concat(teachers.lastname, ', ', teachers.firstname) as teacher_name"), 
+                                    "students_payment_log.*", "lesson_option.title")
+                ->leftJoin('lesson_option', 'lesson_schedule.lesson_option_id', '=', 'lesson_option.id')
+                ->leftJoin('students', 'students.id', '=', 'lesson_schedule.students_id')
+                ->leftJoin('teachers', 'teachers.id', '=', 'lesson_schedule.teachers_id')
+                ->leftJoin('students_payment_log', 'students_payment_log.lesson_schedule_id', '=', 'lesson_schedule.id')
+                ->orderBy($columns[$column], $dir);
+
+        if ($searchValue) {
+            $q->where(function($q) use ($searchValue) {
+                $q->where('teachers.lastname', 'like', '%' . $searchValue . '%')
+                    ->orWhere('teachers.firstname', 'like', '%' . $searchValue . '%');
+            });
+        }
+
+        $pymnt = $q->paginate($length);
+        return ['data' => $pymnt, 'draw' => $request->draw];
+    }
+    
+    public function getPaymentTransactionTeacher(Request $request){
+        
+        $columns = ['students.lastname'];
+        $length = $request->length;
+        $column = $request->column;
+        $dir = $request->dir;
+        $searchValue = $request->search;
+        $q = DB::table('teachers_wallet')
+                ->select(DB::raw("concat(students.lastname, ', ', students.firstname) as student_name, 
+                                concat(teachers.lastname, ', ', teachers.firstname) as teacher_name"), 
+                                "students_payment_log.trans_id", 
+                                "students_payment_log.currency", 
+                                "students_payment_log.response_date", 
+                                "teachers_wallet.*")
+                ->leftJoin('students_payment_log', 'teachers_wallet.students_payment_log_id', '=', 'students_payment_log.id')
+                ->leftJoin('lesson_schedule', 'lesson_schedule.id', '=', 'students_payment_log.lesson_schedule_id')
+                ->leftJoin('teachers', 'teachers.id', '=', 'lesson_schedule.teachers_id')
+                ->leftJoin('students', 'students.id', '=', 'lesson_schedule.students_id')
+                ->orderBy($columns[$column], $dir);
+
+        if ($searchValue) {
+            $q->where(function($q) use ($searchValue) {
+                $q->where('students.lastname', 'like', '%' . $searchValue . '%')
+                    ->orWhere('students.firstname', 'like', '%' . $searchValue . '%');
+            });
+        }
+
+        $pymnt = $q->paginate($length);
+        return ['data' => $pymnt, 'draw' => $request->draw];
+    }
+    
+    public function getHeygoWallet(Request $request){
+        $columns = ['teachers.lastname'];
+        $length = $request->length;
+        $column = $request->column;
+        $dir = $request->dir;
+        $searchValue = $request->search;
+        $q = DB::table('heygo_wallet')
+                ->select(DB::raw("concat(students.lastname, ', ', students.firstname) as student_name, 
+                                concat(teachers.lastname, ', ', teachers.firstname) as teacher_name"), 
+                                "students_payment_log.trans_id", 
+                                "students_payment_log.currency", 
+                                "students_payment_log.response_date", 
+                                "heygo_wallet.*")
+                ->leftJoin('students_payment_log', 'heygo_wallet.students_payment_log_id', '=', 'students_payment_log.id')
+                ->leftJoin('lesson_schedule', 'lesson_schedule.id', '=', 'students_payment_log.lesson_schedule_id')
+                ->leftJoin('teachers', 'teachers.id', '=', 'lesson_schedule.teachers_id')
+                ->leftJoin('students', 'students.id', '=', 'lesson_schedule.students_id')
+                ->orderBy($columns[$column], $dir);
+                // SELECT concat(s.lastname, ', ', s.firstname) as student_name, concat(t.lastname, ', ', t.firstname) as teacher_name,
+                // spl.trans_id, spl.currency, spl.response_date, hw.* 
+                // from heygo_wallet hw
+                // LEFT JOIN students_payment_log spl on hw.students_payment_log_id = spl.id
+                // LEFT JOIN lesson_schedule ls on ls.id = spl.lesson_schedule_id
+                // LEFT JOIN teachers t on t.id = ls.teachers_id
+                // LEFT JOIN students s on s.id = ls.students_id
+
+        if ($searchValue) {
+            $q->where(function($q) use ($searchValue) {
+                $q->where('teachers.lastname', 'like', '%' . $searchValue . '%')
+                    ->orWhere('teachers.firstname', 'like', '%' . $searchValue . '%');
+            });
+        }
+
+        $pymnt = $q->paginate($length);
+        return ['data' => $pymnt, 'draw' => $request->draw];
     }
 }
