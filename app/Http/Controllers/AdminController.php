@@ -9,6 +9,7 @@ use App\Models\Teachers;
 use Auth;
 use DB;
 use Cartalyst\Stripe\Laravel\Facades\Stripe;
+use Imagick;
 
 class AdminController extends Controller{
     
