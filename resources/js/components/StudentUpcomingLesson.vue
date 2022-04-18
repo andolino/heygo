@@ -221,8 +221,8 @@ export default {
   props: [ 'base_url' ],
   data(){
     return {
-      bgImgStepper: './public/images/stepper-left.png',
-      bgImgStudentView: './public/images/feedback-1.png',
+      bgImgStepper: process.env.MIX_BASE_URL + './public/images/stepper-left.png',
+      bgImgStudentView: process.env.MIX_BASE_URL + './public/images/feedback-1.png',
       showStepper1: true,
       joinClassPanel: true,
       showStepper2: false,

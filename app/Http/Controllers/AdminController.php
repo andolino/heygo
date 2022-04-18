@@ -13,6 +13,9 @@ use Cartalyst\Stripe\Laravel\Facades\Stripe;
 class AdminController extends Controller{
     
     public function adminsDashboard(){
+        $imagick = new Imagick();
+        $imagick->readImage(public_path('/uploads/worksheet-1.pdf'));
+        dd($imagick);
         $data = DB::table('admins')->where('id', '=', Auth::id())->first();
         $link_url = request()->segment(1);
         return view('admin-dashboard', [ 'data' => $data, 'link' => $link_url]);

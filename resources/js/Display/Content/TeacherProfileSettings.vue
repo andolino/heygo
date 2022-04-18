@@ -113,16 +113,9 @@
                 </div>
               </div>
             </div>
-            <div class="row up-trial-ctrl p-4">
+            <!-- <div class="row up-trial-ctrl p-4">
               <div class="col-lg-12">
                 <label class="font-12" for="lesson_plan_id">Type of Lesson</label>
-                  <!-- <label for="" class="font-12">30 Minutes Free Lesson</label> -->
-                  <!-- <select class="form-control form-control-sm font-12" name="lesson_plan_id" id="lesson_plan_id">
-                    <option value="" selected="" hidden="">--</option>
-                    <option :value="lp.id" v-for="lp in lessonPlan" :key="lp.id">
-                      {{ lp.body }}
-                    </option>
-                  </select> -->
                   <label for="" class="font-12">30 Minutes Free Lesson</label>
                   <select 
                     class="form-control form-control-sm font-12" 
@@ -136,17 +129,8 @@
                       </option>
                     </optgroup>
                   </select>
-                <!-- <div class="value">5</div>
-                <input 
-                  type="range" 
-                  min="0" 
-                  max="10" 
-                  step="0" 
-                  value="5" 
-                  name="age_pref"
-                  v-model="form.age_pref"> -->
               </div>
-            </div>
+            </div> -->
         </div>
 
         <div class="col-lg-5 offset-lg-1">
@@ -283,7 +267,7 @@
             rate_per_hr: '',
             country_id: '',
             email: '',
-            lesson_plan_id: '',
+            // lesson_plan_id: '',
             lesson_rate_type_id: '',
             objective_title: '',
             objective_text: '',
@@ -340,7 +324,7 @@
             this.form.rate_per_hr = res.data[0].rate_per_hr;
             this.form.country_id = res.data[0].country_id;
             this.form.email = res.data[0].email;
-            this.form.lesson_plan_id = res.data[0].lesson_plan_id;
+            // this.form.lesson_plan_id = res.data[0].lesson_plan_id;
             this.form.lesson_rate_type_id = res.data[0].lesson_rate_type_id;
             this.form.currency_rate_id = res.data[0].currency_rate_id;
             this.form.objective_title = res.data[0].objective_title;
@@ -369,7 +353,7 @@
 					data.append('rate_per_hr', this.form.rate_per_hr);
 					data.append('country_id', this.form.country_id);
 					data.append('email', this.form.email);
-					data.append('lesson_plan_id', this.form.lesson_plan_id);
+					// data.append('lesson_plan_id', this.form.lesson_plan_id);
 					data.append('lesson_rate_type_id', this.form.lesson_rate_type_id);
 					data.append('currency_rate_id', this.form.currency_rate_id);
 					data.append('objective_title', this.form.objective_title);
