@@ -15,7 +15,7 @@ class AdminController extends Controller{
     
     public function adminsDashboard(){
         $imagick = new Imagick();
-        $imagick->writeImages(public_path('/uploads/converted.jpg'), true);
+        $imagick->writeImages(public_path('\uploads\converted.jpg'), true);
         dd($imagick);
         $data = DB::table('admins')->where('id', '=', Auth::id())->first();
         $link_url = request()->segment(1);
