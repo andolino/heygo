@@ -122,11 +122,11 @@
 
               <span class="float-right">
                 <a id="navbarDropdownSettings" class="nav-link dropdown-toggle text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                  Hi Students, <span class="caret"></span>
+                  Hi Student, <span class="caret"></span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right settings-cont font-12 p-3" aria-labelledby="navbarDropdownSettings">
                   <a class="dropdown-item l-h-1p4 font-weight-bold" href="#">
-                    Hi Students,
+                    {{ strtoupper($data->lastname) }}, {{ strtoupper($data->firstname) }}
                   </a>
                   <a class="dropdown-item l-h-1p4" href="#">
                     {{ strtoupper($data->email) }}
