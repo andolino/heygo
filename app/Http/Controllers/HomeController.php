@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\RegisterMail;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Hash;
+use Imagick;
+use Storage;
 
 
 class HomeController extends Controller {
@@ -50,12 +52,65 @@ class HomeController extends Controller {
     /*
     * teachers *
     */
-    public function teachersDashboard($uri = null){
-        $data = DB::table('teachers')->where('id', '=', Auth::id())->first();
-        if ($uri == 'teacher-lobby') {
-            return view('teacher-lobby', ['data' => $data]);
+
+    public function uploadWorkbook(){
+        
+        $file = Request::file('file');  
+        $imagick = new Imagick($file->getPathname());
+        $pagesCount = $imagick->getNumberImages();
+
+        $initPage = ($pagesCount < 2)?'-0':'';
+
+
+        $file_name = uniqid('img_');
+
+        $imagick = new Imagick();
+        $imagick->readImage($file->getPathname());
+        $imagick->writeImages(public_path('\uploads\\' . $file_name. $initPage .'.jpg'), true);
+        
+     
+
+
+        $workbookID = DB::table('workbooks')->insertGetId([
+            'teachers_id' => Auth::id(),
+            'file_name' => $file_name.'-0.jpg',
+        ]);
+
+        for ($i=0; $i < $pagesCount; $i++) { 
+            DB::table('workbooks_pages')->insert([
+                'workbook_id' => $workbookID,
+                'file_name' => $file_name . '-' . $i.'.jpg',
+            ]);
         }
-        return view('teachers', [ 'data' => $data, 'uri' => $uri, 'teachers_id' => request()->id ]);
+
+    }
+
+
+    public function teachersDashboard($uri = null){
+
+        $data = DB::table('teachers')->where('id', '=', Auth::id())->first();
+        $workbooks = [];
+
+        switch($uri){
+            case 'teacher-lobby':
+                return view('teacher-lobby', ['data' => $data]);
+            break;
+
+            case 'teachers-workbooks':
+
+                $workbooks = DB::table('workbooks')->where('teachers_id', '=', Auth::id())->orderBy('id', 'desc')->get();
+
+                foreach($workbooks as $key => $workbook):
+                    $pages = DB::table('workbooks_pages')->where('workbook_id', '=', $workbook->id)->get();
+                    $workbooks[$key]->pages = $pages;
+                endforeach;      
+
+                
+            break;
+        }
+
+        
+        return view('teachers', [ 'data' => $data, 'uri' => $uri, 'teachers_id' => request()->id , 'workbooks' => $workbooks]);
     }
 
     public function getTeachersDetails(){

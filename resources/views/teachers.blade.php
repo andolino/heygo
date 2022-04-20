@@ -53,7 +53,7 @@
 							@break
 						@case('teachers-workbooks')
 							<div class="body-upcoming-lesson p-3 rounded-md h-100">
-								<teachers-workbooks class="h-100" teachers-id="{{ $teachers_id }}"></teachers-workbooks>
+								<teachers-workbooks class="h-100" workbooks="{{ $workbooks }}" teachers-id="{{ $teachers_id }}"></teachers-workbooks>
 							</div>
 							@break
 						@default
