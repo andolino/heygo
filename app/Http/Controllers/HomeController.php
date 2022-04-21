@@ -66,7 +66,7 @@ class HomeController extends Controller {
 
         $imagick = new Imagick();
         $imagick->readImage($file->getPathname());
-        $imagick->writeImages(public_path('\uploads\\' . $file_name. $initPage .'.jpg'), true);
+        $imagick->writeImages(public_path("uploads/" . $file_name. $initPage .'.jpg'), true);
         
      
 
