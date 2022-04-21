@@ -164,7 +164,8 @@
         formData.append('file', event.target.files[0]);
         axios.post(process.env.MIX_BASE_URL+'/upload-workbook', formData
         ).then((res) => {
-           window.location.reload();        
+          
+          //  window.location.reload();        
         }).catch((error) => {
           console.log(error)
         }); 
