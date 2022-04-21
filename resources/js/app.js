@@ -54,6 +54,7 @@ import TeachingStrategies from './components/TeachingStrategies.vue';
 import StrategyFilter from './Display/Functions/StrategyFilter.vue';
 import Embed from 'v-video-embed';
 import VCalendar from 'v-calendar';
+import VueDraggableResizable from 'vue-draggable-resizable'
 
 
 
@@ -63,6 +64,10 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 //view dropzone
 import 'vue2-dropzone/dist/vue2Dropzone.min.css'
+
+//resizable
+import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
+
 
 
 window.Form = Form
@@ -97,6 +102,7 @@ Vue.use(Embed)
 Vue.component('BCard', BCard)
 Vue.component('todo-component', require('./components/TodoComponent.vue').default );
 Vue.use(VCalendar);
+Vue.component('vue-draggable-resizable', VueDraggableResizable)
 // Vue.component('b-carousel', '');
 
 
