@@ -23,7 +23,7 @@
 
 			{{-- mid content --}}
 
-			<div class="{{ $uri=='teachers-workbooks' ? 'col-lg-8' : 'col-lg-5' }} justify-content-center col-md-5 pr-2 pl-4">
+			<div class="{{ $uri=='teachers-workbooks' ? 'col-lg-9' : 'col-lg-5' }} justify-content-center col-md-5 pr-2 pl-4">
 				@switch($uri)
 						@case('chat')
 							<chat-panel :messageDisplay="{{ $messageDisplay }}" :teachers-id="{{ $teachers_id ?? 0 }}" :students-id="{{ $students_id ?? 0 }}"></chat-panel>

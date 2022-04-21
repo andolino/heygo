@@ -85,6 +85,13 @@ class HomeController extends Controller {
 
     }
 
+    public function saveWorkbookTitle(){
+        
+        DB::table('workbooks')
+        ->where('id', '=',Request::post('id'))
+        ->update(['title' => Request::post('title')]);
+    }
+
 
     public function teachersDashboard($uri = null){
 
