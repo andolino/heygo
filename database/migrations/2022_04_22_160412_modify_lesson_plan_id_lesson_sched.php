@@ -14,8 +14,8 @@ class ModifyLessonPlanIdLessonSched extends Migration
     public function up()
     {
         DB::statement('SET FOREIGN_KEY_CHECKS = 0;');
-        DB::statement('ALTER TABLE heygodb.lesson_schedule DROP INDEX lesson_schedule_lesson_plan_id_foreign;');
-        DB::statement('ALTER TABLE heygodb.lesson_schedule DROP COLUMN lesson_plan_id;');
+        DB::statement('ALTER TABLE lesson_schedule DROP INDEX lesson_schedule_lesson_plan_id_foreign;');
+        DB::statement('ALTER TABLE lesson_schedule DROP COLUMN lesson_plan_id;');
         DB::statement('SET FOREIGN_KEY_CHECKS = 1;');
     }
 
