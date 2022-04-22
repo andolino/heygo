@@ -147,6 +147,8 @@ Route::group(['middleware' => 'auth:teachers'], function () {
 
     Route::post('/upload-workbook', [HomeController::class, 'uploadWorkbook'],function(Request $request){});
     Route::post('/save-workbook-title', [HomeController::class, 'saveWorkbookTitle'],function(Request $request){});
+    Route::get('/get-worksheet-image', [HomeController::class, 'getWorksheetImage']);
+
 
 });
 Route::post('/save-bookmark', [FeedsController::class, 'saveBookmark']);

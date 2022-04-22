@@ -85,6 +85,12 @@ class HomeController extends Controller {
 
     }
 
+    /**get workbooks front- page */
+    public function getWorksheetImage(){
+        $workbooks = DB::table('workbooks')->where('teachers_id', '=', Auth::id())->orderBy('id', 'desc')->get();
+        return response()->json($workbooks);
+    }
+
     public function saveWorkbookTitle(){
         
         DB::table('workbooks')
