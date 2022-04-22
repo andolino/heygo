@@ -298,7 +298,7 @@ class HomeController extends Controller {
             'contact_no'      => 'required',
             'rate_per_hr'      => 'required|numeric',
             'rate_per_hr'      => 'required|numeric',
-            'lesson_plan_id'      => 'required',
+            // 'lesson_plan_id'      => 'required',
             'lesson_rate_type_id'      => 'required',
             'currency_rate_id'      => 'required',
             'objective_title' => 'required|string',
@@ -312,7 +312,7 @@ class HomeController extends Controller {
         $teachers->contact_no = Request::post('contact_no');
         $teachers->rate_per_hr = Request::post('rate_per_hr');
         $teachers->country_id = Request::post('country_id');
-        $teachers->lesson_plan_id = Request::post('lesson_plan_id');
+        // $teachers->lesson_plan_id = Request::post('lesson_plan_id');
         $teachers->lesson_rate_type_id = Request::post('lesson_rate_type_id');
         $teachers->currency_rate_id = Request::post('currency_rate_id');
         $teachers->objective_title = Request::post('objective_title');
