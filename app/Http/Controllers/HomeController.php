@@ -960,7 +960,7 @@ class HomeController extends Controller {
             $d = array();
             array_push($m, array(
                 'teachers_id'           => Request::post('teachers_id'),
-                'lesson_plan_id'        => Request::post('lesson_plan_id'),
+                // 'lesson_plan_id'        => Request::post('lesson_plan_id'),
                 'lesson_option_id'      => Request::post('lesson_option_id'),
                 // 'communication_app_id'  => Request::post('communication_app_id'),
                 // 'app_id'                => Request::post('app_id'),
