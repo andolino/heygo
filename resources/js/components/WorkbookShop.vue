@@ -18,32 +18,34 @@
             >
               <!-- Slides with img slot -->
               <!-- Note the classes .d-block and .img-fluid to prevent browser default image alignment -->
-              <b-carousel-slide>
+              <!-- https://picsum.photos/1024/480/?image=55 -->
+              <b-carousel-slide v-for="img in dataWorksheet" :key="img.id">
                 <template #img >
                   <img
                     class="d-block img-fluid w-100"
                     width="1024"
                     height="480"
-                    src="https://picsum.photos/1024/480/?image=55"
+                    :src="baseurl+'/public/uploads/'+img.file_name"
                     alt="image slot"
-                    @click="showBooksThumb = !showBooksThumb"
+                    @click="fnShowWorkBooks(baseurl+'/public/uploads/'+img.file_name)"
                   >
                 </template>
               </b-carousel-slide>
-             
+
+              <transition name="fade">
+                <div class="lightbox-container" v-if="showBooksThumb">
+                  <a href="javascript:void(0);" v-on:click="showBooksThumb = false"><i class="fas fa-times"></i></a>
+                  <img :src="this.booksThumb" alt="" class="lightbox-img">
+                </div>
+              </transition>
             </b-carousel>
-            <p class="mt-4">
+            <!-- <p class="mt-4">
               Slide #: {{ slide }}<br>
               Sliding: {{ sliding }}
-            </p>
+            </p> -->
           </div>
 
-          <transition name="fade">
-            <div class="lightbox-container" v-if="showBooksThumb">
-              <a href="javascript:void(0);" v-on:click="showBooksThumb = false"><i class="fas fa-times"></i></a>
-              <img :src="asset + 'images/apay.jpg'" alt="" class="lightbox-img">
-            </div>
-          </transition>
+          
 
       </div>
     </div>
@@ -51,6 +53,7 @@
 </template>
 
 <script>
+  import * as api from './backend/api.js';
   export default {
     props: {
     },
@@ -62,7 +65,9 @@
         asset: document.querySelector('meta[name="url-asset"]').getAttribute('content'),
         slide: 0,
         sliding: null,
-        showBooksThumb: false
+        showBooksThumb: false,
+        booksThumb: '',
+        dataWorksheet: ''
       }
     },
     methods: {
@@ -74,12 +79,17 @@
       },
       showAlert(){
         alert('oowa');
+      },
+      assignDataWorksheet(data){
+        this.dataWorksheet = data;
+      },
+      fnShowWorkBooks(img){
+        this.showBooksThumb = true;
+        this.booksThumb = img;
       }
-
-      
     },
     mounted() {
-      
+      api.getWorksheet(this.assignDataWorksheet);
     }
   }
 </script>
@@ -88,7 +98,7 @@
 #carousel-1 .carousel-item img {
   display: block;
   object-fit: cover;
-  height: 30vh;
+  height: 40vh;
   margin: auto;
   width: 74% !important;
 }
@@ -113,7 +123,6 @@
   width: 100%;
   z-index: 9;
   right: 0%;
-  padding-top: 10%;
   background: rgba(0, 0, 0, 0.63);
   height: 100%;
 }
@@ -122,6 +131,8 @@
   margin-left: auto;
   margin-right: auto;
   width: 50%;
+  object-fit: cover;
+  width: 30%;
 }
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s;
