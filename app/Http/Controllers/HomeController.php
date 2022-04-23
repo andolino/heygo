@@ -93,10 +93,12 @@ class HomeController extends Controller {
     }
 
 
-    public function teachersDashboard($uri = null){
+    public function teachersDashboard($uri = null,$id=null){
+
+        
 
         $data = DB::table('teachers')->where('id', '=', Auth::id())->first();
-        $workbooks = [];
+        $workbook = [];
 
         switch($uri){
             case 'teacher-lobby':
@@ -105,19 +107,24 @@ class HomeController extends Controller {
 
             case 'teachers-workbooks':
 
-                $workbooks = DB::table('workbooks')->where('teachers_id', '=', Auth::id())->orderBy('id', 'desc')->get();
+                $workbook = DB::table('workbooks')
+                ->where( 'teachers_id', '=', Auth::id())
+                ->where( 'id','=',$id)
+                ->orderBy('id', 'desc')
+                ->first();
 
-                foreach($workbooks as $key => $workbook):
+                
+                if($workbook){
                     $pages = DB::table('workbooks_pages')->where('workbook_id', '=', $workbook->id)->get();
-                    $workbooks[$key]->pages = $pages;
-                endforeach;      
-
+                    $workbook->pages = $pages;
+                }
+                    
                 
             break;
         }
 
         
-        return view('teachers', [ 'data' => $data, 'uri' => $uri, 'teachers_id' => request()->id , 'workbooks' => $workbooks]);
+        return view('teachers', [ 'data' => $data, 'uri' => $uri, 'teachers_id' => request()->id , 'workbook' => json_encode($workbook)]);
     }
 
     public function getTeachersDetails(){

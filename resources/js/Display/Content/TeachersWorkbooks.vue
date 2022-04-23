@@ -10,15 +10,15 @@
             </div>
               
              <div class="row">
-                <div v-for="(v,i) in workBooks" :key="i" class="m-4 border">
-                  <a href="#" @click="renderPages(v,$event)"><img :src="baseurl + '/public/uploads/' +  v.file_name" ></a>
+                <div v-for="(v,i) in workBook.pages" :key="i" class="m-4 border">
+                  <a href="#" @click="renderPages(workBook,i,$event)"><img :src="baseurl + '/public/uploads/' +  v.file_name" ></a>
                 </div>
               </div>
 
 
           </div>
           <div class="col-lg-7">
-            <div class="card h-100 p-3">
+            <div class="card p-3">
               
               
               
@@ -50,13 +50,23 @@
                         <button class="btn btn-default btn-md w-50"><i class="fas fa-edit font-24" ></i> <br>Update Worksheet</button>
                       </div>
                      
+                       <div class="w-100 text-center m-4 border"  style="position: relative;" v-if="toggle">
+                                    
+                          <vue-draggable-resizable :w="100" :h="30" @dragging="onDrag" @resizing="onResize" :parent="true" v-for="(v,i) in inputs[this.preview.index].elements" :key="i">
+                            
+                            <input type="text" class="w-100 h-100">
 
-                   
+                            <!-- X: {{ x }} / Y: {{ y }} - Width: {{ width }} / Height: {{ height }} -->
+                          </vue-draggable-resizable> 
+
+                          <img :src="baseurl + '/public/uploads/' +  preview.file_name">
+                      </div>    
+                     
 
 
-                      <div class="w-100 text-center m-4 border" v-for="(v,i) in pages" :key="i">
-                          <img :src="baseurl + '/public/uploads/' +  v.file_name">
-                      </div>         
+
+
+                          
               </div>
 
 
@@ -66,12 +76,7 @@
             <div class="card h-100 p-3">
                 <h6 class="mb-3 text-center">Components</h6>
 
-                <div style="height: 500px; width: 500px; border: 1px solid red; position: relative;">
-                  <vue-draggable-resizable :w="100" :h="100" @dragging="onDrag" @resizing="onResize" :parent="true">
-                    <p>Hello! I'm a flexible component. You can drag me around and you can resize me.<br>
-                    X: {{ x }} / Y: {{ y }} - Width: {{ width }} / Height: {{ height }}</p>
-                  </vue-draggable-resizable>
-                </div>
+                  <button @click="cloneInput()"> Add input</button>
                 
             </div>
           </div>
@@ -94,19 +99,22 @@
 
   export default {
     props: { 
-      workbooks : {} 
+      workbook : {} 
     },
     components: {},
     name: 'TeacherWorkbooks',
     data(){
       return{
-          workBooks : JSON.parse(this.workbooks),  
+          workBook : JSON.parse(this.workbook),  
           baseurl: document.querySelector('meta[name="base-url"]').getAttribute('content'),
-          pages : {},
+         
+          pages: [],
+          preview: {},
           title : '',
           workbookID : 0,
           titleN : '',
           toggle: false,
+          rendered : false,
 
           positions: {
             clientX: undefined,
@@ -116,10 +124,7 @@
 
           },
           counter: 0,
-          inputs: [{
-            id: 'choice0',
-            value: '',
-          }],
+          inputs: [],
 
 
           /**
@@ -147,14 +152,46 @@
         this.y = y
       },
 
+      cloneInput(){
+  
+        let tempInput = [];
+        let existing = this.inputs[this.preview.index].elements;  
+        
+        existing.push({id:this.preview.id});
 
-      renderPages(v,event){
-          event.preventDefault()
+        tempInput.elements = existing;    
+
+        this.inputs[this.preview.index].elements = tempInput.elements;
+
+
+        console.log(this.inputs)
+
+      },
+
+
+      renderPages(v,i,event){
+
           this.pages = v.pages;
+          this.preview = v.pages[i];
+          this.preview.index = i;
+
+          event.preventDefault();
           this.workbookID = v.id;
           this.title = (v.title == null) ? 'Untitled Workbook' : v.title ;
           this.toggle = true;
-          console.log(v);
+
+          //create container for input boxes
+          if(!this.rendered){
+            for (let i = 0; i < this.pages.length; i++) {
+              this.inputs.push({elements : []})
+            }
+            this.rendered = true;
+          }
+          
+
+
+
+
       },
 
 
@@ -165,7 +202,7 @@
         axios.post(process.env.MIX_BASE_URL+'/upload-workbook', formData
         ).then((res) => {
           
-          //  window.location.reload();        
+           window.location.reload();        
         }).catch((error) => {
           console.log(error)
         }); 
@@ -199,32 +236,9 @@
 
 <style>
 
-.resizable-content {
-    height: 100%;
-    width: 100%;
-    background-color: aqua;
-}
-
-
 .font-24{
   font-size: 24px;
 }
-
-
-#draggable-container {
-  position: absolute;
-  z-index: 9;
-  cursor: pointer;
-}
-
-.draggable-input{
-  z-index: 10;
-}
-
-
-
-
-
 
 
 </style>

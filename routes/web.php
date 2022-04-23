@@ -121,6 +121,7 @@ Route::group(['middleware' => 'auth:teachers'], function () {
     // Route::view('/teachers', 'teachers');
     Route::get('/teachers', [HomeController::class, 'teachersDashboard']);
     Route::get('/teachers/{any}', [HomeController::class, 'teachersDashboard']);
+    Route::get('/teachers/{any}/{id}', [HomeController::class, 'teachersDashboard']);
     Route::get('/teachers-account-settings', [HomeController::class, 'teachersAccountSettings']);
     Route::get('/teachers-profile-main', [HomeController::class, 'teachersDashboard']);
     Route::get('/get-lesson-type-rate', [HomeController::class, 'getLessonTypeRate']);
