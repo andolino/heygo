@@ -10,9 +10,11 @@
             </div>
               
              <div class="row">
-                <div v-for="(v,i) in workBook.pages" :key="i" class="m-4 border">
+              <div v-if="workBook != null">
+                <div v-for="(v,i) in workBook.pages" :key="i" class="m-4 border" >
                   <a href="#" @click="renderPages(workBook,i,$event)"><img :src="baseurl + '/public/uploads/' +  v.file_name" ></a>
                 </div>
+              </div>
               </div>
 
 
@@ -52,7 +54,7 @@
                      
                        <div class="w-100 text-center m-4 border"  style="position: relative;" v-if="toggle">
                                     
-                          <vue-draggable-resizable :w="100" :h="30" @dragging="onDrag" @resizing="onResize" :parent="true" v-for="(v,i) in inputs[this.preview.index].elements" :key="i">
+                          <vue-draggable-resizable :x="v.positionX" :w="100" :h="30" @dragging="onDrag(x,y,i)" @resizing="onResize" :parent="true" v-for="(v,i) in inputs[this.preview.index].elements" :key="i">
                             
                             <input type="text" class="w-100 h-100">
 
@@ -125,6 +127,7 @@
           },
           counter: 0,
           inputs: [],
+          input : {},
 
 
           /**
@@ -147,24 +150,34 @@
         this.width = width
         this.height = height
       },
-      onDrag: function (x, y) {
+      onDrag: function (x, y,index) {
         this.x = x
         this.y = y
+
+        console.log(index)
+
+        this.inputs[this.preview.index].elements[index].positionX = this.x
+        this.inputs[this.preview.index].elements[index].positionY = this.y
+
+
       },
 
       cloneInput(){
   
         let tempInput = [];
         let existing = this.inputs[this.preview.index].elements;  
-        
-        existing.push({id:this.preview.id});
+
+
+        existing.push({
+          workbookId: this.preview.workbook_id,  
+          page_id: this.preview.id,
+          positionX : 0,
+          positionY : 0,
+        });
 
         tempInput.elements = existing;    
 
         this.inputs[this.preview.index].elements = tempInput.elements;
-
-
-        console.log(this.inputs)
 
       },
 
@@ -188,10 +201,6 @@
             this.rendered = true;
           }
           
-
-
-
-
       },
 
 

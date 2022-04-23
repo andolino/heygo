@@ -124,8 +124,8 @@ class HomeController extends Controller {
                     $pages = DB::table('workbooks_pages')->where('workbook_id', '=', $workbook->id)->get();
                     $workbook->pages = $pages;
                 }
-                    
-                
+
+                  
             break;
         }
 
