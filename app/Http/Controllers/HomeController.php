@@ -136,6 +136,11 @@ class HomeController extends Controller {
                 if($workbook){
                     $pages = DB::table('workbooks_pages')->where('workbook_id', '=', $workbook->id)->get();
                     $workbook->pages = $pages;
+                    
+                    $inputs = DB::table('workbook_inputs')->where('workbook_id', '=', $workbook->id)->first();
+                    $workbook->inputs = $inputs;
+
+
                 }
 
                   

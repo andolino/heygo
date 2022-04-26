@@ -204,6 +204,7 @@
 
       renderPages(v,i,event){
 
+        
           this.pages = v.pages;
           this.preview = v.pages[i];
           this.preview.index = i;
@@ -212,6 +213,15 @@
           this.workbookID = v.id;
           this.title = (v.title == null) ? 'Untitled Workbook' : v.title ;
           this.toggle = true;
+
+
+
+          //get inputs frim database
+          if(v.inputs != null){
+            this.inputs = JSON.parse(v.inputs.data);
+            this.rendered = true;
+          }
+
 
           //create container for input boxes
           if(!this.rendered){
