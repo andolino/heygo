@@ -49,14 +49,22 @@
                         
                       </div>
                       <div class="col" v-show="toggle">
-                        <button class="btn btn-default btn-md w-50"><i class="fas fa-edit font-24" ></i> <br>Update Worksheet</button>
+                        <button class="btn btn-default btn-md w-50"  @click="saveWorkbook()"><i class="fas fa-edit font-24"></i> <br>Update Worksheet</button>
                       </div>
                      
                        <div class="w-100 text-center m-4 border"  style="position: relative;" v-if="toggle">
                                     
-                          <vue-draggable-resizable :x="v.positionX" :w="100" :h="30" @dragging="onDrag(x,y,i)" @resizing="onResize" :parent="true" v-for="(v,i) in inputs[this.preview.index].elements" :key="i">
+                          <vue-draggable-resizable 
+                            @activated="onActivated(i)"
+                            :x="v.positionX" 
+                            :y="v.positionY" 
+                            :w="v.width" :h="v.height"
+                            @dragging="onDrag"
+                            @resizing="onResize" 
+                            :parent="true" 
+                            v-for="(v,i) in inputs[this.preview.index].elements" :key="i">
                             
-                            <input type="text" class="w-100 h-100">
+                            <input type="text" class="w-100 h-100" :value="v.value" @change="setValue">
 
                             <!-- X: {{ x }} / Y: {{ y }} - Width: {{ width }} / Height: {{ height }} -->
                           </vue-draggable-resizable> 
@@ -78,7 +86,7 @@
             <div class="card h-100 p-3">
                 <h6 class="mb-3 text-center">Components</h6>
 
-                  <button @click="cloneInput()"> Add input</button>
+                  <button @click="cloneInput('input')"> Add input</button>
                 
             </div>
           </div>
@@ -128,6 +136,7 @@
           counter: 0,
           inputs: [],
           input : {},
+          inputIndex: 0,
 
 
           /**
@@ -149,20 +158,27 @@
         this.y = y
         this.width = width
         this.height = height
+
+        this.inputs[this.preview.index].elements[this.inputIndex].width = this.width
+        this.inputs[this.preview.index].elements[this.inputIndex].height = this.height
       },
-      onDrag: function (x, y,index) {
+      onDrag: function (x, y) {
         this.x = x
         this.y = y
-
-        console.log(index)
-
-        this.inputs[this.preview.index].elements[index].positionX = this.x
-        this.inputs[this.preview.index].elements[index].positionY = this.y
-
-
+        this.inputs[this.preview.index].elements[this.inputIndex].positionX = this.x
+        this.inputs[this.preview.index].elements[this.inputIndex].positionY = this.y
+      
+      },
+      onActivated: function(index){
+          this.inputIndex = index
       },
 
-      cloneInput(){
+      setValue(event){
+        this.inputs[this.preview.index].elements[this.inputIndex].value = event.target.value
+      },
+
+
+      cloneInput(type){
   
         let tempInput = [];
         let existing = this.inputs[this.preview.index].elements;  
@@ -173,11 +189,15 @@
           page_id: this.preview.id,
           positionX : 0,
           positionY : 0,
+          width : 100,
+          height : 30,
+          value : "",
+          type: type
         });
 
         tempInput.elements = existing;    
-
         this.inputs[this.preview.index].elements = tempInput.elements;
+        console.log(this.inputs)
 
       },
 
@@ -201,6 +221,7 @@
             this.rendered = true;
           }
           
+          console.log(this.inputs)
       },
 
 
@@ -228,12 +249,21 @@
         ).then((res) => {
               this.title = this.$refs.workbookTitle.value;
         }).catch((error) => {
-          console.log(error)
+          console.log(error);
         });
-
-
-
       },
+
+       saveWorkbook(){
+          let formData = new FormData();
+          formData.append('data',JSON.stringify(this.inputs));
+          formData.append('workbookID',this.preview.workbook_id);
+          axios.post(process.env.MIX_BASE_URL+'/save-workbook-inputs', formData
+            ).then((res) => {
+                  window.location.reload();  
+            }).catch((error) => {
+              console.log(error);
+            });
+       }
 
 
     },

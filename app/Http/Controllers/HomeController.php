@@ -99,6 +99,19 @@ class HomeController extends Controller {
     }
 
 
+    public function saveWorkbookInputs(){
+        $data = Request::post('data');
+        $workbookID = Request::post('workbookID');
+
+        DB::table('workbook_inputs')->updateOrInsert(
+            ['workbook_id' => $workbookID], 
+            [ 'data' => $data]
+        );     
+
+
+    }
+
+
     public function teachersDashboard($uri = null,$id=null){
 
         
