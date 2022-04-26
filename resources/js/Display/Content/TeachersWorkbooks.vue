@@ -227,7 +227,7 @@
           if(!this.rendered){
             for (let i = 0; i < this.pages.length; i++) {
               this.inputs.push({elements : []})
-            }
+            } 
             this.rendered = true;
           }
           
