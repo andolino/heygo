@@ -50,9 +50,10 @@
                       </div>
                       <div class="col" v-show="toggle">
                         <button class="btn btn-default btn-md w-50"  @click="saveWorkbook()"><i class="fas fa-edit font-24"></i> <br>Update Worksheet</button>
+                        
                       </div>
                      
-                       <div class="w-100 text-center m-4 border"  style="position: relative;" v-if="toggle">
+                       <div class="w-100 text-center m-4 border dragCont"  style="position: relative;" v-if="toggle">
                                     
                           <vue-draggable-resizable 
                             @activated="onActivated(i)"
@@ -64,8 +65,12 @@
                             :parent="true" 
                             v-for="(v,i) in inputs[this.preview.index].elements" :key="i">
                             
-                            <input type="text" class="w-100 h-100" :value="v.value" @change="setValue">
-
+                            <input v-if="v.type == 'input'" type="text" placeholder="Input correct answer" class="w-100 h-100" :value="v.value" @change="setValue">
+                            
+                            <div v-if="v.type == 'radio'" style="display:flex">
+                              <input style="width:40%" class="h-100 radio" type="radio" :value="v.value" :checked="v.value" :name="v.name" @change="setValueRadio">
+                              <input style="width:60%" class="h-100" type="text"  placeholder="group" @change="setGroup" :value="v.name">
+                            </div>
                             <!-- X: {{ x }} / Y: {{ y }} - Width: {{ width }} / Height: {{ height }} -->
                           </vue-draggable-resizable> 
 
@@ -87,6 +92,7 @@
                 <h6 class="mb-3 text-center">Components</h6>
 
                   <button @click="cloneInput('input')"> Add input</button>
+                  <button @click="cloneInput('radio')"> Add radio</button>
                 
             </div>
           </div>
@@ -173,8 +179,34 @@
           this.inputIndex = index
       },
 
-      setValue(event){
+      setValue(event){  
         this.inputs[this.preview.index].elements[this.inputIndex].value = event.target.value
+      },
+
+      setValueRadio(event){  
+        let siblings = this.inputs[this.preview.index].elements;
+        
+        siblings.forEach((element,index) => {
+          if(element.name == event.target.name){
+            
+            this.inputs[this.preview.index].elements[index].value = false
+          }
+        });
+
+        this.inputs[this.preview.index].elements[this.inputIndex].value = event.target.checked
+      },
+
+      setGroup(event){  
+
+        let checked = event.target.closest('div').getElementsByTagName('input')[0].checked
+
+        console.log(checked)
+
+        this.inputs[this.preview.index].elements[this.inputIndex].name = event.target.value
+        this.inputs[this.preview.index].elements[this.inputIndex].value = checked
+
+        console.log(this.inputs)
+
       },
 
 
@@ -189,9 +221,10 @@
           page_id: this.preview.id,
           positionX : 0,
           positionY : 0,
-          width : 100,
+          width : 180,
           height : 30,
           value : "",
+          name : "",
           type: type
         });
 
