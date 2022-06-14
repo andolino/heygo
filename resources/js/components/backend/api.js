@@ -46,4 +46,20 @@ export const getWorksheet = async (fnc) => {
 };
 
 
+export const getCommunicationApp = async (fnc) => {
+  try {
+      const res = await axios.get(process.env.MIX_BASE_URL+'/get-comm-app');
+      // console.log(res.data);
+      return fnc(res.data);
+    //   if (res.data.status == 1) {
+        
+    //   } else {
+    //     console.error('Error');
+    //   }
+  } catch (error) {
+      console.error(error);
+  }
+};
+
+
 

@@ -15,6 +15,37 @@
                   name="email">
             </div>
             <p class="text-danger text-center" v-if="form.errors.has('email')" v-text="form.errors.get('email')"></p>
+            <label for="" class="text-left w-100">Meeting App</label>
+            <div class="form-group input-group mb-0">
+                  <select name="communication_app_id" 
+                          id="communication_app_id" 
+                          :class="[{'is-invalid' : form.errors.has('communication_app_id')}, selectCountryClass]" 
+                          v-on:change="handleCommInfo"
+                          v-model="form.communication_app_id" 
+                          :required="true">
+                          <option 
+                            :value="t.id"
+                            v-for="(t, i) in dataCommApp" 
+                            :key="i">{{ t.app_name }}</option>
+                  </select>
+            </div>
+            <label for="" class="text-left w-100" v-if="showAppInpLink || form.communication_app_id != ''">Link Invitation</label>
+            <div class="form-group input-group mb-0" v-if="showAppInpLink || form.communication_app_id != ''">
+                <!-- <input 
+                  type="text" 
+                  v-model="form.link" 
+                  :class="{'is-invalid' : form.errors.has('link')}" 
+                  class="form-control text-center input-custom font-14 mb-3" 
+                  id="link" 
+                  name="link"> -->
+                  <textarea 
+                    id="link" 
+                    name="link" 
+                    v-model="form.link" 
+                    class="form-control input-custom font-14 mb-3"
+                    :class="{'is-invalid' : form.errors.has('link')}" 
+                    cols="30" rows="10"></textarea>
+            </div>
             <label for="" class="text-left w-100">Account Type</label>
             <div class="form-group input-group mb-0">
                   <select name="account_types_id" 
@@ -23,6 +54,7 @@
                           v-on:change="handleAtInfo"
                           v-model="form.account_types_id" 
                           :required="true">
+                          <option value="" hidden selected></option>
                           <option 
                             :value="t.id"
                             v-for="(t, i) in account_types" 
@@ -89,7 +121,7 @@
 
 <script>
     import ResetPasswordModal from '../Display/Modal/AccountSettings/ResetPasswordModal.vue'
-
+    import * as api from './backend/api.js';
     export default {
       name: "TeacherAcctSettings",
       components:{ ResetPasswordModal },
@@ -115,7 +147,9 @@
             objective_title: '',
             objective_text: '',
             currency_rate_id: '',
-            account_types_id: ''
+            account_types_id: '',
+            communication_app_id: '',
+            link: '',
 					}),
           csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
           baseurl: document.querySelector('meta[name="base-url"]').getAttribute('content'),
@@ -137,7 +171,9 @@
           ],
           // defaultVid: document.querySelector('meta[name="url-asset"]').getAttribute('content') + 'images/ellipse-4.png',
           activeModal: 0,
-          isTeacherAccount: ''
+          isTeacherAccount: '',
+          dataCommApp: '',
+          showAppInpLink: false
 				}
 			},
 			methods: {
@@ -176,6 +212,8 @@
             this.form.objective_title = res.data[0].objective_title;
             this.form.objective_text = res.data[0].objective_text;
             this.form.account_types_id = res.data[0].account_types_id;
+            this.form.communication_app_id = res.data[0].communication_app_id;
+            this.form.link = res.data[0].link;
             if (res.data[0].picture != null) {
               this.defaultImg = this.baseurl + '/public/images/profile/teachers/thumb/' + res.data[0].picture;
             }
@@ -198,6 +236,9 @@
 					data.append('objective_title', this.form.objective_title);
 					data.append('objective_text', this.form.objective_text);
 					data.append('account_types_id', this.form.account_types_id);
+					data.append('user_id', this.user_id);
+					data.append('link', this.form.link);
+					data.append('communication_app_id', this.form.communication_app_id);
 					data.append('user_id', this.user_id);
 					data.append('_token', this.csrf);
 					axios.post(process.env.MIX_BASE_URL+'/update-teacher-settings', data).then((res) => {
@@ -256,6 +297,12 @@
         handleAtInfo(e){
           var val = e.target.value;
           this.isTeacherAccount = val;
+        },
+        handleCommInfo(e){
+          this.showAppInpLink = true;
+        },
+        getDataCommApp(data){
+          this.dataCommApp = data;
         }
 			},
 			mounted() { 
@@ -264,6 +311,7 @@
         this.getLessonPlan();
         this.getTeachersData();
         this.getCurrencyRate();
+        api.getCommunicationApp(this.getDataCommApp);
         // var elem = document.querySelector('input[type="range"]');
         // var rangeValue = function(){
         //   var newValue = elem.value;

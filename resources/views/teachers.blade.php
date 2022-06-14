@@ -23,7 +23,7 @@
 
 			{{-- mid content --}}
 
-			<div class="{{ $uri=='teachers-workbooks' ? 'col-lg-9' : 'col-lg-5' }} justify-content-center col-md-5 pr-2 pl-4">
+			<div class="{{ $uri=='teachers-workbooks' || $uri=='workbook-materials' || $uri=='answer-materials' ? 'col-lg-9' : 'col-lg-5' }} justify-content-center col-md-5 pr-2 pl-4">
 				@switch($uri)
 						@case('chat')
 							<chat-panel :messageDisplay="{{ $messageDisplay }}" :teachers-id="{{ $teachers_id ?? 0 }}" :students-id="{{ $students_id ?? 0 }}"></chat-panel>
@@ -37,13 +37,13 @@
 								</div>
 							</div>
 							@break
-						@case('teacher-lobby')
+						{{-- @case('teacher-lobby')
 							<div class="body-upcoming-lesson p-3 rounded-md">
 								<div class="upcoming-lesson-list custom-scrollbar-css p-2 mCustomScrollbar" data-mcs-theme="minimal-dark">
 									<teacher-information-main teachers-id="{{ Auth::id() }}"></teacher-information-main>
 								</div>
 							</div>
-							@break
+							@break --}}
 						@case('profile-details')
 							<div class="body-upcoming-lesson p-3 rounded-md">
 								<div class="upcoming-lesson-list custom-scrollbar-css p-2 mCustomScrollbar" data-mcs-theme="minimal-dark">
@@ -53,7 +53,17 @@
 							@break
 						@case('teachers-workbooks')
 							<div class="body-upcoming-lesson p-3 rounded-md h-100">
-								<teachers-workbooks class="h-100" workbook="{{ $workbook }}" teachers-id="{{ $teachers_id }}"></teachers-workbooks>
+								<teachers-workbooks class="h-100" :workbook="{{ json_encode($workbook) }}" :teachers-id="{{ $teachers_id }}"></teachers-workbooks>
+							</div>
+							@break
+						@case('workbook-materials')
+							<div class="body-upcoming-lesson p-3 rounded-md h-100">
+								<workbook-materials class="h-100" :workbook="{{ $workbook }}" teachers-id="{{ $teachers_id }}"></workbook-materials>
+							</div>
+							@break
+						@case('answer-materials')
+							<div class="body-upcoming-lesson p-3 rounded-md h-100">
+								<answer-materials class="h-100" :workbook="{{ json_encode($workbook) }}" teachers-id="{{ $teachers_id }}"></answer-materials>
 							</div>
 							@break
 						@default
@@ -76,7 +86,7 @@
 
 
 			{{-- right content --}}
-			@if ($uri != 'teachers-workbooks')
+			@if ($uri != 'teachers-workbooks' && $uri != 'workbook-materials' && $uri != 'answer-materials')
 
 			<div class="col-lg-3 col-md-3 offset-lg-1 pr-0">
 				<div class="cont-home-works">
@@ -152,7 +162,7 @@
 						
 				<div class="cont-books-workbooks-shop mt-4">
 					<div class="head-upcoming-lesson bg-dark mb-0 pb-2 pt-3 pl-3">
-						<h5 class="font-weight-regular cursor" onclick="window.location.href='{{ url('teachers/teachers-workbooks') }}'">Books/Workbooks Shop 
+						<h5 class="font-weight-regular cursor" onclick="window.location.href='{{ url('teachers/workbook-materials') }}'">Books/Workbooks Shop 
 							<span class="float-right pr-2" style="line-height: 1.5"><i class="fas fa-chevron-right"></i></span>
 						</h5>
 					</div>

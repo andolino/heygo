@@ -114,41 +114,45 @@ class HomeController extends Controller {
 
     public function teachersDashboard($uri = null,$id=null){
 
-        
 
         $data = DB::table('teachers')->where('id', '=', Auth::id())->first();
-        $workbook = [];
+        $workbook = array();
 
         switch($uri){
             case 'teacher-lobby':
                 return view('teacher-lobby', ['data' => $data]);
             break;
-
             case 'teachers-workbooks':
-
                 $workbook = DB::table('workbooks')
                 ->where( 'teachers_id', '=', Auth::id())
                 ->where( 'id','=',$id)
                 ->orderBy('id', 'desc')
                 ->first();
-
-                
                 if($workbook){
                     $pages = DB::table('workbooks_pages')->where('workbook_id', '=', $workbook->id)->get();
                     $workbook->pages = $pages;
                     
                     $inputs = DB::table('workbook_inputs')->where('workbook_id', '=', $workbook->id)->first();
                     $workbook->inputs = $inputs;
-
-
                 }
-
-                  
+            break;
+            case 'answer-materials':
+                $workbook = DB::table('workbooks')->where( 'teachers_id', '=', Auth::id())->first();
+                if($workbook){
+                    $pages = DB::table('workbooks_pages')->where('workbook_id', '=', $id)->get();
+                    $workbook->pages = $pages;
+                    
+                    $inputs = DB::table('workbook_inputs')->where('workbook_id', '=', $id)->first();
+                    $workbook->inputs = $inputs;
+                }
+            break;
+            default:
+                $workbook = DB::table('workbooks')->where( 'teachers_id', '=', Auth::id())->get();
             break;
         }
 
         
-        return view('teachers', [ 'data' => $data, 'uri' => $uri, 'teachers_id' => request()->id , 'workbook' => json_encode($workbook)]);
+        return view('teachers', [ 'data' => $data, 'uri' => $uri, 'teachers_id' => request()->id , 'workbook' => $workbook]);
     }
 
     public function getTeachersDetails(){
@@ -163,6 +167,11 @@ class HomeController extends Controller {
         $data = DB::table('teachers')->where('id', '=', Auth::id())->first();
         $account_types = DB::table('account_types')->get();
         return view('teachers-account-settings', ['data' => $data, 'account_types' => $account_types]);
+    }
+
+    public function getCommApp(){
+        $data = DB::table('communication_app')->get();
+        return response()->json($data);
     }
     
     public function displayTeacherCalendar(){
@@ -315,6 +324,8 @@ class HomeController extends Controller {
         $teachers = Teachers::find(Request::post('user_id'));
         $teachers->email = Request::post('email');
         $teachers->account_types_id  = Request::post('account_types_id');
+        $teachers->link  = Request::post('link');
+        $teachers->communication_app_id  = Request::post('communication_app_id');
         $teachers->save();
         
         return redirect()->intended('teachers-account-settings');

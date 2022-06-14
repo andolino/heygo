@@ -9,13 +9,13 @@
               <button class="btn btn-warning btn-md mt-2"><i class="fas fa-angle-left"></i> Dashboard</button>
             </div>
               
-             <div class="row">
+            <div class="row">
               <div v-if="workBook != null">
                 <div v-for="(v,i) in workBook.pages" :key="i" class="m-4 border" >
-                  <a href="#" @click="renderPages(workBook,i,$event)"><img :src="baseurl + '/public/uploads/' +  v.file_name" ></a>
+                  <a href="#" @click="renderPages(workBook, i, $event)"><img :src="baseurl + '/public/uploads/' +  v.file_name" ></a>
                 </div>
               </div>
-              </div>
+            </div>
 
 
           </div>
@@ -115,13 +115,15 @@
 
   export default {
     props: { 
-      workbook : {} 
+      workbook : {
+        type: Object
+      },
     },
     components: {},
     name: 'TeacherWorkbooks',
     data(){
       return{
-          workBook : JSON.parse(this.workbook),  
+          workBook : this.workbook,//JSON.parse(this.workbook),  
           baseurl: document.querySelector('meta[name="base-url"]').getAttribute('content'),
          
           pages: [],
