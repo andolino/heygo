@@ -173,16 +173,16 @@ const app = new Vue({
 		'workbook-shop'							: WorkbookShop,
 		'student-feeds'							: StudentFeeds,
 		'dashboard-panel'						: DashboardPanel,
-		// 'settings-panel'						: SettingsPanel,
+		// 'settings-panel'				  : SettingsPanel,
 		'navigation'								: Navigation,
 		'upper-navigation'					: UpperNavigation,
 		'teacher-information-main'	: TeacherInformationMain,
 		'teaching-strategies'	      : TeachingStrategies,
-		'strategy-filter'	      : StrategyFilter,
-		'teacher-main-profile'	      : TeacherMainProfile,
+		'strategy-filter'	          : StrategyFilter,
+		'teacher-main-profile'	    : TeacherMainProfile,
 		'teachers-workbooks'	      : TeachersWorkbooks,
 		'workbook-materials'	      : WorkbookMaterials,
-		'answer-materials'	      : AnswerMaterials
+		'answer-materials'	        : AnswerMaterials
 	},
 });
 

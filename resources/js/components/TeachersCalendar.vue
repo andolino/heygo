@@ -69,8 +69,6 @@
       
 
     </b-card>
-    
-    
   </div>
 </template>
 
@@ -114,7 +112,7 @@
           nowIndicator: true,
           dayMaxEvents: true, // allow "more" link when too many events
           expandRows: true,
-          contentHeight: '4000px',
+          contentHeight: '1500px',
           events: [
             {
               time_start: this.time_start
@@ -147,7 +145,33 @@
             }
           },
           dateClick: function(info) {
-              console.log(info.event.extendedProps.status);
+              // console.log(info.event.extendedProps.status);
+              // console.log(moment(info.date).format('YYYY-MM-DD h:mm:ss'), ' info');
+              
+              Swal.fire({
+                title: 'Confirm',
+                html: "Are you sure on this date? </br>" + moment(info.date).format('lll'),
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#fcb017',
+                cancelButtonColor: '#212222',
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'Wait'
+              }).then((result) => {
+                axios.post(process.env.MIX_BASE_URL+'/save-teacher-availability', {
+                  time_start : moment(info.date).format('YYYY-MM-DD h:mm:ss'),
+                  user_id : document.querySelector('meta[name="user-id"]').getAttribute('content'),
+                  selected_status : 0
+                } ).then((res) => {
+                  window.location.reload(false);
+                  // console.log(res);
+                  // this.$refs.calendar.$emit('rerenderEvents');
+                  }).catch((error) => {
+                    console.log(error);
+                });
+              });
+
+
               // console.log(moment(info.date).format('YYYY-MM-DD HH:mm:ss'));
               // this.addAvailDateTime = false;
               // this.form.teacher_availability_id = calEvent.event.id;
@@ -193,6 +217,7 @@
         }).then((result) => {
           if (result.isConfirmed) {
             axios.post(process.env.MIX_BASE_URL+'/save-teacher-availability', this.form ).then((res) => {
+              // console.log(res);
               this.calendarOptions.events = res.data[0];
               console.log(res);
               // this.$refs.calendar.$emit('rerenderEvents');
