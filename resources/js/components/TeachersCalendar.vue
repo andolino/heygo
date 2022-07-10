@@ -158,17 +158,21 @@
                 confirmButtonText: 'Yes',
                 cancelButtonText: 'Wait'
               }).then((result) => {
-                axios.post(process.env.MIX_BASE_URL+'/save-teacher-availability', {
-                  time_start : moment(info.date).format('YYYY-MM-DD h:mm:ss'),
-                  user_id : document.querySelector('meta[name="user-id"]').getAttribute('content'),
-                  selected_status : 0
-                } ).then((res) => {
-                  window.location.reload(false);
-                  // console.log(res);
-                  // this.$refs.calendar.$emit('rerenderEvents');
-                  }).catch((error) => {
-                    console.log(error);
-                });
+                if (result.isConfirmed) {
+                  axios.post(process.env.MIX_BASE_URL+'/save-teacher-availability', {
+                    time_start : moment(info.date).format('YYYY-MM-DD h:mm:ss'),
+                    user_id : document.querySelector('meta[name="user-id"]').getAttribute('content'),
+                    selected_status : 0
+                  } ).then((res) => {
+                    window.location.reload(false);
+                    // console.log(res);
+                    // this.$refs.calendar.$emit('rerenderEvents');
+                    }).catch((error) => {
+                      console.log(error);
+                  });
+                } else {
+
+                }
               });
 
 
