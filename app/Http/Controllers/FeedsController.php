@@ -146,7 +146,8 @@ class FeedsController extends Controller{
                                         t.rate_per_hr,
                                         t.email,
                                         GROUP_CONCAT(DISTINCT tna.file ORDER BY tna.file DESC SEPARATOR '==') as attmnts,
-                                        tnl.is_like
+                                        tnl.is_like,
+                                        COUNT(tnl.is_like) as like_count
                                     FROM teacher_newsfeed tn
                                     LEFT JOIN teacher_newsfeed_attachments tna ON tna.teacher_newsfeed_id = tn.id
                                     LEFT JOIN teacher_newsfeed_likes tnl ON tnl.teacher_newsfeed_id = tn.id
@@ -164,7 +165,8 @@ class FeedsController extends Controller{
                                                     coalesce(t.email, s.email) as email,
                                                     t.rate_per_hr,
                                                     tncu.is_like as usefull_like,
-                                                    tncl.is_like
+                                                    tncl.is_like,
+                                                    COUNT(tncl.is_like) as like_count
                                                 FROM teacher_newsfeed_comments tnc
                                                 LEFT JOIN teacher_newsfeed_com_usefull tncu ON tncu.teacher_newsfeed_com_id = tnc.id
                                                 LEFT JOIN teacher_newsfeed_com_likes tncl ON tncl.teacher_newsfeed_com_id = tnc.id

@@ -23,20 +23,20 @@
           </div>
           <div class="modal-body">
 
-            <ul class="nav nav-tabs border-0 justify-content-center font-12" id="myTab" role="tablist">
+            <!-- <ul class="nav nav-tabs border-0 justify-content-center font-12" id="myTab" role="tablist">
               <li class="nav-item" role="presentation">
                 <a class="nav-link border-0 active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Post a Question</a>
               </li>
               <li class="nav-item" role="presentation">
                 <a class="nav-link border-0" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Post a Lesson Plan</a>
               </li>
-            </ul>
+            </ul> -->
 
             <div class="tab-content" id="myTabContent">
               <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                 <form>
                   <div class="form-group mt-3">
-                    <textarea :class="{ errbox: isActive }"  v-model="post_msg" class="form-control font-14" rows="6" id="message-post" placeholder="Create you question"></textarea>
+                    <textarea :class="{ errbox: isActive }"  v-model="post_msg" class="form-control font-14" rows="6" id="message-post" placeholder="Create your post"></textarea>
                   </div>
                   <span  :class="{ alert: isActive, 'alert-danger': isActive }"> {{ validationfail}}</span>
                 </form>
@@ -77,6 +77,7 @@
         </div>
       </div>
     </div>
+    <div class="ov">
     <div class="mb-3 cursor" v-for="pfd in postedFeedsData" :key="pfd.id">
       <div class="card rounded-11px">
         <div class="card-body mt-1" @click="goToProfile(pfd.teacher_id, pfd.id)">
@@ -89,7 +90,7 @@
               <div class="row">
                 <div class="col-lg-7">
                   <span class="ml-3 font-14"> 
-                   {{ pfd.lastname.toUpperCase() }}, {{ pfd.firstname.toUpperCase() }}</span>
+                   {{ pfd.lastname?.toUpperCase() }}, {{ pfd.firstname?.toUpperCase() }}</span>
                 </div>
                 <div class="col-lg-5">
                   <span class="ml-3 font-14" style="float: right;">
@@ -124,9 +125,10 @@
           <div class="row cont-count-feeds">
             <div class="col-lg-4 text-center font-weight-normal pr-1 count-feeds-like">
               <span class="font-12 cursor" :class="{ 'text-primary' : pfd.is_like }" data-loc="like-question" :data-id="pfd.id" v-on:click="likeCmnt"><i class="fas fa-thumbs-up"></i> Like</span>
+              <span class="badge badge-secondary">{{pfd.like_count > 0 ? pfd.like_count: ''}}</span>
             </div>
             <!-- <div class="col-lg-4 text-center font-weight-normal pr-1 count-feeds-comment">
-              <span class="font-12 cursor"><i class="far fa-check-circle"></i> This helpfull me</span>
+              <span class="font-12 cursor"><i class="far fa-check-circle"></i> This is helpful</span>
             </div> -->
             <div class="col-lg-4 offset-lg-4 text-center font-weight-normal pr-1 count-feeds-dislikes">
               <span class="font-12 cursor text-secondary" v-on:click="showComments(pfd.id)"><i class="fas fa-comment"></i> Show Answers</span>
@@ -157,9 +159,10 @@
                       <div class="row mt-3">
                         <div class="col-lg-2 font-weight-normal pr-1 count-feeds-like">
                           <span class="font-12 cursor" :class="{ 'text-primary' : cmnts.is_like }" data-loc="like-comments" :data-id="cmnts.id" v-on:click="likeCmnt"><i class="fas fa-thumbs-up"></i> Like</span>
+                          <span class="badge badge-secondary">{{cmnts.like_count > 0 ? cmnts.like_count : ''}}</span>
                         </div>
                         <div class="col-lg-4 font-weight-normal pr-1 count-feeds-comment">
-                          <span class="font-12 cursor" :class="{ 'text-primary' : cmnts.usefull_like }" data-loc="usefull-comments" :data-id="cmnts.id" v-on:click="likeCmnt"><i class="far fa-check-circle"></i> This helpfull me</span>
+                          <span class="font-12 cursor" :class="{ 'text-primary' : cmnts.usefull_like }" data-loc="usefull-comments" :data-id="cmnts.id" v-on:click="likeCmnt"><i class="far fa-check-circle"></i> This is helpful</span>
                         </div>
                         <div class="col-lg-4 font-weight-normal pr-1 count-feeds-dislikes">
                           <span class="font-12 cursor"><i class="fas fa-comment"></i> Show Comments</span>
@@ -191,7 +194,7 @@
                       <input type="text" class="form-control form-control-sm rounded-pill font-12" data-loc="comment-comments-sub" :data-id="cmnts.id" v-on:keyup.enter="onEnterCmnts">
                     </div>
                     <div class="col-lg-1 text-left pr-1 pl-0 count-feeds-comment">
-                      <a href="#" class="text-black-50"><img :src="baseurl+'/public/images/arrow-left-ico.png'" 
+                      <a href="#" class="text-black-50" @click="onEnterCmnts"><img :src="baseurl+'/public/images/arrow-left-ico.png'" 
                                                               style="position: relative;
                                                                       right: 24px;
                                                                       top: 1px;" alt="" width="14"></a>
@@ -216,7 +219,7 @@
               <input type="text" class="form-control form-control-lg rounded-pill font-12" data-loc="comment-comments" :data-id="pfd.id" v-on:keyup.enter="onEnterCmnts">
             </div>
             <div class="col-lg-1 text-left pr-1 count-feeds-comment">
-              <a href="#" class="text-black-50"><img :src="baseurl+'/public/images/arrow-left-ico.png'" 
+              <a href="#" class="text-black-50" @click="onEnterCmnts"><img :src="baseurl+'/public/images/arrow-left-ico.png'" 
                                                       style="position: relative;
                                                       right: 56px;
                                                       font-size: 12px;
@@ -227,7 +230,7 @@
       </div>
     </div>
 
-    
+    </div>
 
   </div>
 </template>
@@ -336,7 +339,7 @@ export default {
       formData.append('teacher_id', this.user_id);
     },
     postTeacherFeed: async function(){
-      if (typeof this.$refs.myVueDropzone.processQueue() === 'undefined') {
+      if (this.$refs.myVueDropzone?.processQueue() === undefined) {
         axios.post(process.env.MIX_BASE_URL+'/api/post-teacher-feeds', 
             { 'feed_body': this.post_msg, 'teacher_id': this.user_id 
         }).then((res) => {
@@ -431,6 +434,10 @@ export default {
 </script>
 
 <style>
+.ov{
+  overflow-y: scroll;
+  height: 70vh;
+}
 .modal-header {
     border-bottom: 0px !important;
     text-align: center;

@@ -38,6 +38,7 @@
         "bootstrap-vue": "^2.21.2",
         "font-awesome": "^4.7.0",
         "formBuilder": "^3.7.3",
+        "fullcalendar": "^5.11.3",
         "moment": "^2.29.1",
         "pusher-js": "^7.0.3",
         "sweetalert2": "^11.1.7",
