@@ -127,10 +127,10 @@
               <span class="font-12 cursor" :class="{ 'text-primary' : pfd.is_like }" data-loc="like-question" :data-id="pfd.id" v-on:click="likeCmnt"><i class="fas fa-thumbs-up"></i> Like</span>
               <span class="badge badge-secondary">{{pfd.like_count > 0 ? pfd.like_count: ''}}</span>
             </div>
-            <!-- <div class="col-lg-4 text-center font-weight-normal pr-1 count-feeds-comment">
-              <span class="font-12 cursor"><i class="far fa-check-circle"></i> This is helpful</span>
-            </div> -->
-            <div class="col-lg-4 offset-lg-4 text-center font-weight-normal pr-1 count-feeds-dislikes">
+            <div class="col-lg-4 text-center font-weight-normal pr-1 count-feeds-comment">
+              <span class="font-12 cursor" :class="{ 'text-danger' : pfd.is_reported }" :data-id="pfd.id" @click="reportPost"><i class="fas fa-flag"></i> Report</span>
+            </div>
+            <div class="col-lg-4 text-center font-weight-normal pr-1 count-feeds-dislikes">
               <span class="font-12 cursor text-secondary" v-on:click="showComments(pfd.id)"><i class="fas fa-comment"></i> Show Answers</span>
             </div>
           </div>
@@ -425,7 +425,23 @@ export default {
     },
     goToProfile(teacher_id, feeds_id){
       window.location.href = process.env.MIX_BASE_URL+'/profile-feeds/'+teacher_id+'/'+feeds_id;
+    },
+    reportPost(e){
+      e.target.classList.toggle('text-danger');
+      var feeds_id = e.target.getAttribute('data-id');
+      axios.post(process.env.MIX_BASE_URL+'/api/post-report', 
+          { 
+            'feeds_id' : feeds_id, 
+            'user_id' : this.user_id, 
+            'is_students' : (this.user_type == 'teachers' ? 0 : 1),
+            'is_reported' : (e.target.classList.contains('text-danger') ? 1 : 0)
+      }).then((res) => {
+        
+      }).catch((error) => {
+          console.log(error);
+      });
     }
+
   },
   mounted() {
     this.displayTeacherFeeds();
