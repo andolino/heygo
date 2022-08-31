@@ -147,13 +147,13 @@ class FeedsController extends Controller{
                                         t.email,
                                         GROUP_CONCAT(DISTINCT tna.file ORDER BY tna.file DESC SEPARATOR '==') as attmnts,
                                         tnl.is_like,
-                                        COUNT(tnl.is_like) as like_count,
-                                        COUNT(tnc.id) as comment_count
+                                        tnr.is_reported,
+                                        COUNT(tnl.is_like) as like_count
                                         
                                     FROM teacher_newsfeed tn
                                     LEFT JOIN teacher_newsfeed_attachments tna ON tna.teacher_newsfeed_id = tn.id
                                     LEFT JOIN teacher_newsfeed_likes tnl ON tnl.teacher_newsfeed_id = tn.id
-                                    LEFT JOIN teacher_newsfeed_comments tnc ON tnc.teacher_newsfeed_id = tn.id
+                                    LEFT JOIN teacher_newsfeed_reports tnr ON tnr.teacher_newsfeed_id = tn.id
                                     LEFT JOIN teachers t ON t.id = tn.teacher_id
                                     $feeds_id
                                     GROUP BY tn.id ORDER BY tn.id DESC"));
@@ -247,6 +247,14 @@ class FeedsController extends Controller{
         return response()->json(['question' => $question, 'comments' => $c, 'sub_comments' => $sc]);
     }
 
+    public function postReport(Request $request){
+        DB::table('teacher_newsfeed_reports')
+            ->updateOrInsert(
+                [ 'teacher_newsfeed_id' => $request->feeds_id, 'teachers_id' => $request->user_id ],
+                [ 'is_reported' => $request->is_reported, 'created_at' => date('Y-m-d H:i:s') ],
+            );
+
+    }
     public function postLikes(Request $request){
         // $request->type;
         // $request->user_id;
