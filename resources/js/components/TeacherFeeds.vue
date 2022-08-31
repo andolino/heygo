@@ -90,7 +90,7 @@
               <div class="row">
                 <div class="col-lg-7">
                   <span class="ml-3 font-14"> 
-                   {{ pfd.lastname?.toUpperCase() }}, {{ pfd.firstname?.toUpperCase() }}</span>
+                   {{ pfd.lastname.toUpperCase() }}, {{ pfd.firstname.toUpperCase() }}</span>
                 </div>
                 <div class="col-lg-5">
                   <span class="ml-3 font-14" style="float: right;">
@@ -223,7 +223,8 @@
                                                       style="position: relative;
                                                       right: 56px;
                                                       font-size: 12px;
-                                                      top: 5px;" alt="" width="18"></a>
+                                                      top: 5px;" 
+                                                      alt="" width="18"></a>
             </div>
           </div>
         </div>
