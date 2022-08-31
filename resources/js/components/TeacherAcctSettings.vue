@@ -81,6 +81,48 @@
                 </ul>
               </small>
             </div>
+
+            <div class="row up-trial-ctrl">
+              <div class="col-lg-12">
+                <label for="">Trial Lesson</label>
+              </div>
+              <div class="col-lg-12 mb-2">
+                <select class="form-control form-control-sm font-12" name="" id="">
+                  <option value="Yes" selected>Yes</option>
+                  <option value="No">No</option>
+                </select>
+              </div>
+              <div class="col-lg-12 mb-2">
+                <label for="currency_rate_id" class="font-12">Currency Rate</label>
+                <select 
+                  class="form-control form-control-sm font-12" 
+                  name="currency_rate_id" 
+                  id="currency_rate_id"
+                  v-model="form.currency_rate_id"
+                  :class="{'is-invalid' : form.errors.has('currency_rate_id')}">
+                  <option value="" selected hidden>--</option>
+                  <option v-for="cr in currencyRate"
+                          :key="cr.id"
+                          :value="cr.id" >
+                    {{ cr.currency }} - {{ cr.rate }}
+                  </option>
+                </select>
+              </div>
+              <div class="col-lg-12">
+                <label for="" class="font-12">Trial Lesson Rate</label>
+                <div class="form-check form-check-inline w-100" v-for="lrt in lessonTypeRate" :key="lrt.id">
+                  <input class="form-check-input" 
+                        type="radio" 
+                        name="lesson_rate_type_id" 
+                        :id="lrt.id" 
+                        :value="lrt.id" 
+                        v-model="form.lesson_rate_type_id"
+                        :class="{'is-invalid' : form.errors.has('lesson_rate_type_id')}">
+                  <label class="form-check-label font-12" :for="lrt.id">{{ lrt.type }}</label>
+                </div>
+              </div>
+            </div>
+
             <p class="text-danger text-center" v-if="form.errors.has('account_type')" v-text="form.errors.get('account_type')"></p>
             <button 
               type="button" 

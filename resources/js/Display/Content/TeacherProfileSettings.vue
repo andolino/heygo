@@ -1,11 +1,11 @@
 <template>
   <div>
     <form @submit.prevent="submitTeachersAcctSettings">
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-lg-12">
           Profile Settings
         </div>
-      </div>
+      </div> -->
       <div class="row mt-5">
         <div class="col-lg-5 text-center">
             <div class="img-card">
@@ -63,12 +63,11 @@
                 </b-form-group>
               </div>
             </div>
-            <div class="row up-trial-ctrl p-4">
+            <!-- <div class="row up-trial-ctrl p-4">
               <div class="col-lg-12">
                 <label for="">Trial Lesson</label>
               </div>
               <div class="col-lg-12 mb-2">
-                <!-- <label for="" class="font-12">30 Minutes Free Lesson</label> -->
                 <select class="form-control form-control-sm font-12" name="" id="">
                   <option value="Yes" selected>Yes</option>
                   <option value="No">No</option>
@@ -90,15 +89,6 @@
                   </option>
                 </select>
               </div>
-              <!-- <div class="col-lg-12">
-                <label class="switch">
-                  <input type="checkbox" id="togBtn">
-                  <div class="slider round">
-                    <span class="off">No</span>
-                    <span class="on">Yes</span>
-                  </div>
-                </label>
-              </div> -->
               <div class="col-lg-12">
                 <label for="" class="font-12">Trial Lesson Rate</label>
                 <div class="form-check form-check-inline w-100" v-for="lrt in lessonTypeRate" :key="lrt.id">
@@ -111,24 +101,6 @@
                         :class="{'is-invalid' : form.errors.has('lesson_rate_type_id')}">
                   <label class="form-check-label font-12" :for="lrt.id">{{ lrt.type }}</label>
                 </div>
-              </div>
-            </div>
-            <!-- <div class="row up-trial-ctrl p-4">
-              <div class="col-lg-12">
-                <label class="font-12" for="lesson_plan_id">Type of Lesson</label>
-                  <label for="" class="font-12">30 Minutes Free Lesson</label>
-                  <select 
-                    class="form-control form-control-sm font-12" 
-                    name="lesson_plan_id" 
-                    id="lesson_plan_id"
-                    v-model="form.lesson_plan_id" 
-                    :class="{'is-invalid' : form.errors.has('lesson_plan_id')}">
-                    <optgroup v-for="(group, name) in lessonPlan" :label="name" :key="group.id">
-                      <option v-for="option in group" :value="option.id" :key="option.id">
-                        {{ option.body }}
-                      </option>
-                    </optgroup>
-                  </select>
               </div>
             </div> -->
         </div>

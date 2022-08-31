@@ -26,7 +26,7 @@
 
 			{{-- mid content --}}
 
-			<div class="col-lg-5 justify-content-center col-md-5 pr-2 pl-4">
+			<div class="col-lg-6 justify-content-center col-md-5 pr-2 pl-4">
         <teacher-feeds :feeds_id="{{ $feeds_id }}"></teacher-feeds>
 			</div>
 		</div>

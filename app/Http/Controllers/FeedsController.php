@@ -500,14 +500,14 @@ class FeedsController extends Controller{
         if ($type == 'view'){
             $data = $data->where('teaching_strategy.id', request()->id);
         }
-        if (isset($request->filter)) {
+        if (isset($request->filter)){
             $filtered_category = [];
             foreach ($request->filter as $row) {
                 $filtered_category[] = $row['id'];
             }
             $data = $data->whereIn('lesson_plan.id', $filtered_category);
         }
-        $data = $data->groupBy('teaching_strategy.id')->get();
+        $data = $data->groupBy('teaching_strategy.id')->orderBy('teaching_strategy.id', 'DESC')->get();
         return response()->json($data);
     }
 
