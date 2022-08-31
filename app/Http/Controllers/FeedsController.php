@@ -147,10 +147,13 @@ class FeedsController extends Controller{
                                         t.email,
                                         GROUP_CONCAT(DISTINCT tna.file ORDER BY tna.file DESC SEPARATOR '==') as attmnts,
                                         tnl.is_like,
-                                        COUNT(tnl.is_like) as like_count
+                                        COUNT(tnl.is_like) as like_count,
+                                        COUNT(tnc.id) as comment_count
+                                        
                                     FROM teacher_newsfeed tn
                                     LEFT JOIN teacher_newsfeed_attachments tna ON tna.teacher_newsfeed_id = tn.id
                                     LEFT JOIN teacher_newsfeed_likes tnl ON tnl.teacher_newsfeed_id = tn.id
+                                    LEFT JOIN teacher_newsfeed_comments tnc ON tnc.teacher_newsfeed_id = tn.id
                                     LEFT JOIN teachers t ON t.id = tn.teacher_id
                                     $feeds_id
                                     GROUP BY tn.id ORDER BY tn.id DESC"));
