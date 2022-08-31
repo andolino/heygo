@@ -4,36 +4,36 @@
         <h5 class="font-weight-regular">Homework 
           <span class="float-right pr-2 cursor" @click="openPurchBook" style="line-height: 1.5">
             <i class="fas fa-chevron-right"></i></span></h5></div>
-    <div class="upcoming-lesson-list custom-scrollbar-css p-2 mCustomScrollbar" data-mcs-theme="minimal-dark">
-      <div class="card-group b-bot-red">
-        <div class="card">
-          <div class="card-body">
-              <label class="card-title">8:00 - 9:30am</label>
-              <small class="float-right text-success">Class starts in 20mins</small>
-              <h6 class="card-title font-weight-bold">Language 1</h6>
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-          </div>
-          <div class="card-footer">
-              <img :src="asset + 'images/ellipse.png'" alt="">
-              <small class="text-muted">Mr. James Cameron</small>
-          </div>
-        </div>
-      </div>
-      <div class="card-group b-bot-yellow mt-2">
-        <div class="card">
-            <div class="card-body">
-                <label class="card-title">8:00 - 9:30am</label>
-                <small class="float-right text-success">Class starts in 20mins</small>
-                <h6 class="card-title font-weight-bold">Language 1</h6>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+            <div class="upcoming-lesson-list custom-scrollbar-css p-2 mCustomScrollbar" data-mcs-theme="minimal-dark">
+              <div class="card-group b-bot-red">
+                <div class="card">
+                  <div class="card-body">
+                      <label class="card-title">8:00 - 9:30am</label>
+                      <small class="float-right text-success">Class starts in 20mins</small>
+                      <h6 class="card-title font-weight-bold">Language 1</h6>
+                      <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                  </div>
+                  <div class="card-footer">
+                      <img :src="asset + 'images/ellipse.png'" alt="">
+                      <small class="text-muted">Mr. James Cameron</small>
+                  </div>
+                </div>
+              </div>
+              <div class="card-group b-bot-yellow mt-2">
+                <div class="card">
+                    <div class="card-body">
+                        <label class="card-title">8:00 - 9:30am</label>
+                        <small class="float-right text-success">Class starts in 20mins</small>
+                        <h6 class="card-title font-weight-bold">Language 1</h6>
+                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                    </div>
+                    <div class="card-footer">
+                        <img :src="asset + 'images/ellipse.png'" alt="">
+                        <small class="text-muted">Mr. James Cameron</small>
+                    </div>
+                </div>
+              </div>
             </div>
-            <div class="card-footer">
-                <img :src="asset + 'images/ellipse.png'" alt="">
-                <small class="text-muted">Mr. James Cameron</small>
-            </div>
-        </div>
-      </div>
-    </div>
     
     <div class="modal fade bd-example-modal-lg" id="modalBookReader" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">

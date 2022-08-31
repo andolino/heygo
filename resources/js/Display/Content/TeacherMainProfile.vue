@@ -1,7 +1,8 @@
 <template>
   <div>
+    <h3>Profile Summary</h3>
     <div class="card rounded-0 bg-transparent border-0">
-      <div class="card-body pb-5">
+      <div class="card-body pb-5 row">
 
         <!-- <div class="col-lg-12 text-center pb-5 pt-5" v-if="teachersData.display_status == 0">
           <img :src="this.defaultImg" ref="prof_display" class="rounded-circle" alt="" >
@@ -16,7 +17,7 @@
           </b-modal>
         </div>
 
-        <div class="col-lg-12 text-justify">
+        <div class="col-lg-6 text-justify">
           <div class="row">
             <div class="col-lg-2 p-0">
               <div class="clearfix">
@@ -71,10 +72,6 @@
             </div>
 
           </div>
-          <!-- <span class="mb-0" style="font-size: 23px;text-align:center"><div class="cicle-active"></div> James Cameron </span>
-          <span class="ml-3"><i class="fas fa-map-marker-alt text-warning p-2"></i><img :src="asset + 'images/flag-1.png'" width="20"></span>
-          <span class="ml-3"><i class="fas fa-star text-warning p-2"></i><strong>4.5</strong></span>
-          <span class="ml-3">43 Reviews <i class="fas fa-heart" style="color: rgb(217, 22, 132);"></i></span> -->
           <hr>
           <div class="row">
             <div class="col-lg-12">
@@ -104,33 +101,17 @@
             <div class="col-lg-12 font-12">
             <Fullcalendar ref="calendar" :options="calendarOptions"/>
             </div>
-            <!-- <v-calendar
-              :attributes='attributes'
-              /> -->
-            <!-- <div class="col-lg-12 text-center">
-              <TeacherSchedule/>
-            </div> -->
           </div>
           <hr>
           <div class="row">
             <div class="col-lg-12">
-              
-
-
+            
             </div>
           </div>
-          
-          <!-- <div class="row mt-5">
-            <div class="col-lg-12">
-              <button type="button" 
-                        class="btn btn-default float-left btn-dashboard mb-3 font-12 pl-3 pr-3"  
-                        data-apptype="confirm">Book A Lesson</button>
-              <a :href="baseurl + '/teachers-profile/' + this.teachersData.id"
-                        class="btn btn-default float-right btn-dashboard mb-3 font-12"  
-                        data-apptype="confirm">See Profile</a>
-            </div>
-          </div> -->
             
+        </div>
+        <div class="col-lg-6">
+          <TeacherProfileSettings/>
         </div>
       </div>
     </div>
@@ -139,6 +120,7 @@
 
 <script>
   import TeacherSchedule from '../../components/TeacherSchedule.vue';
+  import TeacherProfileSettings from '../../Display/Content/TeacherProfileSettings.vue';
   import Fullcalendar from "@fullcalendar/vue";
   import dayGridPlugin from "@fullcalendar/daygrid";
   import interactionPlugin from "@fullcalendar/interaction";
@@ -150,7 +132,8 @@
     },
     components: {
       TeacherSchedule,
-      Fullcalendar
+      Fullcalendar,
+      TeacherProfileSettings
     },
     name: 'TeacherMainProfile',
     data(){

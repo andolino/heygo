@@ -53,6 +53,7 @@ import UpperNavigation from './components/admin/UpperNavigation.vue';
 import BadgesSetup from './components/admin/settings-panel/BadgesSetup.vue';
 import TeacherInformationMain from './components/TeacherInformationMain.vue';
 import TeachingStrategies from './components/TeachingStrategies.vue';
+import TeachingStrategiesCard from './Display/Content/TeachingStrategiesCard.vue';
 import StrategyFilter from './Display/Functions/StrategyFilter.vue';
 import Embed from 'v-video-embed';
 import VCalendar from 'v-calendar';
@@ -182,7 +183,8 @@ const app = new Vue({
 		'teacher-main-profile'	    : TeacherMainProfile,
 		'teachers-workbooks'	      : TeachersWorkbooks,
 		'workbook-materials'	      : WorkbookMaterials,
-		'answer-materials'	        : AnswerMaterials
+		'answer-materials'	        : AnswerMaterials,
+		'teaching-strategies-card'	: TeachingStrategiesCard
 	},
 });
 
