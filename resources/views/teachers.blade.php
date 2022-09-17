@@ -92,7 +92,8 @@
 			<div class="col-lg-3 col-md-3 pr-0">
 				<div class="cont-home-works">
 					<div class="head-upcoming-lesson bg-dark mb-0 pb-2 pt-3 pl-3"><h5 class="font-weight-regular">Lesson Plans <span class="float-right pr-2" style="line-height: 1.5"><i class="fas fa-chevron-right"></i></span></h5></div>
-					<div class="homework-list custom-scrollbar-css p-2 mCustomScrollbar" data-mcs-theme="minimal-dark">
+					{{-- custom-scrollbar-css  mCustomScrollbar --}}
+					<div class="homework-list p-2" data-mcs-theme="minimal-dark">
 						<teaching-strategies-card></teaching-strategies-card>
 						{{-- <div class="card-group b-bot-red">
 							<div class="card">

@@ -17,17 +17,45 @@
           </b-modal>
         </div>
 
-        <div class="col-lg-6 text-justify">
+        <div class="col-lg-12 text-justify">
           <div class="row">
-            <div class="col-lg-2 p-0">
-              <div class="clearfix">
+            <div class="col-lg-2">
+              <!-- <div class="clearfix">
                 <img :src="this.defaultImg" ref="prof_display" width="100%" class="rounded-circle" alt="" >
+              </div> -->
+              <div class="img-card">
+                <!-- <h5 class="text-left font-14">Profile Pic</h5> -->
+                <div class="img-container mb-3">
+                  <img :src="this.defaultImg" ref="prof_display" class="rounded-circle" alt="">
+                  <input type="file" class="d-none" ref="uploadImg" @change="selectFileUploadImg">
+                  <div class="overlay">
+                    <a href="javascript:void(0);" @click="$refs.uploadImg.click()" class="icon" title="User Profile">
+                      <i class="fa fa-upload"></i>
+                    </a>
+                  </div>
+                </div>
               </div>
+
             </div>
-            <div class="col-lg-6">
-              <ul id="ti_ul" class="mb-1">
+            <div class="col-lg-9">
+              <ul class="todo-list">
+                  <li v-for="todo in todos" :key="todo.id">
+                      <input
+                          v-if="todo.edit"
+                          v-model="todo.title"
+                          @blur="todo.edit = false; $emit('update')"
+                          @keyup.enter="todo.edit=false; $emit('update')"
+                          v-focus
+                      >
+                      <div v-else>
+                          <label @click="todo.edit = true;"> {{todo.title}} </label>
+                      </div>
+                  </li>
+              </ul>
+              
+              <!-- <ul id="ti_ul" class="mb-1">
                 <li class="pl-0" style="font-size:20px;">
-                    <i class="fa fa-circle text-success font-12" style="position:relative;bottom:3px;" aria-hidden="true"></i> 
+                  <i class="fa fa-circle text-success font-12" style="position:relative;bottom:3px;" aria-hidden="true"></i> 
                     {{ this.$helpers.capFirstLetter(teachersData.lastname) }}, {{ this.$helpers.capFirstLetter(teachersData.firstname) }} </li>
                 <li style="line-height:2"><i class="fas fa-map-marker-alt text-warning p-2"></i> <img :src="asset + 'images/flag-1.png'" width="20"></li>
               </ul>
@@ -48,9 +76,12 @@
               <ul id="ti_ul" class="font-14 mb-1">
                 <li class="pl-0"><strong>{{ teachersData.rate_per_hr | toCurrency }}</strong> JPY/hour</li>
                 <li></li>
-              </ul>
+              </ul> -->
+              <TeacherProfileSettings />
             </div>
-            <div class="col-lg-4" v-if="teachersId != user_id">
+
+
+            <!-- <div class="col-lg-4" v-if="teachersId != user_id">
               <div class="row">
                 <div class="col-lg-8">
                   <button type="button" 
@@ -69,7 +100,7 @@
                   <label for="" class="price-txt"><span class="font-14">200</span> <br> <span class="font-10">30 mins</span></label>
                 </div>
               </div>
-            </div>
+            </div> -->
 
           </div>
           <hr>
@@ -94,24 +125,24 @@
               <p class="font-14">{{ $helpers.exactLimitText(teachersData.objective_text, textLimit) }} ... <a href="#" v-on:click="showMore">{{ showMoreTxt }}</a></p>
             </div>
           </div>
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-lg-12">
               <h5 for=""><strong>Schedules:</strong></h5>
             </div>
             <div class="col-lg-12 font-12">
-            <Fullcalendar ref="calendar" :options="calendarOptions"/>
+              <Fullcalendar ref="calendar" :options="calendarOptions"/>
             </div>
-          </div>
+          </div> -->
           <hr>
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-lg-12">
             
             </div>
-          </div>
+          </div> -->
             
         </div>
         <div class="col-lg-6">
-          <TeacherProfileSettings/>
+          <!-- <TeacherProfileSettings/> -->
         </div>
       </div>
     </div>
@@ -146,6 +177,7 @@
         baseurl: document.querySelector('meta[name="base-url"]').getAttribute('content'),
         asset: document.querySelector('meta[name="url-asset"]').getAttribute('content'),
         user_id: document.querySelector('meta[name="user-id"]').getAttribute('content'),
+        defaultImg: document.querySelector('meta[name="url-asset"]').getAttribute('content') + 'images/ellipse-4.png',
         teachersData: '',
         defaultImg: '',
         hover: false,
@@ -183,10 +215,33 @@
             return { html: ht } 
           }
         },
+        form_profile: [
+          { 
+            id: 1, 
+            title: 'one value', 
+            edit: false },
+          { id: 2, title: 'one value', edit: false },
+          { id: 3, title: 'otro titulo', edit: false }
+        ],
+        editedTodo: null,
+        message: 'Hello Vue.js!',
+        dataImage: {
+          photo: null,
+          description: ''
+        },
       }
     },
     methods: {
-      
+      editTodo: function (todo) {
+        this.editedTodo = todo
+      },
+      directives: {
+        focus: {
+          inserted (el) {
+            el.focus()
+          }
+        }
+      },
       fetTeachersData(){
         axios.get(process.env.MIX_BASE_URL+'/api/get-teacher-information/'+this.teachersId).then((res) => {
 						this.teachersData = res.data;
@@ -230,6 +285,20 @@
         if (typeof res !== 'undefined') {
           this.calendarOptions.events = res.data[0];
         }
+      },
+      selectFileUploadImg(event){
+        this.dataImage.photo = event.target.files[0];
+        const data = new FormData();
+        data.append('photo', this.dataImage.photo);
+        const json = JSON.stringify({
+            description: 'teachers',
+            type: 'picture',
+            teachers_id: this.user_id,
+        });
+        data.append('data', json);
+        axios.post(process.env.MIX_BASE_URL+"/api/upload-img", data).then((res) => {
+          this.defaultImg = this.baseurl + '/public/images/profile/teachers/thumb/' + res.data.imagename;
+        });
       },
     },
     mounted() {

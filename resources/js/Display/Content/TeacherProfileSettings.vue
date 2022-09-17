@@ -7,7 +7,7 @@
         </div>
       </div> -->
       <div class="row mt-5">
-        <div class="col-lg-5 text-center">
+        <!-- <div class="col-lg-5 text-center">
             <div class="img-card">
               <h5 class="text-left font-14">Profile Pic</h5>
               <div class="img-container mb-3">
@@ -23,7 +23,6 @@
             <div class="img-card">
               <h5 class="text-left font-14">Short Video</h5>
               <div class="vid-container">
-                <!-- <img :src="this.defaultVid" ref="prof_display" class="rounded-circle" alt=""> -->
                 <video ref="videoRef" src="" id="video-container" width="100%" height="100%" controls></video>
                 <input type="file" class="d-none" ref="uploadVideo" @change="selectFileUploadVid">
                 <div class="overlay">
@@ -62,7 +61,7 @@
                   ></b-form-radio-group>
                 </b-form-group>
               </div>
-            </div>
+            </div> -->
             <!-- <div class="row up-trial-ctrl p-4">
               <div class="col-lg-12">
                 <label for="">Trial Lesson</label>
@@ -103,112 +102,133 @@
                 </div>
               </div>
             </div> -->
-        </div>
+        <!-- </div> -->
 
-        <div class="col-lg-5 offset-lg-1">
-          <div class="m-auto">
-            <label for="" class="text-left w-100">First Name</label>
-            <div class="form-group input-group mb-0">
-                <input 
-                  type="text" 
-                  v-model="form.firstname" 
-                  :class="{'is-invalid' : form.errors.has('firstname')}" 
-                  class="form-control text-center input-custom font-14 mb-3" 
-                  id="firstname" 
-                  name="firstname">
+        <div class="col-lg-12 offset-lg-1">
+          <div class="m-auto row">
+            <div class="col-lg-4">
+              <label for="" class="text-left w-100">First Name</label>
+              <div class="form-group input-group mb-0">
+                  <input 
+                    type="text" 
+                    v-model="form.firstname" 
+                    :class="{'is-invalid' : form.errors.has('firstname')}" 
+                    class="form-control text-center input-custom font-14 mb-3" 
+                    id="firstname" 
+                    name="firstname">
+              </div>
+              <p class="text-danger text-center" v-if="form.errors.has('firstname')" v-text="form.errors.get('firstname')"></p>
             </div>
-            <p class="text-danger text-center" v-if="form.errors.has('firstname')" v-text="form.errors.get('firstname')"></p>
 
-            <label for="" class="text-left w-100">Last Name</label>
-            <div class="form-group input-group mb-0">
-                <input 
-                  type="text" 
-                  v-model="form.lastname" 
-                  :class="{'is-invalid' : form.errors.has('lastname')}" 
-                  class="form-control text-center input-custom font-14 mb-3" 
-                  id="lastname" 
-                  name="lastname">
+            <div class="col-lg-4">
+              <label for="" class="text-left w-100">Last Name</label>
+              <div class="form-group input-group mb-0">
+                  <input 
+                    type="text" 
+                    v-model="form.lastname" 
+                    :class="{'is-invalid' : form.errors.has('lastname')}" 
+                    class="form-control text-center input-custom font-14 mb-3" 
+                    id="lastname" 
+                    name="lastname">
+              </div>
+              <p class="text-danger text-center" v-if="form.errors.has('lastname')" v-text="form.errors.get('lastname')"></p>
             </div>
-            <p class="text-danger text-center" v-if="form.errors.has('lastname')" v-text="form.errors.get('lastname')"></p>
 
-            <label for="" class="text-left w-100">Contact</label>
-            <div class="form-group input-group mb-0">
-                <input 
-                  type="text" 
-                  v-model="form.contact_no" 
-                  :class="{'is-invalid' : form.errors.has('contact_no')}" 
-                  class="form-control text-center input-custom font-14 mb-3" 
-                  id="contact_no" 
-                  name="contact_no">
+            <div class="col-lg-4">
+              <label for="" class="text-left w-100">Contact</label>
+              <div class="form-group input-group mb-0">
+                  <input 
+                    type="text" 
+                    v-model="form.contact_no" 
+                    :class="{'is-invalid' : form.errors.has('contact_no')}" 
+                    class="form-control text-center input-custom font-14 mb-3" 
+                    id="contact_no" 
+                    name="contact_no">
+              </div>
+              <p class="text-danger text-center" v-if="form.errors.has('contact_no')" v-text="form.errors.get('contact_no')"></p>
             </div>
-            <p class="text-danger text-center" v-if="form.errors.has('contact_no')" v-text="form.errors.get('contact_no')"></p>
 
-            <label for="" class="text-left w-100">Rate Per Hour</label>
-            <div class="form-group input-group mb-0">
-                <input 
-                  type="text" 
-                  v-model="form.rate_per_hr" 
-                  :class="{'is-invalid' : form.errors.has('rate_per_hr')}" 
-                  class="form-control text-center input-custom font-14 mb-3" 
-                  id="rate_per_hr" 
-                  name="rate_per_hr">
+            <div class="col-lg-4">
+              <label for="" class="text-left w-100">Rate Per Hour</label>
+              <div class="form-group input-group mb-0">
+                  <input 
+                    type="text" 
+                    v-model="form.rate_per_hr" 
+                    :class="{'is-invalid' : form.errors.has('rate_per_hr')}" 
+                    class="form-control text-center input-custom font-14 mb-3" 
+                    id="rate_per_hr" 
+                    name="rate_per_hr">
+              </div>
+              <p class="text-danger text-center" v-if="form.errors.has('rate_per_hr')" v-text="form.errors.get('rate_per_hr')"></p>
             </div>
-            <p class="text-danger text-center" v-if="form.errors.has('rate_per_hr')" v-text="form.errors.get('rate_per_hr')"></p>
 
-            <label for="" class="text-left w-100">Location</label>
-            <div class="form-group input-group mb-0">
-                  <select name="country_id" 
-                          id="country_id" 
-                          :class="[{'is-invalid' : form.errors.has('country_id')}, selectCountryClass]" 
-                          v-model="form.country_id" 
-                          :required="true">
-                          <option 
-                            :value="t.id"
-                            v-for="(t, i) in countries" 
-                            :key="i">{{ t.country_name }}</option>
-                  </select>
+            <div class="col-lg-4">
+              <label for="" class="text-left w-100">Location</label>
+              <div class="form-group input-group mb-0">
+                    <select name="country_id" 
+                            id="country_id" 
+                            :class="[{'is-invalid' : form.errors.has('country_id')}, selectCountryClass]" 
+                            v-model="form.country_id" 
+                            :required="true">
+                            <option 
+                              :value="t.id"
+                              v-for="(t, i) in countries" 
+                              :key="i">{{ t.country_name }}</option>
+                    </select>
+              </div>
+              <p class="text-danger text-center" v-if="form.errors.has('country_id')" v-text="form.errors.get('country_id')"></p>
             </div>
-            <p class="text-danger text-center" v-if="form.errors.has('country_id')" v-text="form.errors.get('country_id')"></p>
 
-            <label for="" class="text-left w-100">Email Address</label>
-            <div class="form-group input-group mb-0">
-                <input 
-                  type="text" 
-                  v-model="form.email" 
-                  :class="{'is-invalid' : form.errors.has('email')}" 
-                  class="form-control text-center input-custom font-14 mb-3" 
-                  id="email" 
-                  name="email">
+            <div class="col-lg-4">
+              <label for="" class="text-left w-100">Email Address</label>
+              <div class="form-group input-group mb-0">
+                  <input 
+                    type="text" 
+                    v-model="form.email" 
+                    :class="{'is-invalid' : form.errors.has('email')}" 
+                    class="form-control text-center input-custom font-14 mb-3" 
+                    id="email" 
+                    name="email">
+              </div>
+              <p class="text-danger text-center mb-3" v-if="form.errors.has('email')" v-text="form.errors.get('email')"></p>
             </div>
-            <p class="text-danger text-center mb-3" v-if="form.errors.has('email')" v-text="form.errors.get('email')"></p>
 
-            <label for="" class="text-left w-100">Objective Title</label>
-            <div class="form-group input-group mb-0">
-                <input 
-                  type="text" 
-                  v-model="form.objective_title" 
-                  :class="{'is-invalid' : form.errors.has('objective_title')}" 
-                  class="form-control text-center input-custom font-14 mb-3" 
-                  id="objective_title" 
-                  name="objective_title">
+            <div class="col-lg-4">
+              <label for="" class="text-left w-100">Objective Title</label>
+              <div class="form-group input-group mb-0">
+                  <input 
+                    type="text" 
+                    v-model="form.objective_title" 
+                    :class="{'is-invalid' : form.errors.has('objective_title')}" 
+                    class="form-control text-center input-custom font-14 mb-3" 
+                    id="objective_title" 
+                    name="objective_title">
+              </div>
+              <p class="text-danger text-center mb-3" v-if="form.errors.has('objective_title')" v-text="form.errors.get('objective_title')"></p>
             </div>
-            <p class="text-danger text-center mb-3" v-if="form.errors.has('objective_title')" v-text="form.errors.get('objective_title')"></p>
-            <label for="" class="text-left w-100">Objective Description</label>
-
-            <div class="form-group input-group mb-0">
-                <textarea 
-                  id="objective_text" 
-                  name="objective_text" 
-                  v-model="form.objective_text" 
-                  class="form-control input-custom font-14 mb-3"
-                  :class="{'is-invalid' : form.errors.has('objective_text')}" 
-                  cols="30" rows="10"></textarea>
-            </div>
-            <p class="text-danger text-center mb-3" v-if="form.errors.has('objective_text')" v-text="form.errors.get('objective_text')"></p>
             
-            <button type="submit" class="btn btn-default font-14 float-right text-center btn-cust-radius pr-4 pl-4 mt-4 mb-4">Okay</button>
-            
+            <div class="col-lg-12">
+              <label for="" class="text-left w-100">Objective Description</label>
+              <div class="form-group input-group mb-0">
+                  <textarea 
+                    id="objective_text" 
+                    name="objective_text" 
+                    v-model="form.objective_text" 
+                    class="form-control input-custom font-14 mb-3"
+                    :class="{'is-invalid' : form.errors.has('objective_text')}" 
+                    cols="30" rows="10"></textarea>
+              </div>
+              <p class="text-danger text-center mb-3" v-if="form.errors.has('objective_text')" v-text="form.errors.get('objective_text')"></p>
+            </div>
+        
           </div>
+          <div class="row">
+            <div class="col-lg-12">
+              <button type="submit" class="btn btn-default font-14 float-right float-right text-center btn-cust-radius pr-4 pl-4 mt-4 mb-4">Okay</button>
+            </div>
+          </div>
+
+
         </div>
         <div class="col-lg-5 offset-lg-6">
             

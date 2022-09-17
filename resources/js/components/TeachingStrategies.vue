@@ -4,7 +4,7 @@
     <b-container class="bv-example-row">
         <b-row>
           <b-col cols="3">
-            <b-button variant="warning" class="font-12 w-100 mb-2 text-left btn-nav" v-on:click="fetchTeachingDashboard">Dashboard</b-button>
+            <b-button variant="warning" class="font-12 w-100 mb-2 text-left btn-nav" v-on:click="fetchTeachingDashboard">All Lesson Plan</b-button>
             <b-button variant="warning" class="font-12 w-100 mb-2 text-left btn-nav" v-on:click="showFrmAddStrat = 3;">Create Lesson plan/Teaching strategy</b-button>
             <b-button variant="warning" class="font-12 w-100 mb-2 text-left btn-nav" v-on:click="fetchTeachingStrategyLobby">Bookmarks</b-button>
 
