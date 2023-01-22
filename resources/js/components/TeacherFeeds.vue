@@ -78,31 +78,46 @@
       </div>
     </div>
     <div class="ov">
-    <div class="mb-3 cursor" v-for="pfd in postedFeedsData" :key="pfd.id">
-      <div class="card rounded-11px">
-        <div class="card-body mt-1" @click="goToProfile(pfd.teacher_id, pfd.id)">
+    <div class="">
+      <div class="mb-3 card cursor"  v-for="pfd in postedFeedsData" :key="pfd.id">
+        <div class="card-body mt-1">
           <div class="row">
-            <div class="col-lg-2 text-center mt-3 pr-1">
-              <img :src="asset + 'images/ellipse-1.png'" alt="">
+            <!-- @click="goToProfile(pfd.teacher_id, pfd.id)" -->
+            <div class="col-lg-2 text-center mt-3 pr-1" v-if="pfd.picture !== null">
+              <img class="rounded-circle" :src="baseurl + '/public/images/profile/teachers/thumb/' + pfd.picture" alt="">
+            </div>
+            <div class="col-lg-2 text-center mt-3 pr-1" v-else>
+              <img class="rounded-circle" src="https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg" alt="">
             </div>
             <div class="col-lg-10">
               <div class="cicle-active"></div>
-              <div class="row">
+              <div class="row text-secondary">
                 <div class="col-lg-7">
-                  <span class="ml-3 font-14"> 
-                   {{ pfd.lastname.toUpperCase() }}, {{ pfd.firstname.toUpperCase() }}</span>
+                  <p class="ml-3 mb-0 font-14 font-weight-normal"> 
+                   {{ pfd.lastname.toUpperCase() }}, {{ pfd.firstname.toUpperCase() }}</p>
+                  <p class="ml-3 font-12 text-muted">
+                    {{ moment(new Date(pfd.created_at)).fromNow() === 'a year ago' ? moment(new Date(pfd.created_at)).format('MMMM DD') : moment(new Date(pfd.created_at)).fromNow() }}
+                  </p>
                 </div>
-                <div class="col-lg-5">
-                  <span class="ml-3 font-14" style="float: right;">
-                    {{ moment(new Date(pfd.created_at)).format('LLL') }}
-                  </span>
+                <div class="col-lg-5 report-dd">
+                  <div class="dropdown float-right">
+                    <a class="dropdown-toggle text-muted" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="fas fa-ellipsis-h"></i>
+                    </a>
+                    <div class="dropdown-menu font-12 float-left" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item text-secondary" href="#"><i class="fas fa-exclamation-circle"></i> Report Post</a>
+                      <a class="dropdown-item text-secondary" href="#"><i class="fas fa-save"></i> Save Post</a>
+                      <a class="dropdown-item text-secondary" href="#"><i class="fas fa-eye-slash"></i> Hide Post</a>
+                    </div>
+                  </div>
+
                 </div>
               </div>
               <hr>
               <!-- <span class="ml-3">
                 43 Reviews 
                 <i class="fas fa-heart" style="color: rgb(217, 22, 132);"></i></span> -->
-              <div class="row">
+              <div class="row text-body">
                 <div class="col-lg-9">
                   {{ pfd.feed_body }}
                 </div>
@@ -121,16 +136,16 @@
           </div>
           
         </div>
-        <div class="card-footer">
+        <div class="card-footer" style="background: transparent">
           <div class="row cont-count-feeds">
-            <div class="col-lg-4 text-center font-weight-normal pr-1 count-feeds-like">
+            <div class="col-lg-6 text-center font-weight-normal pr-1 count-feeds-like">
               <span class="font-12 cursor" :class="{ 'text-primary' : pfd.is_like }" data-loc="like-question" :data-id="pfd.id" v-on:click="likeCmnt"><i class="fas fa-thumbs-up"></i> Like</span>
               <span class="badge badge-secondary">{{pfd.like_count > 0 ? pfd.like_count: ''}}</span>
             </div>
-            <div class="col-lg-4 text-center font-weight-normal pr-1 count-feeds-comment">
+            <!-- <div class="col-lg-4 text-center font-weight-normal pr-1 count-feeds-comment">
               <span class="font-12 cursor" :class="{ 'text-danger' : pfd.is_reported }" :data-id="pfd.id" @click="reportPost"><i class="fas fa-flag"></i> Report</span>
-            </div>
-            <div class="col-lg-4 text-center font-weight-normal pr-1 count-feeds-dislikes">
+            </div> -->
+            <div class="col-lg-6 text-center font-weight-normal pr-1 count-feeds-dislikes">
               <span class="font-12 cursor text-secondary" v-on:click="showComments(pfd.id)"><i class="fas fa-comment"></i> Show Answers</span>
             </div>
           </div>
@@ -288,7 +303,8 @@ export default {
         default: [],
       },
       isActive : false,
-      validationfail : ''
+      validationfail : '',
+      sideTop: false
     }
   },
 
@@ -441,19 +457,41 @@ export default {
       }).catch((error) => {
           console.log(error);
       });
+    },
+    vueOnScroll() {
+      var prev = window.pageYOffset;
+      var refs = document.getElementsByClassName("cont-upcoming-lesson"); // assign the reference in variable
+      window.addEventListener("scroll", () => {
+        var curr = window.pageYOffset;
+        if (curr > 75) {
+          for(var i = 0; i < refs.length; i++){
+            refs[i].classList.add("side_top");
+            console.log(refs[i].className);
+          }
+        } else {
+          for(var i = 0; i < refs.length; i++){
+            refs[i].classList.remove("side_top");
+            console.log(refs[i].className);
+          }
+        }
+      });
     }
-
   },
   mounted() {
     this.displayTeacherFeeds();
+    this.vueOnScroll();
   }
 }
 </script>
 
 <style>
-.ov{
-  overflow-y: scroll;
-  height: 70vh;
+.side_top{
+  top: 33px !important;
+}
+.ov .card {
+  border-radius: 20px;
+  border: 0;
+  box-shadow: 2px 2px 13px #e3e3e3;
 }
 .modal-header {
     border-bottom: 0px !important;
@@ -488,4 +526,13 @@ export default {
 .errbox{
   border: 2px solid red !important;
 }
+
+.report-dd .dropdown-menu {
+  transform: translate3d(-143px, 22px, 0px) !important;
+}
+
+.report-dd .dropdown-toggle::after {
+    display: none;
+}
+
 </style>

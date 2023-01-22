@@ -131,7 +131,7 @@
                   <a class="dropdown-item l-h-1p4" href="#">
                     {{ strtoupper($data->email) }}
                   </a>
-                  <hr>
+                  {{-- <hr>
                   <a class="dropdown-item l-h-1p4" href="#">
                     Your Profile
                   </a>
@@ -150,7 +150,7 @@
                   </a>
                   <a class="dropdown-item l-h-1p4" href="#">
                     Favorites
-                  </a>
+                  </a> --}}
                   <hr>
                   <a class="dropdown-item l-h-1p4" href="{{ url('students-account-settings') }}">
                     Account Settings
@@ -158,9 +158,9 @@
                   <a class="dropdown-item l-h-1p4" href="{{ url('students-payment-methods') }}">
                     Payment Methods
                   </a>
-                  <a class="dropdown-item l-h-1p4" href="#">
+                  {{-- <a class="dropdown-item l-h-1p4" href="#">
                     Heygo Credits
-                  </a>
+                  </a> --}}
                   <a class="dropdown-item l-h-1p4" href="{{ url('students-purchase-history') }}">
                     Purchase History
                   </a>

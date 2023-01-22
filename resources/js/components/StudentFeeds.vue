@@ -79,6 +79,7 @@
         <div class="card-body mt-1" @click="goToProfile(pfd.id)">
           <div class="row">
             <div class="col-lg-2 text-center mt-3 pr-1">
+              
               <img :src="asset + 'images/ellipse-1.png'" alt="">
             </div>
             <div class="col-lg-10">
@@ -401,10 +402,29 @@ export default {
     },
     goToProfile(feeds_id){
       window.location.href = process.env.MIX_BASE_URL+'/profile-feeds/'+this.user_id+'/'+feeds_id;
+    },
+    vueOnScroll() {
+      var prev = window.pageYOffset;
+      var refs = document.getElementsByClassName("cont-upcoming-lesson"); // assign the reference in variable
+      window.addEventListener("scroll", () => {
+        var curr = window.pageYOffset;
+        if (curr > 75) {
+          for(var i = 0; i < refs.length; i++){
+            refs[i].classList.add("side_top");
+            console.log(refs[i].className);
+          }
+        } else {
+          for(var i = 0; i < refs.length; i++){
+            refs[i].classList.remove("side_top");
+            console.log(refs[i].className);
+          }
+        }
+      });
     }
   },
   mounted() {
     this.displayTeacherFeeds();
+    this.vueOnScroll();
   }
 }
 </script>

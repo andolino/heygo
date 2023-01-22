@@ -58,7 +58,8 @@ import StrategyFilter from './Display/Functions/StrategyFilter.vue';
 import Embed from 'v-video-embed';
 import VCalendar from 'v-calendar';
 import VueDraggableResizable from 'vue-draggable-resizable'
-
+import Calendar from 'v-calendar/lib/components/calendar.umd'
+import DatePicker from 'v-calendar/lib/components/date-picker.umd'
 
 
 // Import Bootstrap an BootstrapVue CSS files (order is important)
@@ -106,6 +107,9 @@ Vue.component('BCard', BCard)
 Vue.component('todo-component', require('./components/TodoComponent.vue').default );
 Vue.use(VCalendar);
 Vue.component('vue-draggable-resizable', VueDraggableResizable)
+// Register components in your 'main.js'
+Vue.component('calendar', Calendar)
+Vue.component('date-picker', DatePicker)
 // Vue.component('b-carousel', '');
 
 

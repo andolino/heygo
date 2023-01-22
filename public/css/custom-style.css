@@ -36,7 +36,7 @@ hr{
 header, #demo, footer{
 	position: relative;
 	margin: 0 auto;
-	width: 90%;
+	width: 100%;
 	padding: 0 30px;
 }
 
@@ -802,8 +802,6 @@ body.colorbox-demo #cboxContent, body.colorbox-demo #cboxContent p, body.colorbo
 }
 
 footer{
-	margin-top: 40px;
-	margin-bottom: 40px;
 	color: #bbb;
 	font-size: 12px;
 }
@@ -816,4 +814,16 @@ footer a{ margin-right: 20px; }
 
 @media only screen and (min-width: 1629px){
 	.showcase .horizontal-images.content{ width: 700px; }
+}
+
+.modal-header {
+  height: 54px;
+  background: #df9509;
+  color: #fff;
+}
+
+.cont-upcoming-lesson {
+	position: fixed;
+	max-width: 400px;
+	width: 100%;
 }

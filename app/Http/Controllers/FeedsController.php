@@ -148,8 +148,8 @@ class FeedsController extends Controller{
                                         GROUP_CONCAT(DISTINCT tna.file ORDER BY tna.file DESC SEPARATOR '==') as attmnts,
                                         tnl.is_like,
                                         tnr.is_reported,
+                                        t.picture,
                                         COUNT(tnl.is_like) as like_count
-                                        
                                     FROM teacher_newsfeed tn
                                     LEFT JOIN teacher_newsfeed_attachments tna ON tna.teacher_newsfeed_id = tn.id
                                     LEFT JOIN teacher_newsfeed_likes tnl ON tnl.teacher_newsfeed_id = tn.id

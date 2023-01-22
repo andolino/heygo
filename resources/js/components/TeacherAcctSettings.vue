@@ -547,7 +547,6 @@
   }
 
   .img-card {
-    padding: 21px;
     margin: 29px;
     margin-top: 29px;
     margin-top: 0;
@@ -577,12 +576,11 @@
     left: 0;
     right: 0;
     height: 100%;
-    width: 73%;
+    width: 100%;
     opacity: 0;
-    transition: .3s ease;
-    background-color: rgba(79, 73, 73, 0.7);
+    transition: 1.3s ease;
+    background-color: rgba(79, 73, 73, 0.11);
     margin: auto;
-    border-radius: 93px;
   }
 
   .img-container .overlay a {

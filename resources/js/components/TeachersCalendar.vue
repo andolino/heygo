@@ -13,7 +13,7 @@
           <b-row>
             <b-col>
               <label for="" class="font-12">Time Start</label>
-              <datetime format="YYYY-MM-DD H:i:s" width="" v-model="form.time_start"></datetime>  
+              <datetime format="YYYY-MM-DD H:i:s" width="" v-model="form.time_start"></datetime>
             </b-col>
           </b-row>
           <!-- <b-row>
@@ -35,6 +35,7 @@
                 <b-button href="#" @click="saveAddTeacherAvailability" variant="default" class="font-12">Add</b-button>
               </div>
               <div v-else>
+                <b-button href="#" variant="dark" class="font-12" @click="modalShow = !modalShow">Apply this Time</b-button>
                 <b-button href="#" variant="default" class="font-12" @click="saveAddTeacherAvailability">Update</b-button>
                 <b-button href="#" variant="default" class="font-12" @click="addAvailDateTime = !addAvailDateTime; form.teacher_availability_id = null">Cancel</b-button>
               </div>
@@ -61,14 +62,21 @@
           </select>
         </b-col>
       </b-row> -->
-      <b-row>
-        <b-col>
-          
-        </b-col>
-      </b-row>
-      
-
+      <b-modal class="p-0" v-model="modalShow" size="sm" title="Apply time to date" @ok="handleOk" ok-only>
+        <b-row>
+          <b-col>
+            <date-picker v-model="range" is-range />
+          </b-col>
+        </b-row>
+      </b-modal>
     </b-card>
+    <Toasts
+			:show-progress="true"
+			:rtl="false"
+			:max-messages="5"
+			:time-out="3000"
+			:closeable="true"
+		></Toasts>
   </div>
 </template>
 
@@ -89,6 +97,11 @@
     name: 'TeachersCalendar',
     data(){
       return {
+        range: {
+          start: '',
+          end: '',
+        },
+        selectedDate: null,
         lessonPlan: [],
         form: {
           // lesson_plan_id: '',
@@ -98,6 +111,7 @@
           teacher_availability_id: null,
           user_id: '',
         },
+        modalShow: false,
         status_options: [
           { value: 0, text: 'Open' },
           { value: 3, text: 'Closed' }
@@ -112,7 +126,7 @@
           nowIndicator: true,
           dayMaxEvents: true, // allow "more" link when too many events
           expandRows: true,
-          contentHeight: '1500px',
+          contentHeight: '1900px',
           events: [
             {
               time_start: this.time_start
@@ -121,16 +135,16 @@
           // eventColor: '#fff',
           eventContent: function (arg, createElement){
             let ht = '';
-                ht+='<div class="card" style="height:100%;">';
-                  ht+='<div class="card-body pt-2 pr-3 pl-3 pb-3">';
-                    ht+='<h6 class="card-title">'+arg.timeText+'</h6>';
-                    // ht+='<p class="card-subtitle mb-2 text-muted">'+arg.event.title+'</p>';
-                    ht+='<small class="text-muted">'+arg.event.extendedProps.status_text+'</small>';
+                ht+='<div class="card" style="height:100%;" role="button">';
+                  ht+='<div class="card-body pt-2 pr-2 pl-2 pb-2" style="font-size:12px;">';
+                      ht+='<p class="m-0">Time: '+arg.timeText+'</p>';
+                      ht+='<p class="text-muted m-0">Current Enrolled: '+0+'</p>';
                   ht+='</div>';
               ht+='</div>';
             arg.backgroundColor = 'rgba(0, 0, 0, 0)';
             arg.borderColor = 'rgba(0, 0, 0, 0)';
             arg.textColor = '#000';
+            console.log(arg, ' arg')
             return { html: ht } 
           },
           eventClick: (calEvent, jsEvent, view) => {
@@ -141,13 +155,10 @@
               this.form.time_start = moment(calEvent.event.start).format('YYYY-MM-DD HH:mm:ss');
               this.form.time_end = moment(calEvent.event.end).format('YYYY-MM-DD HH:mm:ss');
               this.form.selected_status = calEvent.event.extendedProps.status;
-              // this.form.lesson_plan_id = calEvent.event.extendedProps.lesson_plan_id;
+              this.range.start = Date(2022, 0, 5)
             }
           },
           dateClick: function(info) {
-              // console.log(info.event.extendedProps.status);
-              // console.log(moment(info.date).format('YYYY-MM-DD h:mm:ss'), ' info');
-              
               Swal.fire({
                 title: 'Confirm',
                 html: "Are you sure on this date? </br>" + moment(info.date).format('lll'),
@@ -165,8 +176,6 @@
                     selected_status : 0
                   } ).then((res) => {
                     window.location.reload(false);
-                    // console.log(res);
-                    // this.$refs.calendar.$emit('rerenderEvents');
                     }).catch((error) => {
                       console.log(error);
                   });
@@ -174,17 +183,6 @@
                   
                 }
               });
-
-
-              // console.log(moment(info.date).format('YYYY-MM-DD HH:mm:ss'));
-              // this.addAvailDateTime = false;
-              // this.form.teacher_availability_id = calEvent.event.id;
-              // this.assignStartData(moment(info.date).format('YYYY-MM-DD HH:mm:ss'));
-
-              // console.log(moment(info.date).format('YYYY-MM-DD HH:mm:ss'));
-              // this.form.time_start = moment(info.date).format('YYYY-MM-DD HH:mm:ss');
-              // this.form.time_end = moment(calEvent.event.end).format('YYYY-MM-DD HH:mm:ss');
-              // this.form.selected_status = calEvent.event.extendedProps.status;
           },
         },
         csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
@@ -194,6 +192,38 @@
       }
     },
     methods: {
+      handleOk(){
+
+        Swal.fire({
+          title: 'Are you sure?',
+          text: "",
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#fcb017',
+          cancelButtonColor: '#212222',
+          confirmButtonText: 'Yes'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            const start = moment(this.range.start).format('YYYY-MM-DD');
+            const end   = moment(this.range.end).format('YYYY-MM-DD');
+            const user_id = document.querySelector('meta[name="user-id"]').getAttribute('content');
+            axios.post(process.env.MIX_BASE_URL+'/save-time-to-date', {
+              start, 
+              end,
+              user_id,
+              time: this.form.time_start
+            }).then((res) => {
+              this.$toast.success('Schedule is already Updated!');
+            }).catch((error) => {
+                console.log(error);
+            });
+          } else {
+            
+          }
+        });
+
+        
+      },
       getTeachersAvailability(){
         axios.get(process.env.MIX_BASE_URL+'/get-teachers-availability', { 'teachers_id' : this.user_id }).then((res) => {
             this.calendarOptions.events = res.data[0];
@@ -210,6 +240,7 @@
         this.form.time_start = start_date;
       },
       saveAddTeacherAvailability(){
+
         Swal.fire({
           title: 'Adding this to your availability?',
           text: "",

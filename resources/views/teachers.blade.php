@@ -9,7 +9,7 @@
 
 					<div class="cont-upcoming-lesson">
 						
-						<div class="head-upcoming-lesson bg-dark mb-0 pb-2 pt-3 pl-3"><h5 class="font-weight-regular">Upcoming Lesson <span class="float-right pr-2" style="line-height: 1.5"><i class="fas fa-chevron-right"></i></span></h5></div>
+						<div class="head-upcoming-lesson bg-dark mb-0 pb-2 pt-3 pl-3"><h5 class="font-weight-regular text-center">Upcoming Lesson <span class="float-right pr-2" style="line-height: 1.5"><i class="fas fa-chevron-right"></i></span></h5></div>
 						<div class="body-upcoming-lesson p-3">
 							<label class="text-center w-100 font-weight-bold"><?php echo date('l, F, j, Y'); ?></label>
 							<p class="text-center"><?php echo date('h:i A'); ?></p>
@@ -24,7 +24,7 @@
 
 			{{-- mid content --}}
 
-			<div class="{{ $uri=='teachers-workbooks' || $uri=='workbook-materials' || $uri=='answer-materials' || $uri=='profile' || $uri== 'profile-details' ? 'col-lg-9' : 'col-lg-6' }} justify-content-center col-md-5 pr-2 pl-4">
+			<div class="{{ $uri=='teachers-workbooks' || $uri=='workbook-materials' || $uri=='answer-materials' || $uri=='profile' || $uri== 'profile-details' ? 'col-lg-8' : 'col-lg-5' }} justify-content-center col-md-5 pr-2 pl-4">
 				@switch($uri)
 						@case('chat')
 							<chat-panel :messageDisplay="{{ $messageDisplay }}" :teachers-id="{{ $teachers_id ?? 0 }}" :students-id="{{ $students_id ?? 0 }}"></chat-panel>
@@ -46,12 +46,12 @@
 							</div>
 							@break --}}
 						@case('profile-details')
-							<div class="body-upcoming-lesson p-3 rounded-md">
+							{{-- <div class="body-upcoming-lesson p-3 rounded-md"> --}}
 								{{-- upcoming-lesson-list custom-scrollbar-css mCustomScrollbar --}}
 								<div class="p-2 h-100" data-mcs-theme="minimal-dark">
 									<teacher-main-profile teachers-id="{{ $teachers_id }}"></teacher-main-profile>
 								</div>
-							</div>
+							{{-- </div> --}}
 							@break
 						@case('teachers-workbooks')
 							<div class="body-upcoming-lesson p-3 rounded-md h-100">
@@ -89,9 +89,9 @@
 			{{-- right content --}}
 			@if ($uri != 'teachers-workbooks' && $uri != 'workbook-materials' && $uri != 'answer-materials' && $uri != 'profile')
 
-			<div class="col-lg-3 col-md-3 pr-0">
+			<div class="col-lg-3 col-md-3 offset-lg-1 pr-0 mr-auto">
 				<div class="cont-home-works">
-					<div class="head-upcoming-lesson bg-dark mb-0 pb-2 pt-3 pl-3"><h5 class="font-weight-regular">Lesson Plans <span class="float-right pr-2" style="line-height: 1.5"><i class="fas fa-chevron-right"></i></span></h5></div>
+					<div class="head-upcoming-lesson bg-dark mb-0 pb-2 pt-3 pl-3"><h5 class="font-weight-regular text-center">Lesson Plans <span class="float-right pr-2" style="line-height: 1.5" role="button" onclick="window.location.href = '{{ url('teachers/teacher-lobby') }}'"><i class="fas fa-chevron-right"></i></span></h5></div>
 					{{-- custom-scrollbar-css  mCustomScrollbar --}}
 					<div class="homework-list p-2" data-mcs-theme="minimal-dark">
 						<teaching-strategies-card></teaching-strategies-card>
@@ -145,7 +145,7 @@
 						
 				<div class="cont-books-workbooks-shop mt-4">
 					<div class="head-upcoming-lesson bg-dark mb-0 pb-2 pt-3 pl-3">
-						<h5 class="font-weight-regular cursor" onclick="window.location.href='{{ url('teachers/workbook-materials') }}'">Books/Workbooks Shop 
+						<h5 class="font-weight-regular cursor text-center" onclick="window.location.href='{{ url('teachers/workbook-materials') }}'">Books/Workbooks Shop 
 							<span class="float-right pr-2" style="line-height: 1.5"><i class="fas fa-chevron-right"></i></span>
 						</h5>
 					</div>

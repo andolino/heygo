@@ -179,6 +179,26 @@ class HomeController extends Controller {
         return view('teachers-calendar', ['data' => $data]);
     }
     
+    public function saveTimeToDate(){
+        $data = Request::post();
+        $dates = [];
+        $current = strtotime($data['start']);
+        $last = strtotime($data['end']);
+        $time = strtotime($data['time']);
+        $user_id = $data['user_id'];
+        while( $current <= $last ) {
+            array_push($dates, array(
+                'teacher_id' => $user_id,
+                'start_time' => date( 'Y-m-d', $current ) . ' ' . date('H:i:s', $time),
+            ));
+            $current = strtotime( '+1 day', $current );
+        }
+        DB::table('teacher_availability')->insert($dates);
+        return response()->json(['msg'=>'success']);
+        // $data = DB::table('teachers')->where('id', '=', Auth::id())->first();
+        // return view('teachers-calendar', ['data' => $data]);
+    }
+    
     public function teachersPurchaseHistory(){
         $data = DB::table('teachers')->where('id', '=', Auth::id())->first();
         $purchases = DB::select(DB::raw("SELECT 
@@ -341,7 +361,7 @@ class HomeController extends Controller {
             'rate_per_hr'      => 'required|numeric',
             'rate_per_hr'      => 'required|numeric',
             // 'lesson_plan_id'      => 'required',
-            'lesson_rate_type_id'      => 'required',
+            // 'lesson_rate_type_id'      => 'required',
             // 'currency_rate_id'      => 'required',
             'objective_title' => 'required|string',
             'objective_text'  => 'required|string',
@@ -355,7 +375,7 @@ class HomeController extends Controller {
         $teachers->rate_per_hr = Request::post('rate_per_hr');
         $teachers->country_id = Request::post('country_id');
         // $teachers->lesson_plan_id = Request::post('lesson_plan_id');
-        $teachers->lesson_rate_type_id = Request::post('lesson_rate_type_id');
+        // $teachers->lesson_rate_type_id = Request::post('lesson_rate_type_id');
         // $teachers->currency_rate_id = Request::post('currency_rate_id');
         $teachers->objective_title = Request::post('objective_title');
         $teachers->objective_text  = Request::post('objective_text');

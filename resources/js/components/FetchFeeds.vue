@@ -779,6 +779,24 @@
             return false;
           }
         }
+      },
+      vueOnScroll() {
+        var prev = window.pageYOffset;
+        var refs = document.getElementsByClassName("cont-upcoming-lesson"); // assign the reference in variable
+        window.addEventListener("scroll", () => {
+          var curr = window.pageYOffset;
+          if (curr > 75) {
+            for(var i = 0; i < refs.length; i++){
+              refs[i].classList.add("side_top");
+              console.log(refs[i].className);
+            }
+          } else {
+            for(var i = 0; i < refs.length; i++){
+              refs[i].classList.remove("side_top");
+              console.log(refs[i].className);
+            }
+          }
+        });
       }
     },
     beforeMount: function(){
@@ -788,6 +806,8 @@
       this.fetchTutor();
       this.getCommunicationApp();
       this.getStudentsInfo();
+      this.vueOnScroll();
+
     },
     destroyed(){
       console.log('destroyed');
@@ -810,6 +830,9 @@
     transform-origin: 50% -100%;
     background-color: rgba(15, 14, 14, 0.55);
     z-index: 1;
+  }
+  .side_top{
+    top: 33px !important;
   }
   .step:last-child .circle:after{
     display:none

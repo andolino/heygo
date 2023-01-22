@@ -4,39 +4,7 @@
       <div class="col-lg-12 mb-2">
         <button type="button" class="btn w-100 text-left p-3"><img :src="asset + 'images/spay.png'" alt=""></button>
       </div>
-      <!-- <div class="col-lg-12 mb-2">
-        <button type="button" class="btn w-100 text-left p-3"><img :src="asset + 'images/apay.png'" alt=""></button>
-      </div> -->
-      <!-- <div class="col-lg-12 mb-3">
-        <button type="button" class="btn w-100 text-left p-3"><img :src="asset + 'images/ppay.png'"></button>
-      </div> -->
-      <!-- <div class="col-lg-12">
-        <hr>
-      </div>
-      <div class="col-lg-4 mb-3 pr-0">
-        <button type="button" class="btn w-100 text-left font-12 p-2 rounded-0">Eastwest <br> **** **** **** *015</button>
-      </div>
-      <div class="col-lg-4 mb-3 pr-0">
-        <button type="button" class="btn w-100 text-left font-12 p-2 rounded-0">Account 2 <br> Bpi</button>
-      </div>
-      <div class="col-lg-4 mb-3 pr-0">
-        <button type="button" class="btn w-100 text-left p-2 rounded-0 font-12 h-100" v-on:click="showFrm = !showFrm">+ Add Account</button>
-      </div> -->
-      
     </div>
-    <form >
-      <!-- <b-form-group>
-        <b-form-input v-model="formStudentPayment.student_name" placeholder="Student Name"></b-form-input>
-      </b-form-group>
-      <b-form-group>
-        <b-form-input v-model="formStudentPayment.student_email" placeholder="Student Email"></b-form-input>
-      </b-form-group>
-      <b-form-group>
-        <b-form-input v-model="formStudentPayment.amount" placeholder="Amount"></b-form-input>
-      </b-form-group> -->
-      
-    </form>
-    <!-- @submit.prevent="submitStudentBankAccouts" -->
     <form @submit.prevent="submitStudentPayment">
       <div class="frm-add-bnk-acct" v-if="showFrm">
         <div class="row mt-3">
@@ -59,40 +27,7 @@
                         class="form-control text-center input-custom font-14 mb-3" 
                         name="email">
                 </div>
-                <!-- <div class="form-group">
-                  <label for="" class="font-14">Card Number</label>
-                  <input type="text" 
-                        v-model="form.card_number" 
-                        :class="{'is-invalid' : form.errors.has('card_number')}" 
-                        class="form-control text-center input-custom font-14 mb-3" 
-                        name="card_number">
-                </div> -->
-                <!-- <div class="row">
-                  <div class="col-lg-6">
-                    <label for="" class="font-14">Expiry Date</label>
-                    <input type="text" 
-                          v-model="form.expiry_date" 
-                          :class="{'is-invalid' : form.errors.has('expiry_date')}" 
-                          class="form-control text-center input-custom font-14 mb-3" 
-                          name="expiry_date">
-                  </div>
-                  <div class="col-lg-6">
-                    <label for="" class="font-14">CVV Code</label>
-                    <input type="text" 
-                          v-model="form.cvv_code" 
-                          :class="{'is-invalid' : form.errors.has('cvv_code')}" 
-                          class="form-control text-center input-custom font-14 mb-3" 
-                          name="cvv_code">
-                  </div>
-                </div> -->
-                <!-- <div class="form-group">
-                  <label for="" class="font-14">Add Card Name</label>
-                  <input type="text" 
-                        v-model="form.card_name" 
-                        :class="{'is-invalid' : form.errors.has('card_name')}" 
-                        class="form-control text-center input-custom font-14 mb-3" 
-                        name="card_name">
-                </div> -->
+                
             </div>
 
             <div ref="card" id="stripe_card"></div>

@@ -1,110 +1,8 @@
 <template>
   <div>
     <form @submit.prevent="submitTeachersAcctSettings">
-      <!-- <div class="row">
-        <div class="col-lg-12">
-          Profile Settings
-        </div>
-      </div> -->
-      <div class="row mt-5">
-        <!-- <div class="col-lg-5 text-center">
-            <div class="img-card">
-              <h5 class="text-left font-14">Profile Pic</h5>
-              <div class="img-container mb-3">
-                <img :src="this.defaultImg" ref="prof_display" class="rounded-circle" alt="">
-                <input type="file" class="d-none" ref="uploadImg" @change="selectFileUploadImg">
-                <div class="overlay">
-                  <a href="javascript:void(0);" @click="$refs.uploadImg.click()" class="icon" title="User Profile">
-                    <i class="fa fa-upload"></i>
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div class="img-card">
-              <h5 class="text-left font-14">Short Video</h5>
-              <div class="vid-container">
-                <video ref="videoRef" src="" id="video-container" width="100%" height="100%" controls></video>
-                <input type="file" class="d-none" ref="uploadVideo" @change="selectFileUploadVid">
-                <div class="overlay">
-                  <div class="row w-100 m-auto">
-                    <div class="col-sm-4">
-                      <a href="javascript:void(0);" @click="$refs.uploadVideo.click()" class="icon" title="User Profile">
-                        <i class="fas fa-upload"></i>
-                      </a>
-                    </div>
-                    <div class="col-sm-4">
-                      <a href="javascript:void(0);" @click="$refs.videoRef.play();" class="icon" title="User Profile">
-                        <i class="fas fa-play"></i>
-                      </a>
-                    </div>
-                    <div class="col-sm-4">
-                      <a href="javascript:void(0);" @click="$refs.videoRef.pause();" class="icon" title="User Profile">
-                        <i class="fa fa-pause"></i>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-lg-12">
-                <b-form-group label="Choose you want to display in profile" class="font-12" v-slot="{ ariaDescribedby }">
-                  <b-form-radio-group
-                    id="btn-radios-1"
-                    v-model="vp_selected"
-                    :options="options"
-                    size="sm"
-                    :aria-describedby="ariaDescribedby"
-                    name="radios-btn-default"
-                    buttons
-                    @change="setDisplayTeacher"
-                  ></b-form-radio-group>
-                </b-form-group>
-              </div>
-            </div> -->
-            <!-- <div class="row up-trial-ctrl p-4">
-              <div class="col-lg-12">
-                <label for="">Trial Lesson</label>
-              </div>
-              <div class="col-lg-12 mb-2">
-                <select class="form-control form-control-sm font-12" name="" id="">
-                  <option value="Yes" selected>Yes</option>
-                  <option value="No">No</option>
-                </select>
-              </div>
-              <div class="col-lg-12 mb-2">
-                <label for="currency_rate_id" class="font-12">Currency Rate</label>
-                <select 
-                  class="form-control form-control-sm font-12" 
-                  name="currency_rate_id" 
-                  id="currency_rate_id"
-                  v-model="form.currency_rate_id"
-                  :class="{'is-invalid' : form.errors.has('currency_rate_id')}">
-                  <option value="" selected hidden>--</option>
-                  <option v-for="cr in currencyRate"
-                          :key="cr.id"
-                          :value="cr.id" >
-                    {{ cr.currency }} - {{ cr.rate }}
-                  </option>
-                </select>
-              </div>
-              <div class="col-lg-12">
-                <label for="" class="font-12">Trial Lesson Rate</label>
-                <div class="form-check form-check-inline w-100" v-for="lrt in lessonTypeRate" :key="lrt.id">
-                  <input class="form-check-input" 
-                        type="radio" 
-                        name="lesson_rate_type_id" 
-                        :id="lrt.id" 
-                        :value="lrt.id" 
-                        v-model="form.lesson_rate_type_id"
-                        :class="{'is-invalid' : form.errors.has('lesson_rate_type_id')}">
-                  <label class="form-check-label font-12" :for="lrt.id">{{ lrt.type }}</label>
-                </div>
-              </div>
-            </div> -->
-        <!-- </div> -->
-
-        <div class="col-lg-12 offset-lg-1">
+      <div class="row">
+        <div class="col-lg-12 ">
           <div class="m-auto row">
             <div class="col-lg-4">
               <label for="" class="text-left w-100">First Name</label>
@@ -282,7 +180,8 @@
           options: [
             { text: 'Display Picture', value: '0' },
             { text: 'Diplay Video', value: '1' }
-          ]
+          ],
+          editedTodo: null,
           // defaultVid: document.querySelector('meta[name="url-asset"]').getAttribute('content') + 'images/ellipse-4.png',
 				}
 			},
@@ -385,6 +284,12 @@
         },
         setDisplayTeacher(){
           axios.post(process.env.MIX_BASE_URL+"/update-default-dp", { 'display_status' : this.vp_selected }).then((res) => {});
+        },
+        editTodo: function (todo) {
+          this.editedTodo = todo
+        },
+        submitFrm: function(){
+          console.log(this.form_profile.title, ' this.form_profile')
         }
 			},
 			mounted() { 
@@ -587,7 +492,6 @@
   }
 
   .img-card {
-    padding: 21px;
     margin: 29px;
     margin-top: 29px;
     margin-top: 0;
@@ -617,12 +521,11 @@
     left: 0;
     right: 0;
     height: 100%;
-    width: 81%;
+    width: 100%;
     opacity: 0;
-    transition: .3s ease;
-    background-color: rgba(79, 73, 73, 0.7);
+    transition: 1.3s ease;
+    background-color: rgba(79, 73, 73, 0.11);
     margin: auto;
-    border-radius: 93px;
   }
 
   .img-container .overlay a {

@@ -377,7 +377,7 @@ export default {
           console.log(error);
       });
       this.fetchCalendarWeek();
-      $('#modalTeacherStartLesson').modal('show');
+      $('#modalTeacherStartLesson').appendTo("body").modal('show');
     },
     lessonApproval(lesson_schedule_id) {
       const approval_type = event.target.getAttribute('data-apptype');

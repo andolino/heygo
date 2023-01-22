@@ -23,7 +23,13 @@
           <tbody>
             <!-- @click="updateBadge(b.id, b.title, b.image)" -->
             <tr v-for="b in dtaTbl" :key="b.id" class="cursor" @click="getLessonAndBadges(b.id)">
-              <td><img :src="asset + 'images/profile/teachers/thumb/' + b.picture" width="50" alt=""></td>
+              <!--  -->
+              <td v-if="b.picture !== null">
+                <img :src="asset + 'images/profile/teachers/thumb/' + b.picture" width="50" alt=""/>
+              </td>
+              <td v-else>
+                <img src="https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg" width="50" alt=""/>
+              </td>
               <td>{{ b.lastname }}</td>
               <td>{{ b.firstname }}</td>
               <td>{{ b.middlename }}</td>

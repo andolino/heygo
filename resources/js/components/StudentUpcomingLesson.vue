@@ -290,7 +290,7 @@ export default {
         }).catch((error) => {
           console.log(error);
       });
-      $('#modalStudentStartLesson').modal('show');
+      $('#modalStudentStartLesson').appendTo("body").modal('show');
     },
     timeReminder(sd, ed){
       let now = moment(new Date(sd));

@@ -151,6 +151,7 @@ Route::group(['middleware' => 'auth:teachers'], function () {
     Route::post('/save-workbook-inputs', [HomeController::class, 'saveWorkbookInputs'],function(Request $request){});
     Route::get('/get-worksheet-image', [HomeController::class, 'getWorksheetImage']);
     Route::get('/get-comm-app', [HomeController::class, 'getCommApp']);
+    Route::post('/save-time-to-date', [HomeController::class, 'saveTimeToDate']);
 
 
 });

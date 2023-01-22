@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h3>Profile Summary</h3>
-    <div class="card rounded-0 bg-transparent border-0">
+    <h4 class="head-upcoming-lesson bg-dark text-center mb-0">Profile Summary</h4>
+    <div class="card rounded-0 border-0 bg-white">
       <div class="card-body pb-5 row">
 
         <!-- <div class="col-lg-12 text-center pb-5 pt-5" v-if="teachersData.display_status == 0">
@@ -20,13 +20,9 @@
         <div class="col-lg-12 text-justify">
           <div class="row">
             <div class="col-lg-2">
-              <!-- <div class="clearfix">
-                <img :src="this.defaultImg" ref="prof_display" width="100%" class="rounded-circle" alt="" >
-              </div> -->
-              <div class="img-card">
-                <!-- <h5 class="text-left font-14">Profile Pic</h5> -->
-                <div class="img-container mb-3">
-                  <img :src="this.defaultImg" ref="prof_display" class="rounded-circle" alt="">
+              <div class="img-card m-0">
+                <div class="img-container">
+                  <img :src="this.defaultImg" ref="prof_display" class="rounded-circle w-100" alt="">
                   <input type="file" class="d-none" ref="uploadImg" @change="selectFileUploadImg">
                   <div class="overlay">
                     <a href="javascript:void(0);" @click="$refs.uploadImg.click()" class="icon" title="User Profile">
@@ -35,73 +31,10 @@
                   </div>
                 </div>
               </div>
-
             </div>
-            <div class="col-lg-9">
-              <ul class="todo-list">
-                  <li v-for="todo in todos" :key="todo.id">
-                      <input
-                          v-if="todo.edit"
-                          v-model="todo.title"
-                          @blur="todo.edit = false; $emit('update')"
-                          @keyup.enter="todo.edit=false; $emit('update')"
-                          v-focus
-                      >
-                      <div v-else>
-                          <label @click="todo.edit = true;"> {{todo.title}} </label>
-                      </div>
-                  </li>
-              </ul>
-              
-              <!-- <ul id="ti_ul" class="mb-1">
-                <li class="pl-0" style="font-size:20px;">
-                  <i class="fa fa-circle text-success font-12" style="position:relative;bottom:3px;" aria-hidden="true"></i> 
-                    {{ this.$helpers.capFirstLetter(teachersData.lastname) }}, {{ this.$helpers.capFirstLetter(teachersData.firstname) }} </li>
-                <li style="line-height:2"><i class="fas fa-map-marker-alt text-warning p-2"></i> <img :src="asset + 'images/flag-1.png'" width="20"></li>
-              </ul>
-              <ul id="ti_ul" class="font-14">
-                <li class="pl-0"><i class="fas fa-star text-warning" aria-hidden="true"></i> 4.5 </li>
-                <li>43 Reviews</li>
-                <li><i class="fa fa-circle text-success font-12" aria-hidden="true"></i> Certified Tutor</li>
-                <li></li>
-              </ul>
-              <ul id="ti_ul" class="font-12 mb-1">
-                <li class="pl-0">45 active students</li>
-                <li>2,820 Lesson</li>
-              </ul>
-              <ul id="ti_ul" class="font-12">
-                <li class="pl-0"><strong>Speaks:</strong></li>
-                <li>English, Japanese, Korean</li>
-              </ul>
-              <ul id="ti_ul" class="font-14 mb-1">
-                <li class="pl-0"><strong>{{ teachersData.rate_per_hr | toCurrency }}</strong> JPY/hour</li>
-                <li></li>
-              </ul> -->
+            <div class="col-lg-10">
               <TeacherProfileSettings />
             </div>
-
-
-            <!-- <div class="col-lg-4" v-if="teachersId != user_id">
-              <div class="row">
-                <div class="col-lg-8">
-                  <button type="button" 
-                          class="btn btn-default float-left btn-dashboard mb-3 font-12 pl-3 pr-3"  
-                          data-apptype="confirm">SCHEDULE A LESSON</button>
-                </div>
-                <div class="col-lg-4 text-center mb-3 card">
-                  <label for="" class="price-txt"><span class="font-14">5,000</span> <br> <span class="font-10">per day</span></label>
-                </div>
-                <div class="col-lg-8">
-                  <button type="button" 
-                          class="btn btn-warning float-left btn-dashboard mb-3 font-12 pl-3 pr-3"  
-                          data-apptype="confirm">SCHEDULE A TRIAL</button>
-                </div>
-                <div class="col-lg-4 text-center mb-3 card">
-                  <label for="" class="price-txt"><span class="font-14">200</span> <br> <span class="font-10">30 mins</span></label>
-                </div>
-              </div>
-            </div> -->
-
           </div>
           <hr>
           <div class="row">
@@ -125,21 +58,6 @@
               <p class="font-14">{{ $helpers.exactLimitText(teachersData.objective_text, textLimit) }} ... <a href="#" v-on:click="showMore">{{ showMoreTxt }}</a></p>
             </div>
           </div>
-          <!-- <div class="row">
-            <div class="col-lg-12">
-              <h5 for=""><strong>Schedules:</strong></h5>
-            </div>
-            <div class="col-lg-12 font-12">
-              <Fullcalendar ref="calendar" :options="calendarOptions"/>
-            </div>
-          </div> -->
-          <hr>
-          <!-- <div class="row">
-            <div class="col-lg-12">
-            
-            </div>
-          </div> -->
-            
         </div>
         <div class="col-lg-6">
           <!-- <TeacherProfileSettings/> -->
@@ -245,7 +163,12 @@
       fetTeachersData(){
         axios.get(process.env.MIX_BASE_URL+'/api/get-teacher-information/'+this.teachersId).then((res) => {
 						this.teachersData = res.data;
-            this.defaultImg = this.baseurl + '/public/images/profile/teachers/thumb/' + res.data.picture;
+            if (res.data.picture !== null) {
+              this.defaultImg = this.baseurl + '/public/images/profile/teachers/thumb/' + res.data.picture;
+            } else {
+              this.defaultImg = "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg";
+            }
+            
             if (typeof this.$refs.videoRef !== 'undefined') {
               this.$refs.videoRef.src = this.baseurl + '/public/videos/teachers/' + res.data.video;
             } 
@@ -297,7 +220,12 @@
         });
         data.append('data', json);
         axios.post(process.env.MIX_BASE_URL+"/api/upload-img", data).then((res) => {
-          this.defaultImg = this.baseurl + '/public/images/profile/teachers/thumb/' + res.data.imagename;
+          if (res.data.imagename !== null) {
+            this.defaultImg = this.baseurl + '/public/images/profile/teachers/thumb/' + res.data.imagename;
+          } else {
+            this.defaultImg = "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg";
+          }
+          
         });
       },
     },

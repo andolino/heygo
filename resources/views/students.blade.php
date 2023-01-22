@@ -4,25 +4,26 @@
 <div class="w-100 h-100 d-flex flex-column justify-content-center align-items-center">
     <div class="row w-100 pl-4 pr-4 pb-4 pt-0">
         {{-- left content --}}
-        <div class="col-lg-3">
-            <a href="<?php echo url('student-feeds'); ?>" class="btn btn-default w-100 mb-3 font-12 text-center btn-dashboard">View Feeds</a>
-        </div>
+        {{-- <div class="col-lg-3">
+            <a href="<?php //echo url('student-feeds'); ?>" class="btn btn-default w-100 mb-3 font-12 text-center btn-dashboard">View Feeds</a>
+        </div> --}}
         <div class="col-lg-12"></div>
         <div class="col-lg-3 pr-0">
             <div class="cont-upcoming-lesson">
-                <div class="head-upcoming-lesson bg-dark mb-0 pb-2 pt-3 pl-3"><h5 class="font-weight-regular">Today's Schedule <span class="float-right pr-2" style="line-height: 1.5"><i class="fas fa-chevron-right"></i></span></h5></div>
+                <div class="head-upcoming-lesson bg-dark mb-0 pb-2 pt-3 pl-3"><h5 class="font-weight-regular text-center">Today's Schedule <span class="float-right pr-2" style="line-height: 1.5"><i class="fas fa-chevron-right"></i></span></h5></div>
                 <div class="body-upcoming-lesson p-3">
                     <label class="text-center w-100 font-weight-bold"><?php echo date('l, F, j, Y'); ?></label>
                     <p class="text-center"><?php echo date('H:i A'); ?></p>
                 </div>
                 {{-- custom-scrollbar-css p-2 mCustomScrollbar --}}
-                <div class="upcoming-lesson-list p-2" >
+                <div class="upcoming-lesson-list p-2">
                     <student-upcoming-lesson></student-upcoming-lesson>
                 </div>
             </div>
-            <div class="cont-upcoming-lesson mt-4">
+
+            {{-- <div class="mt-4" ref="leftPortDv">
                 <student-homework></student-homework>
-            </div>
+            </div> --}}
         </div>
 
         {{-- mid content --}}
@@ -86,7 +87,7 @@
 
 
         {{-- right content --}}
-        <div class="col-lg-3 pr-0">
+        {{-- <div class="col-lg-3 pr-0">
             <div class="cont-home-works">
                 <div class="head-upcoming-lesson bg-dark mb-0 pb-2 pt-3 pl-3"><h5 class="font-weight-regular">Homeworks <span class="float-right pr-2" style="line-height: 1.5"><i class="fas fa-chevron-right"></i></span></h5></div>
                 <div class="homework-list custom-scrollbar-css p-2 mCustomScrollbar" data-mcs-theme="minimal-dark">
@@ -317,7 +318,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
 </div>
 
