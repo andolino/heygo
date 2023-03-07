@@ -447,7 +447,7 @@
   }
   input[type="range"] {
     display: block;
-    -webkit-appearance: none;
+    /* -webkit-appearance: none; */
     background-color: #bdc3c7;
     width: 174px;
     height: 5px;
