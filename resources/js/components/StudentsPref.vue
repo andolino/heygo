@@ -29,12 +29,11 @@
                     :key="sl.id" 
                     class="btn btn-light text-left mb-2 p-3 w-100 font-14" 
                     :class="{ 'active' : formPref.students_level_id == sl.id }">
-                    <input type="radio" 
-                      
-                      :value="sl.id" 
-                      v-model="formPref.students_level_id" 
-                      autocomplete="off">
-                    {{ sl.level }} {{ sl.age_range_from }} {{ (sl.age_range_to == 0 ? ' and Above' : '-' + sl.age_range_to) }}
+                      <input type="radio" 
+                        :value="sl.id" 
+                        v-model="formPref.students_level_id" 
+                        autocomplete="off">
+                      {{ sl.level }} {{ sl.age_range_from }} {{ (sl.age_range_to == 0 ? ' and Above' : '-' + sl.age_range_to) }}
                   </label>
                 </div>
               </b-col>

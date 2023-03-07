@@ -10,6 +10,8 @@ use App\Models\TeacherFeeds;
 use App\Models\StudentFeeds;
 use App\Models\TeacherFeedsAttachments;
 use App\Models\StudentFeedsAttachments;
+use App\Models\Messages;
+use App\Models\LessonSchedule;
 use Auth;
 use DB;
 
@@ -554,6 +556,26 @@ class FeedsController extends Controller{
         }
         if ($ratings) {
             return response()->json(['msg'=>'Bookmark Successfully','status'=>1]);
+        } else {
+            return response()->json(['msg'=>'Error','status'=>0]);
+        }
+    }
+    
+    public function saveCancelLessonMsg(Request $request){
+        $data = $request->all();
+        $lesson_option_id = $data['data']['lesson_option_id'];
+        $lesson_option = DB::table('lesson_option')->where('id', $lesson_option_id)->first();
+        $ratings = Messages::create([
+            'students_id' => $data['student_id'],
+            'teachers_id' => $data['data']['teachers_id'],
+            'messages' => $data['msg'],
+            'notif_hdng' => 'Lesson for ' . $lesson_option->title . ' is Cancelled',
+            'notif_msg' => $data['msg'],
+            'created_at' => date('Y-m-d H:i:s')
+        ]);
+        $ls = LessonSchedule::where('id', $data['data']['lesson_id'])->update(['status' => 0]);
+        if ($ls) {
+            return response()->json(['msg'=>'Lessong Successfully Cancelled','status'=>1]);
         } else {
             return response()->json(['msg'=>'Error','status'=>0]);
         }

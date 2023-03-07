@@ -45,12 +45,14 @@ class LoginController extends Controller{
             $this->middleware('guest:admins')->except('logout');
     }
 
-     public function showTeachersLoginForm(){
+    public function showTeachersLoginForm(){
         $logged_in = true;
         $objT = Auth::guard('teachers')->user();
         $objS = Auth::guard('students')->user();
         if (is_null($objT) && is_null($objS)) {
-            $logged_in = false;
+            // $logged_in = false;
+            return redirect()->intended('/');
+            // return redirect()->guest('/');
         }
         return view('auth.login', ['url' => 'teachers', 'logged_in' => $logged_in]);
     }

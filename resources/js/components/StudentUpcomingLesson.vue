@@ -48,13 +48,12 @@
                   <div class="left-stepper-tab-ts h-100" 
                       v-bind:style="{ backgroundImage: 'url(' + bgImgStepper + ')' }">
                     <h2 for="" class="mb-5 text-light font-weight-bold">Start Your Lesson</h2>
-                    <div class="step" :class="{ 'step-active' : showStepper1 }">
+                    <!-- <div class="step" :class="{ 'step-active' : showStepper1 }">
                       <div>
                         <div class="circle">&nbsp;</div>
                       </div>
                       <div>
                         <div class="title mt-0 text-light mr-0">Join the Class</div>
-                        <!-- <div class="caption">Optional</div> -->
                       </div>
                     </div>
                     <div class="step" style="min-height:0em" :class="{ 'step-active' : showStepper2 }">
@@ -64,19 +63,19 @@
                       <div>
                         <div class="title mt-0 text-light mr-0">Classroom</div>
                       </div>
-                    </div>
-                    <div class="student-view-call mb-3">
+                    </div> -->
+                    <!-- <div class="student-view-call mb-3">
                       
-                    </div>
-                    <div class="row">
+                    </div> -->
+                    <!-- <div class="row">
                         <div class="col-lg-6 pr-1"><button type="button" class="btn btn-secondary font-12 w-100"><i class="fas fa-video text-danger"></i> Video On</button></div>
                         <div class="col-lg-6 pl-1"><button type="button" class="btn btn-secondary font-12 w-100"><i class="fas fa-microphone text-success"></i> Audio Off</button></div>
-                      </div>
+                    </div> -->
                   </div>
                 </div>
                 <transition name="fade">
                   <div class="col-lg-8 pl-0 bg-light rounded" v-if="joinClassPanel">
-                    <div class="stepper-control">
+                    <div class="stepper-control" style="height: 650px;">
                       <div class="btn-vertical btn-group-toggle" data-toggle="buttons">
                         <ul id="list-teacher-info-booked" class="pl-0">
                           <li><label for="">Name of Teacher : </label><span class="capitalize"> {{ this.teacherInfo.name }}</span></li>
@@ -94,7 +93,7 @@
                           </div>
                         </div>
                         <div class="row" v-if="this.teacherInfo.lesson_status == 3">
-                          <div class="col-lg-4">
+                          <!-- <div class="col-lg-4">
                             <label for="" class="mb-0">Class Status</label>
                             <select class="form-control form-control-sm" id="class_status">
                               <option hidden selected>----</option>
@@ -102,7 +101,7 @@
                               <option value="1">Reschedule</option>
                               <option value="2">Cancel Lesson</option>
                             </select>
-                          </div>
+                          </div> -->
                           
                         </div>
                         <div v-else-if="this.teacherInfo.lesson_status == 0">
@@ -112,12 +111,46 @@
                           <b-alert show variant="warning">This Schedule is for Approval</b-alert>
                         </div>
                     </div>
+                    <!-- v-if="this.teacherInfo.lesson_status == 3" -->
+                    <!-- v-if="this.teacherInfo.lesson_status == 3" -->
+                    <!-- teacherInfo.app_id -->
                     <button type="button" 
                         class="btn btn-default float-right btn-dashboard mb-3 font-14 stepper-next"
-                        v-on:click="chooseClassStatus(teacherInfo.app_id)" v-if="this.teacherInfo.lesson_status == 3">Next</button>
+                        v-on:click="chooseClassStatus(teacherInfo)" v-if="this.teacherInfo.lesson_status == 3">Next</button>
+                    <button type="button" 
+                        class="btn btn-default float-right btn-dashboard mb-3 font-14 stepper-next"
+                        v-on:click="cancelLesson(teacherInfo)" style="right: 200px !important;" v-if="this.teacherInfo.lesson_status != 0">Cancel</button>
                     <button type="button" v-if="this.teacherInfo.lesson_status != 0"
                         class="btn btn-default float-right btn-dashboard mb-3 font-14 stepper-prev"
                         @click="rescheduleStudentBooked">Reschedule</button>
+
+
+
+                    <div>
+                      <b-modal static class="p-0" v-model="showVideoModal" title="Lesson Cancellation" id="video-container-mod" ref="my-modal" hide-footer>
+                        <form @submit.prevent="submitCancelLessonMsg(teacherInfo)">
+                          <div class="card">
+                            <div class="card-body">
+                              <h5 class="mb-4">Are you sure you want to cancel the class?</h5>
+                              <b-form-textarea
+                                id="textarea"
+                                placeholder="Enter message..."
+                                rows="3"
+                                max-rows="6"
+                                v-model="formCancelMsg.msg"
+                                class="mb-3"
+                              ></b-form-textarea>
+
+                              <!-- <pre class="mt-3 mb-0">{{ text }}</pre> -->
+                              <button type="submit"
+                                    class="btn btn-default btn-sm float-right btn-dashboard mb-3 font-12">Submit</button>
+                            </div>
+                          </div>
+                        </form>
+                      </b-modal>
+                    </div>
+
+
                   </div>
                   
                   <div class="col-lg-8 pl-0 bg-light rounded" v-if="reschedulePanel">
@@ -198,7 +231,7 @@
                   </div>
                   
                 </transition>
-
+                
                 
               </div>
             <!-- </section> -->
@@ -210,12 +243,22 @@
       </div>
     </div>
 
+    
+    <Toasts
+      :show-progress="true"
+      :rtl="false"
+      :max-messages="5"
+      :time-out="4000"
+      :closeable="true"
+    ></Toasts>
 
   </div>
 </template>
 
 <script>
 import moment from 'moment';
+import * as api from './backend/api.js';
+
 export default {
   name: 'TeacherUpcomingLesson',
   props: [ 'base_url' ],
@@ -233,6 +276,11 @@ export default {
         email: '',
         password: '',
       }),
+      formCancelMsg: new Form({
+        msg: '',
+        data: '',
+        student_id: ''
+      }),
       teacherInfo: {
         name             : '',
         date             : '',
@@ -242,7 +290,11 @@ export default {
         app_id           : '',
         lesson_option_id : '',
         lesson_status    : '',
-        teachers_id      : ''
+        teachers_id      : '',
+        communication_app_id      : '',
+        link      : '',
+        link2      : '',
+        link3      : ''
       },
       formToSave: {
         lesson_date: [],
@@ -257,10 +309,38 @@ export default {
       asset: document.querySelector('meta[name="url-asset"]').getAttribute('content'),
       user_id: document.querySelector('meta[name="user-id"]').getAttribute('content'),
       upcomingLessonData: '',
-      sorted_date: ''
+      sorted_date: '',
+      showVideoModal: false
     }
   },
   methods: {
+    cancelLesson(info){
+      this.showVideoModal = !this.showVideoModal
+    },
+    callBackCancelLessonMsg(data){
+      this.$toast.success(data.msg);
+      this.showVideoModal = false;
+      $('#modalStudentStartLesson').appendTo("body").modal('hide');
+
+    },
+    submitCancelLessonMsg(info){
+      this.formCancelMsg.data = info
+      this.formCancelMsg.student_id = this.user_id
+      Swal.fire({
+        title: 'You want to cancel this lesson?',
+        text: "You won't be able to revert this transaction!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#fcb017',
+        cancelButtonColor: '#212222',
+        confirmButtonText: 'Yes'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          api.saveCancelLessonMsg(this.callBackCancelLessonMsg, this.formCancelMsg)
+        } else {
+        }
+      });
+    },
     getUpcomingLesson(){
       axios.post(process.env.MIX_BASE_URL+'/get-teacher-booked-lesson', { 'students_id' : this.user_id }).then((res) => {
           this.upcomingLessonData = res.data;
@@ -270,6 +350,7 @@ export default {
     },
     fnAcceptingLesson(e, lesson_schedule_id){
       axios.post(process.env.MIX_BASE_URL+'/get-booked-teacher-info', { 'lesson_date' : e, 'lesson_schedule_id': lesson_schedule_id }).then((res) => {
+          this.teacherInfo.lesson_id        = res.data[0].lesson_id;
           this.teacherInfo.name             = res.data[0].fullname;
           this.teacherInfo.date             = moment(new Date(res.data[0].start_date)).format('LL');
           this.teacherInfo.time             = res.data[0].time_sched;
@@ -286,6 +367,10 @@ export default {
           this.formToSave.lesson_type = res.data[0].level + ' - ' + res.data[0].title;
 
           this.teacherInfo.teachers_id = res.data[0].id;
+          this.teacherInfo.communication_app_id = res.data[0].communication_app_id;
+          this.teacherInfo.link = res.data[0].link;
+          this.teacherInfo.link2 = res.data[0].link2;
+          this.teacherInfo.link3 = res.data[0].link3;
 
         }).catch((error) => {
           console.log(error);
@@ -327,39 +412,52 @@ export default {
       return 'Class starts in ' + msg;
     },
     chooseClassStatus(e){
-      var cs = document.getElementById("class_status").value;
-      if(cs == 0){
-        Swal.fire({
-          title: 'Are you sure?',
-          text: "Please ready the passcode.",
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#df9509',
-          cancelButtonColor: '#353333',
-          cancelButtonText: 'Wait',
-          confirmButtonText: 'Yes, attend it!'
-        }).then((result) => {
-          if (result.isConfirmed) {
-            // this.joinClassPanel = !this.joinClassPanel;
-            this.showStepper1 = !this.showStepper1;
-            this.showStepper2 = !this.showStepper2;
-            window.open('https://us02web.zoom.us/j/' + e);
-            
-          }
-        });
-      } else if (cs == 1) {
-        this.joinClassPanel = !this.joinClassPanel;
-        this.reschedulePanel = !this.reschedulePanel;
-      } else {
-        Swal.fire({
-          title       : 'Opps!',
-          html        : 'Please Select Class Status!',
-          icon        : 'warning',
-          customClass : {
-           confirmButton : 'btn btn-yellow'
-          }
-        });
+      // var cs = document.getElementById("class_status").value;
+      switch (e.communication_app_id) {
+        case 1:
+          window.open(e.link);
+          break;
+        case 2:
+          window.open(e.link2);
+          break;
+        case 3:
+          window.open(e.link3);
+          break;
+        default:
+          break;
       }
+      // if(cs == 0){
+      //   Swal.fire({
+      //     title: 'Are you sure?',
+      //     text: "Please ready the passcode.",
+      //     icon: 'warning',
+      //     showCancelButton: true,
+      //     confirmButtonColor: '#df9509',
+      //     cancelButtonColor: '#353333',
+      //     cancelButtonText: 'Wait',
+      //     confirmButtonText: 'Yes, attend it!'
+      //   }).then((result) => {
+      //     if (result.isConfirmed) {
+      //       // this.joinClassPanel = !this.joinClassPanel;
+      //       this.showStepper1 = !this.showStepper1;
+      //       this.showStepper2 = !this.showStepper2;
+      //       window.open('https://us02web.zoom.us/j/' + e);
+            
+      //     }
+      //   });
+      // } else if (cs == 1) {
+      //   this.joinClassPanel = !this.joinClassPanel;
+      //   this.reschedulePanel = !this.reschedulePanel;
+      // } else {
+      //   Swal.fire({
+      //     title       : 'Opps!',
+      //     html        : 'Please Select Class Status!',
+      //     icon        : 'warning',
+      //     customClass : {
+      //      confirmButton : 'btn btn-yellow'
+      //     }
+      //   });
+      // }
     },
     selectTimePreferred(event){
       const sorted_date = event.target.getAttribute('data-date');

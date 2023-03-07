@@ -115,6 +115,7 @@ Route::group(['middleware' => 'auth:students'], function () {
     Route::post('/get-conversation-students', [ChatController::class, 'getConversation']);
     Route::get('/student-feeds', [HomeController::class, 'studentFeeds']);
     Route::post('/display-student-feeds', [FeedsController::class, 'displayStudentFeeds']);
+    Route::post('/save-cancel-lesson-msg', [FeedsController::class, 'saveCancelLessonMsg']);
 });
 
 Route::group(['middleware' => 'auth:teachers'], function () {
@@ -135,6 +136,8 @@ Route::group(['middleware' => 'auth:teachers'], function () {
     Route::get('/display-teacher-calendar', [HomeController::class, 'displayTeacherCalendar']);
     Route::get('/get-teachers-availability', [HomeController::class, 'getTeachersAvailability']);
     Route::post('/save-teacher-availability', [HomeController::class, 'saveTeacherAvailability']);
+    Route::post('/save-batch-time-avail', [HomeController::class, 'saveBatchTimeAvail']);
+    Route::post('/unset-batch-time-avail', [HomeController::class, 'unsetBatchTimeAvail']);
     Route::get('/teachers-purchase-history', [HomeController::class, 'teachersPurchaseHistory']);
     Route::get('/start-chat-teachers/{any}', [ChatController::class, 'startChat']);
     Route::post('/messages-teachers', [ChatController::class, 'message']);

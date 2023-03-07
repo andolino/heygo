@@ -307,6 +307,29 @@ class HomeController extends Controller {
         }
     }
     
+    public function saveBatchTimeAvail(){
+        $request = Request::all();
+        $times = $request['selected_date'];
+        $data = $request['data'];
+        $d = [];
+        for ($i=0; $i < count($times); $i++) { 
+            array_push($d, array(
+               'teacher_id' => $request['data']['user_id'],
+               'start_time' => date('Y-m-d H:i:s', strtotime($times[$i]))
+            ));
+        }
+        DB::table('teacher_availability')->insert($d);
+        echo response()->json();
+    }
+    
+    public function unsetBatchTimeAvail(){
+        $request = Request::all();
+        $times = $request['selected_date'];
+        $data = $request['data'];
+        DB::table('teacher_availability')->where('start_time', date('Y-m-d H:i:s', strtotime($times)) . '.0')->delete();
+        echo response()->json();
+    }
+    
     public function getFetchTeacher(){
        return Teachers::latest()->get();
     }
@@ -345,6 +368,8 @@ class HomeController extends Controller {
         $teachers->email = Request::post('email');
         $teachers->account_types_id  = Request::post('account_types_id');
         $teachers->link  = Request::post('link');
+        $teachers->link2  = Request::post('link2');
+        $teachers->link3  = Request::post('link3');
         $teachers->communication_app_id  = Request::post('communication_app_id');
         $teachers->save();
         

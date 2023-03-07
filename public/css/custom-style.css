@@ -818,7 +818,9 @@ footer a{ margin-right: 20px; }
 
 .modal-header {
   height: 54px;
-  background: #df9509;
+	background: #FDC830;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #df9509, #FDC830);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #df9509, #FDC830); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   color: #fff;
 }
 

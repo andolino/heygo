@@ -10,37 +10,46 @@
     >
       <b-row class="w-100">
         <b-col>
-          <b-row>
+
+          <!-- <b-row>
             <b-col>
               <label for="" class="font-12">Time Start</label>
               <datetime format="YYYY-MM-DD H:i:s" width="" v-model="form.time_start"></datetime>
             </b-col>
           </b-row>
-          <!-- <b-row>
-            <b-col>
-              <label for="" class="font-12">Time End</label>
-              <datetime format="YYYY-MM-DD H:i:s" width="" v-model="form.time_end"></datetime>
-            </b-col>
-          </b-row> -->
           <b-row>
             <b-col>
               <label for="" class="font-12" data-tooltip="test">Status</label>
               <b-form-select v-model="form.selected_status" class="rounded-0 font-12" :options="status_options" size="sm"></b-form-select>
             </b-col>
-          </b-row>
-          <b-row>
+          </b-row> -->
+
+
+          <b-row class="mb-2">
             <b-col>
               <b-card-text></b-card-text>
               <div v-if="addAvailDateTime">
-                <b-button href="#" @click="saveAddTeacherAvailability" variant="default" class="font-12">Add</b-button>
+                <!-- <b-button href="#" @click="saveAddTeacherAvailability" variant="default" class="font-12">Add</b-button> -->
               </div>
               <div v-else>
-                <b-button href="#" variant="dark" class="font-12" @click="modalShow = !modalShow">Apply this Time</b-button>
-                <b-button href="#" variant="default" class="font-12" @click="saveAddTeacherAvailability">Update</b-button>
-                <b-button href="#" variant="default" class="font-12" @click="addAvailDateTime = !addAvailDateTime; form.teacher_availability_id = null">Cancel</b-button>
+                <b-button block variant="default" @click="modalShow = !modalShow">Apply this Time</b-button>
+                <!-- <b-button href="#" variant="dark" class="font-12" @click="modalShow = !modalShow">Apply this Time</b-button> -->
+                <!-- <b-button href="#" variant="default" class="font-12" @click="saveAddTeacherAvailability">Update</b-button>
+                <b-button href="#" variant="default" class="font-12" @click="addAvailDateTime = !addAvailDateTime; form.teacher_availability_id = null">Cancel</b-button> -->
               </div>
             </b-col>
           </b-row>
+          
+          <b-row>
+            <b-col>
+              <div>
+                <b-button block variant="default" @click="saveDistanceAvail">Set as Available</b-button>
+                <b-button block variant="default" @click="unsetDistanceAvail">Set as Unavailable</b-button>
+              </div>
+            </b-col>
+          </b-row>
+
+
         </b-col>
         <b-col cols="9">
           <label for=""></label>
@@ -101,7 +110,7 @@
           start: '',
           end: '',
         },
-        selectedDate: null,
+        selectedDate: [],
         lessonPlan: [],
         form: {
           // lesson_plan_id: '',
@@ -129,7 +138,8 @@
           contentHeight: '1900px',
           events: [
             {
-              time_start: this.time_start
+              time_start: this.time_start,
+              selected_date: this.selectedDate
             }
           ],
           // eventColor: '#fff',
@@ -184,6 +194,16 @@
                 }
               });
           },
+          select: (info) => {
+            const vm = [];
+            var a = moment(info.startStr);
+            var b = moment(info.endStr);
+            // If you want an exclusive end date (half-open interval)
+            for (var m = moment(a); m.isBefore(b); m.add(1, 'hours')) {
+              vm.push(m.format('YYYY-MM-DD H:mm A'));
+            }
+            this.selected_date = vm
+          }
         },
         csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
         baseurl: document.querySelector('meta[name="base-url"]').getAttribute('content'),
@@ -263,9 +283,53 @@
             
           }
         });
+      },
+      saveDistanceAvail(){
+        // this.selected_date
+        Swal.fire({
+          title: 'Adding this to your availability?',
+          text: "",
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#fcb017',
+          cancelButtonColor: '#212222',
+          confirmButtonText: 'Yes'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            axios.post(process.env.MIX_BASE_URL+'/save-batch-time-avail', {selected_date: this.selected_date, data: this.form} ).then((res) => {
+              window.location.reload();
+            }).catch((error) => {
+                console.log(error);
+            });
+          } else {
+            
+          }
+        });
+      },
+      unsetDistanceAvail(){
+        Swal.fire({
+          title: 'Removing this to your availability?',
+          text: "",
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#fcb017',
+          cancelButtonColor: '#212222',
+          confirmButtonText: 'Yes'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            axios.post(process.env.MIX_BASE_URL+'/unset-batch-time-avail', {selected_date: this.form.time_start, data: this.form} ).then((res) => {
+              window.location.reload();
+            }).catch((error) => {
+                console.log(error);
+            });
+          } else {
+            
+          }
+        });
       }
     },
     mounted(){
+      var self = this;
       this.form.user_id = this.user_id;
       this.getLessonPlan();
       this.getTeachersAvailability();

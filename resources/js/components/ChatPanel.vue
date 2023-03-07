@@ -23,6 +23,7 @@
                             <div class="col-lg-8 offset-lg-2 pr-0">
                               <div class="msg-txt">
                                 <h6 for="" class="font-12"><strong>{{ $helpers.capFirstLetter(msg.username) }} <span class="float-right">{{ msg.time }}</span></strong></h6>
+                                <h6 v-if="msg.notif_head !== ''">{{ msg.notif_head }}</h6>
                                 {{ msg.msg }}
                               </div>
                             </div>
@@ -189,6 +190,8 @@ export default {
       var container = document.querySelector("#chat_scroller");
       container.scrollTop = container.scrollHeight - container.clientHeight;
     }, 1000);
+
+
   }
 }
 </script>

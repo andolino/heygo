@@ -4,19 +4,77 @@
       <div class="row mt-5">
         <div class="col-lg-7 m-auto">
           <div class="">
-            <label for="" class="text-left w-100">Email</label>
-            <div class="form-group input-group mb-0">
-                <input 
-                  type="text" 
-                  v-model="form.email" 
-                  :class="{'is-invalid' : form.errors.has('email')}" 
-                  class="form-control text-center input-custom font-14 mb-3" 
-                  id="email" 
-                  name="email">
-            </div>
+              <label for="" class="text-left w-100">Email</label>
+              <div class="form-group input-group mb-0">
+                  <input 
+                    type="text" 
+                    v-model="form.email" 
+                    :class="{'is-invalid' : form.errors.has('email')}" 
+                    class="form-control text-center input-custom font-14 mb-3" 
+                    id="email" 
+                    name="email">
+              </div>
+              <label for="" class="text-left w-100">Platforms</label>
+
+              <div class="btn-vertical btn-group-toggle text-center w-100" data-toggle="buttons">
+
+                <label 
+                  class="btn btn-light text-center mb-2 p-3 w-100 font-14" 
+                  :class="{ 'active' : true }">
+                    <input type="radio" 
+                      value="2"
+                      v-model="form.communication_app_id" 
+                      autocomplete="off">
+                      <img :src="asset + 'images/zoom.png'" width="40"> Zoom
+                </label>
+                  <input 
+                      type="text"
+                      :class="{'is-invalid' : true}" 
+                      class="form-control text-center input-custom font-14 mb-3" 
+                      id="link" 
+                      name="link"
+                      v-model="form.link"
+                      placeholder="Link here"/>
+                <label 
+                  class="btn btn-light text-center mb-2 p-3 w-100 font-14" 
+                  :class="{ 'active' : true }">
+                    <input type="radio" 
+                      value="3" 
+                      v-model="form.communication_app_id"
+                      autocomplete="off">
+                      <img :src="asset + 'images/meet.png'" width="40"> Meet
+                </label>
+                  <input 
+                      type="text"
+                      :class="{'is-invalid' : true}" 
+                      class="form-control text-center input-custom font-14 mb-3" 
+                      id="link" 
+                      name="link"
+                      v-model="form.link2"
+                      placeholder="Link here"/>
+
+                <label 
+                    class="btn btn-light text-center mb-2 p-3 w-100 font-14" 
+                    :class="{ 'active' : true }">
+                      <input type="radio" 
+                        value="1" 
+                        v-model="form.communication_app_id"
+                        autocomplete="off">
+                        <img :src="asset + 'images/skype.png'" width="40"> Meet
+                  </label>
+                    <input 
+                        type="text"
+                        :class="{'is-invalid' : true}" 
+                        class="form-control text-center input-custom font-14 mb-3" 
+                        id="link" 
+                        name="link"
+                        v-model="form.link3"
+                        placeholder="Link here"/>
+
+              </div>
             <p class="text-danger text-center" v-if="form.errors.has('email')" v-text="form.errors.get('email')"></p>
-            <label for="" class="text-left w-100">Meeting App</label>
-            <div class="form-group input-group mb-0">
+            <!-- <label for="" class="text-left w-100">Meeting App</label> -->
+            <!-- <div class="form-group input-group mb-0">
                   <select name="communication_app_id" 
                           id="communication_app_id" 
                           :class="[{'is-invalid' : form.errors.has('communication_app_id')}, selectCountryClass]" 
@@ -28,8 +86,8 @@
                             v-for="(t, i) in dataCommApp" 
                             :key="i">{{ t.app_name }}</option>
                   </select>
-            </div>
-            <label for="" class="text-left w-100" v-if="showAppInpLink || form.communication_app_id != ''">Link Invitation</label>
+            </div> -->
+            <!-- <label for="" class="text-left w-100" v-if="showAppInpLink || form.communication_app_id != ''">Link Invitation</label> -->
             <div class="form-group input-group mb-0" v-if="showAppInpLink || form.communication_app_id != ''">
                 <!-- <input 
                   type="text" 
@@ -38,13 +96,13 @@
                   class="form-control text-center input-custom font-14 mb-3" 
                   id="link" 
                   name="link"> -->
-                  <textarea 
+                  <!-- <textarea 
                     id="link" 
                     name="link" 
                     v-model="form.link" 
                     class="form-control input-custom font-14 mb-3"
                     :class="{'is-invalid' : form.errors.has('link')}" 
-                    cols="30" rows="10"></textarea>
+                    cols="30" rows="10"></textarea> -->
             </div>
             <label for="" class="text-left w-100">Account Type</label>
             <div class="form-group input-group mb-0">
@@ -82,7 +140,7 @@
               </small>
             </div>
 
-            <div class="row up-trial-ctrl">
+            <!-- <div class="row up-trial-ctrl">
               <div class="col-lg-12">
                 <label for="">Trial Lesson</label>
               </div>
@@ -121,7 +179,7 @@
                   <label class="form-check-label font-12" :for="lrt.id">{{ lrt.type }}</label>
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <p class="text-danger text-center" v-if="form.errors.has('account_type')" v-text="form.errors.get('account_type')"></p>
             <button 
@@ -192,6 +250,8 @@
             account_types_id: '',
             communication_app_id: '',
             link: '',
+            link2: '',
+            link3: ''
 					}),
           csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
           baseurl: document.querySelector('meta[name="base-url"]').getAttribute('content'),
@@ -255,7 +315,11 @@
             this.form.objective_text = res.data[0].objective_text;
             this.form.account_types_id = res.data[0].account_types_id;
             this.form.communication_app_id = res.data[0].communication_app_id;
+
             this.form.link = res.data[0].link;
+            this.form.link2 = res.data[0].link2;
+            this.form.link3 = res.data[0].link3;
+            
             if (res.data[0].picture != null) {
               this.defaultImg = this.baseurl + '/public/images/profile/teachers/thumb/' + res.data[0].picture;
             }
@@ -280,6 +344,8 @@
 					data.append('account_types_id', this.form.account_types_id);
 					data.append('user_id', this.user_id);
 					data.append('link', this.form.link);
+					data.append('link2', this.form.link2);
+					data.append('link3', this.form.link3);
 					data.append('communication_app_id', this.form.communication_app_id);
 					data.append('user_id', this.user_id);
 					data.append('_token', this.csrf);
@@ -365,7 +431,6 @@
       },
 	  }
 </script>
-
 
 
 <style>

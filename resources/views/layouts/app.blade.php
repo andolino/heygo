@@ -58,7 +58,7 @@
                     data-target="#nav3"> 
                     <span class="navbar-toggler-icon"></span> 
             </button> 
-
+            
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav mr-auto">
@@ -68,23 +68,24 @@
                 <!-- Right Side Of Navbar -->
                 <ul class="navbar-nav ml-auto text-light">
                     <!-- Authentication Links -->
-                    @guest
-                        {{-- @if (Route::has('login')) --}}
+                    {{-- @if (Route::has('login')) --}}
                         {{-- login/teachers
                         login/students --}}
-
-                        @if (!$logged_in)
-                            <li class="nav-item mr-3">
-                                <a href="javascript:void(0);" class="nav-link btn-white font-12 rounded" data-toggle="modal" data-target="#custom-modal-register-teacher">{{ __('Login') }}</a>
-                            </li>
-                        @endif
-                        @if (!$logged_in)
-                            <li class="nav-item">
-                                {{-- <a class="nav-link btn-yellow font-12 rounded" href="{{ route('register') }}">{{ __('Register') }}</a> --}}
-                                <a href="javascript:void(0);" class="nav-link btn-yellow font-12 rounded" data-toggle="modal" data-target="#custom-modal-register-teacher">{{ __('Register') }}</a>
-                            </li>
-                            <!-- Modal -->
-                        @endif
+                        
+                    @if (!Auth::guard('teachers')->check() && !Auth::guard('students')->check())
+                        <li class="nav-item mr-3">
+                            <a href="javascript:void(0);" class="nav-link btn-white font-12 rounded" data-toggle="modal" data-target="#custom-modal-register-teacher">{{ __('Login') }}</a>
+                        </li>
+                    @endif
+                    @if (!Auth::guard('teachers')->check() && !Auth::guard('students')->check())
+                        <li class="nav-item">
+                            {{-- <a class="nav-link btn-yellow font-12 rounded" href="{{ route('register') }}">{{ __('Register') }}</a> --}}
+                            <a href="javascript:void(0);" class="nav-link btn-yellow font-12 rounded" data-toggle="modal" data-target="#custom-modal-register-teacher">{{ __('Register') }}</a>
+                        </li>
+                        <!-- Modal -->
+                    @endif
+                    
+                    @guest
                     @else
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -106,11 +107,11 @@
                         <li class="nav-item mr-3">
                             <a href="{{ url('/teachers'); }}" class="nav-link btn-white font-14 rounded"><i class="fas fa-home"></i></a>
                         </li>
-                    @elseif (Auth::guard('students')->check())
+                    @endif
+                    @if (Auth::guard('students')->check())
                         <li class="nav-item mr-3">
                             <a href="{{ url('/students'); }}" class="nav-link btn-white font-14 rounded"><i class="fas fa-home"></i></a>
                         </li>
-                    @else
                     @endif
                     
                 </ul>

@@ -16,7 +16,7 @@ class Messages extends Authenticatable{
     protected $guard = 'Messages';
     
     protected $fillable = [
-        'students_id', 'teachers_id', 'messages', 'is_teacher', 'created_at', 'updated_at'
+        'students_id', 'teachers_id', 'messages', 'notif_hdng', 'notif_msg', 'is_teacher', 'created_at', 'updated_at'
     ];
 
 }

@@ -87,6 +87,8 @@ class ChatController extends Controller{
         foreach ($messages as $trow) {
             $dlp[] = array(
                 'msg'=>$trow->messages,
+                'notif_head'=>$trow->notif_hdng,
+                'notif_msg'=>$trow->notif_msg,
                 'time'=>date('h:i A', strtotime($trow->create_at)),
                 'username'=> $trow->is_teacher == 0 ? $trow->students_name : $trow->teachers_name,
                 'usertype' => $usertype,
