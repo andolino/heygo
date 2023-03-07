@@ -50,7 +50,7 @@
                       class="form-control text-center input-custom font-14 mb-3" 
                       id="link" 
                       name="link"
-                      v-model="form.link2"
+                      v-model="form.link3"
                       placeholder="Link here"/>
 
                 <label 
@@ -68,7 +68,7 @@
                         class="form-control text-center input-custom font-14 mb-3" 
                         id="link" 
                         name="link"
-                        v-model="form.link3"
+                        v-model="form.link2"
                         placeholder="Link here"/>
 
               </div>
