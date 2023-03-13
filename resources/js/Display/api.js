@@ -25,7 +25,7 @@ export const saveTeachingStrategy = async (data, config) => {
           console.log(res);
           if (res.data.status == 1) {
             Swal.fire({
-                position: 'top-end',
+                position: 'center',
                 icon: 'success',
                 title: res.data.msg,
                 showConfirmButton: false,

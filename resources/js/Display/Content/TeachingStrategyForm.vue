@@ -7,6 +7,8 @@
           label="Title"
           label-for="input-1"
           class="mb-1"
+          invalid-feedback="Title is required"
+          :state="!v$.form.title.$error"
         >
           <b-form-input
             id="input-1"
@@ -15,8 +17,10 @@
             placeholder="Enter title"
             size="lg"
             class=""
-            required
+            :state="v$.form.title.$error? !v$.form.title.$error : null"
           ></b-form-input>
+          
+          
         </b-form-group>
 
         <b-form-group
@@ -24,13 +28,17 @@
           label="Lesson Type"
           label-for="select-1"
           class="mb-1"
+          invalid-feedback="Lesson type is required"
+          :state="!v$.form.lesson_type.$error"
         >
           <b-form-select 
             id="select-1" 
             class="" 
             size="lg"
             v-model="form.lesson_type" 
-            :options="lesson_type"></b-form-select>
+            :options="lesson_type"
+            :state="v$.form.lesson_type.$error? !v$.form.lesson_type.$error : null"
+            ></b-form-select>
         </b-form-group>
         
         <b-form-group
@@ -38,8 +46,11 @@
           label="Level"
           label-for="select-2"
           class="mb-1"
+          invalid-feedback="Level is required"
+          :state="!v$.form.student_level.$error"
         >
-          <b-form-select id="select-2" v-model="form.student_level" :options="student_level" size="lg" class=""></b-form-select>
+          <b-form-select id="select-2" v-model="form.student_level" :options="student_level" size="lg" class="" 
+          :state="v$.form.student_level.$error? !v$.form.student_level.$error : null"></b-form-select>
         </b-form-group>
 
         <!-- <div>
@@ -57,8 +68,8 @@
             <!-- <pre class="language-json"><code>{{ form.value_category  }}</code></pre> -->
         <!-- </div> -->
 
-        <div>
-          <label class="typo__label">Category</label>
+        <div :class="{ 'invalid-feedback': v$.form.value_category.$error }">
+          <label class="typo__label" style="color: initial">Category</label>
           <multiselect v-model="form.value_category" 
                         :options="option_category" 
                         :multiple="true" 
@@ -68,20 +79,32 @@
                         placeholder="Type to search" 
                         track-by="name" 
                         label="name"
-                        class="mb-3">
+                        class="mb-3"
+                        >
+                        
           <span slot="noResult">Oops! No elements found. Consider changing the search query.</span>
           </multiselect>
+          <label class="typo__label form__label" v-if="v$.form.value_category.$error">Category must have at least one value</label>
+          
         </div>
-
+        <b-form-group
+          id="input-group-4"
+          label="Description"
+          label-for="description"
+          class="mb-1"
+          invalid-feedback="Description is required"
+          :state="!v$.form.description.$error"
+        >
         <b-form-textarea
-          id="textarea"
+          id="description"
           v-model="form.description"
           placeholder="Description..."
           rows="5"
           max-rows="8"
           class="mb-3"
+          :state="v$.form.description.$error? !v$.form.description.$error : null"
         ></b-form-textarea>
-        
+        </b-form-group>
         <b-form-textarea
           id="textarea"
           v-model="form.video_links"
@@ -108,10 +131,16 @@
           <pre class="m-0">{{ form }}</pre>
         </b-card> -->
 
-        <b-button type="submit" size="sm" class="float-right ml-2" variant="warning">Save</b-button>
+        <b-button type="submit" size="sm" class="float-right ml-2" variant="warning" :disabled="disabled">Save</b-button>
         <b-button type="reset" size="sm" class="float-right" variant="default">Reset</b-button>
       </b-form>
-     
+      <p
+      v-for="error of v$.form.$errors"
+      :key="error.$uid"
+    >
+    <!-- Same as above -->
+    </p>
+    
     </div>
   </div>
 </template>
@@ -120,6 +149,8 @@
 
 import * as api from '../api.js';
 import Multiselect from 'vue-multiselect'
+import {  required } from '@vuelidate/validators'
+import { useVuelidate } from '@vuelidate/core'
 
 export default {
     name: 'TeachingStrategyForm',
@@ -131,6 +162,17 @@ export default {
         type: Number,
         default: 0
       }
+    },
+    validations : {
+      
+        form: {
+          value_category: { required, $autoDirty: true },
+          lesson_type: { required, $autoDirty: true },
+          student_level: { required, $autoDirty: true },
+          title: {required, $autoDirty: true},
+          description: {required, $autoDirty: true}
+        }
+      
     },
     data() {
       return {
@@ -157,12 +199,16 @@ export default {
         ],
         student_level: [],
         show: true,
+        disabled: false,
         
       }
     },
     methods: {
-      onSubmitStrategy(event) {
-        event.preventDefault()
+      async onSubmitStrategy(event) {
+        event.preventDefault();
+        const isFormCorrect = await this.v$.$validate();
+        if (!isFormCorrect) return;
+        this.disabled = true;
         api.saveTeachingStrategy(this.form);
       },
       getLessonPlanfn(data){
@@ -227,7 +273,8 @@ export default {
       if (this.edit_id > 0) {
         api.getTeachingStrategyView(this.viewCardPerStrat, this.edit_id);
       }
-    }
+    },
+    setup: () => ({ v$: useVuelidate() }),
 }
 </script>
 

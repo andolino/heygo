@@ -72,7 +72,7 @@
               <!-- <div class="col-lg-1 mr-2"><a href="" class="text-light"><i class="fas fa-paperclip"></i></a></div>
               <div class="col-lg-1"><a href="" class="text-light"><i class="fas fa-camera"></i></a></div> -->
             </div>
-            <button type="button" @click="postTeacherFeed" class="btn btn-default mb-3 font-14">Post</button>
+            <button type="button" @click="postTeacherFeed" class="btn btn-default mb-3 font-14" :disabled="postDisabled">Post</button>
           </div>
         </div>
       </div>
@@ -304,7 +304,8 @@ export default {
       },
       isActive : false,
       validationfail : '',
-      sideTop: false
+      sideTop: false,
+      postDisabled: false,
     }
   },
 
@@ -365,6 +366,7 @@ export default {
             this.validationfail = res.data.validationfail;
            
             this.isActive = true;
+            this.postDisabled = true;
             return false;
           }else{
               Swal.fire({
@@ -376,7 +378,7 @@ export default {
             }).then((result) => {
               /* Read more about handling dismissals below */
               if (result.dismiss === Swal.DismissReason.timer) {
-                // window.location.reload();
+                window.location.reload();
               }
             });
           }

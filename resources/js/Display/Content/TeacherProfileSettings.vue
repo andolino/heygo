@@ -36,7 +36,7 @@
               <label for="" class="text-left w-100">Contact</label>
               <div class="form-group input-group mb-0">
                   <input 
-                    type="text" 
+                    type="number" 
                     v-model="form.contact_no" 
                     :class="{'is-invalid' : form.errors.has('contact_no')}" 
                     class="form-control text-center input-custom font-14 mb-3" 
@@ -50,7 +50,8 @@
               <label for="" class="text-left w-100">Rate Per Hour</label>
               <div class="form-group input-group mb-0">
                   <input 
-                    type="text" 
+                    type="number"
+                    min="0"
                     v-model="form.rate_per_hr" 
                     :class="{'is-invalid' : form.errors.has('rate_per_hr')}" 
                     class="form-control text-center input-custom font-14 mb-3" 
@@ -307,6 +308,17 @@
         // }
         // elem.addEventListener("input", rangeValue);
         
+      },
+      watch: {
+        'form.firstname': function(val) {
+          this.form.firstname = val.replace(/\W/g, "");
+        },
+        'form.lastname': function(val) {
+          this.form.lastname = val.replace(/\W/g, "");
+        },
+        'form.contact_no': function(val) {
+          this.form.contact_no = val.replace(/\W/g, "");
+        },
       },
 	  }
 </script>
