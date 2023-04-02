@@ -105,7 +105,7 @@
                     cols="30" rows="10"></textarea> -->
             </div>
             <label for="" class="text-left w-100">Account Type</label>
-            <div class="form-group input-group mb-0">
+            <!-- <div class="form-group input-group mb-0">
                   <select name="account_types_id" 
                           id="account_types_id" 
                           :class="[{'is-invalid' : form.errors.has('account_types_id')}, selectCountryClass]" 
@@ -118,18 +118,23 @@
                             v-for="(t, i) in account_types" 
                             :key="i">{{ t.type }}</option>
                   </select>
-            </div>
-            <div class="card p-3" v-if="isTeacherAccount == '1'">
-              <small class="text-muted">
-                Inclusion:
-                <ul>
-                  <li>Can Upload max 3 workbooks</li>
-                  <li>Maximum of 50mb for (3 workbooks)</li>
-                  <li>25% Commission for workbooks sales</li>
+            </div> -->
+            <div class="text-muted card p-4 font-14" v-if="isTeacherAccount == '1'">
+                <ul class="mb-0" style="list-style-type: none;">
+                  <li class="">Upload Limit</li>
+                  <li class="">Up to 3 workbooks to No Limit</li>
+                  <hr>
+                  <li>File Size Limit</li>
+                  <li>200mb to No Limit</li>
+                  <hr>
+                  <li>Payout (on all sales)</li>
+                  <li>64% to 84%</li>
                 </ul>
-              </small>
+                <button 
+                    type="button" 
+                    class="btn btn-default font-14 float-right text-center btn-cust-radius pr-4 pl-4 mt-4 mb-4" >Reset Password</button>
             </div>
-            <div class="card p-3" v-if="isTeacherAccount == '2'">
+            <!-- <div class="card p-3" v-if="isTeacherAccount == '2'">
               <small class="text-muted">
                 Inclusion:
                 <ul>
@@ -138,7 +143,7 @@
                   <li>$5 monthly subscription</li>
                 </ul>
               </small>
-            </div>
+            </div> -->
 
             <!-- <div class="row up-trial-ctrl">
               <div class="col-lg-12">
@@ -247,7 +252,7 @@
             objective_title: '',
             objective_text: '',
             currency_rate_id: '',
-            account_types_id: '',
+            account_types_id: 1,
             communication_app_id: '',
             link: '',
             link2: '',

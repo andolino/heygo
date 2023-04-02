@@ -14,7 +14,6 @@
                   @input="assignFilterData">
     <span slot="noResult">Oops! No elements found. Consider changing the search query.</span>
     </multiselect>
-    <span>{{ form.value_category }}</span>
   </div>
 </template>
 

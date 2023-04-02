@@ -57,6 +57,7 @@
         "vue2-dropzone": "^3.6.0",
         "vuejs-datetimepicker": "^1.1.13",
         "vuetify": "^2.6.9",
-        "vuetify-loader": "^1.9.2"
+        "vuetify-loader": "^1.9.2",
+        "vuex": "^4.0.2"
     }
 }

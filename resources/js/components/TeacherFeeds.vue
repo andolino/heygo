@@ -328,6 +328,7 @@ export default {
       });
     },
     afterUploadComplete: async function(response){
+      this.postDisabled = true
       if (response.status =="success") {
         
         Swal.fire({
@@ -357,6 +358,7 @@ export default {
       formData.append('teacher_id', this.user_id);
     },
     postTeacherFeed: async function(){
+      this.postDisabled = true;
       if (this.$refs.myVueDropzone?.processQueue() === undefined) {
         axios.post(process.env.MIX_BASE_URL+'/api/post-teacher-feeds', 
             { 'feed_body': this.post_msg, 'teacher_id': this.user_id 
@@ -366,11 +368,11 @@ export default {
             this.validationfail = res.data.validationfail;
            
             this.isActive = true;
-            this.postDisabled = true;
+            this.postDisabled = false;
             return false;
           }else{
               Swal.fire({
-              position: 'top-end',
+              position: 'center',
               icon: 'success',
               title: res.data.message,
               showConfirmButton: false,
