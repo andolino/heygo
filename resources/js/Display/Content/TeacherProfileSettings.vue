@@ -232,7 +232,19 @@
         resSaveProfile(res){
           if (res == '') {
             //no error
-            window.location.reload();
+            // window.location.reload();
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Profile saved successfully',
+              showConfirmButton: false,
+              timer: 2000
+            }).then((result) => {
+              /* Read more about handling dismissals below */
+              if (result.dismiss === Swal.DismissReason.timer) {
+                window.location.reload();
+              }
+            });
           } else {
             this.form.errors.record(res.response.data.errors);
           }
@@ -311,10 +323,10 @@
       },
       watch: {
         'form.firstname': function(val) {
-          this.form.firstname = val.replace(/\W/g, "");
+          this.form.firstname = val.replace(/[^A-Za-z .]/g, "");
         },
         'form.lastname': function(val) {
-          this.form.lastname = val.replace(/\W/g, "");
+          this.form.lastname = val.replace(/[^A-Za-z .]/g, "");
         },
         'form.contact_no': function(val) {
           this.form.contact_no = val.replace(/\W/g, "");

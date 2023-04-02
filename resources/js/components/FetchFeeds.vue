@@ -352,13 +352,12 @@
                   </div>
                   <div class="col-lg-8 pl-0" v-if="showStepper5">
                     <div class="stepper-control">
-                        <h5>These are the communication tools your teacher uses.</h5>
-                        <label class="mb-3 font-12">Please choose your preferred communication tool.</label>
+                        <h5>Booked successfully.</h5>
+                        <!-- <label class="mb-3 font-12">Please choose your preferred communication tool.</label> -->
                         
-                        <div class="row">
+                        <!-- <div class="row">
                           <div class="col-lg-6 m-auto">
                             <div class="btn-vertical btn-group-toggle" data-toggle="buttons">
-                              <!-- <label v-for="lo in lessonOption" :key="lo.id" v-on:click="getTitleLessonOpt(lo.title)" class="btn btn-light w-100 mb-2 p-3"> -->
                               <label class="btn btn-light w-100 mb-2 p-3" v-for="gca in getComApp" :key="gca.id" @click="pickComApp = false">
                                 <input type="radio" v-model="formToSave.communication_app_id" :value="gca.id" name="communication-tool" autocomplete="off"> 
                                 <span class="sc-title"><img :src="asset + 'images/' + gca.icon" alt=""> {{ gca.app_name }}</span>
@@ -371,11 +370,12 @@
                               name="com_id"
                               v-model="formToSave.app_id" :disabled="pickComApp">
                           </div>
-                        </div>
+                        </div> -->
                     </div>
                     <button type="button" 
                             class="btn btn-default float-right btn-dashboard mb-3 font-14 stepper-next"
                             @click="submitBookedSchedule">Finished</button>
+
                     <!-- <button type="button" 
                         class="btn btn-default float-left btn-dashboard mb-3 font-14 stepper-prev"
                         v-on:click="showPaymentSection('previous')">Previous</button> -->
@@ -620,19 +620,22 @@
         // data.append('lesson_plan_id', this.formToSave.lesson_plan_id);
         // data.append('lesson_option_id', this.formToSave.lesson_option_id);
         // data.append('lesson_date', this.formToSave.lesson_date);
-        data.append('communication_app_id', this.formToSave.communication_app_id);
-        data.append('app_id', this.formToSave.app_id);
+        
         // data.append('user_id', this.user_id);
         // data.append('_token', this.csrf);
-        data.append('lesson_schedule_id', this.lesson_schedule_id);
-        axios.post(process.env.MIX_BASE_URL+'/save-email-communication', data).then((res) => {
-          if (typeof res.data.errors === 'undefined') {
-            window.location.reload();
-          }
-        }).catch((error) => {
-          console.log(error);
-          // this.form.errors.record(error.response.data.errors);
-        });
+        window.location.reload();
+
+        // data.append('communication_app_id', this.formToSave.communication_app_id);
+        // data.append('app_id', this.formToSave.app_id);
+        // data.append('lesson_schedule_id', this.lesson_schedule_id);
+        // axios.post(process.env.MIX_BASE_URL+'/save-email-communication', data).then((res) => {
+        //   if (typeof res.data.errors === 'undefined') {
+        //     window.location.reload();
+        //   }
+        // }).catch((error) => {
+        //   console.log(error);
+        //   // this.form.errors.record(error.response.data.errors);
+        // });
       },
       submitStudentPayment: function (e) {
         this.showLoading = true;

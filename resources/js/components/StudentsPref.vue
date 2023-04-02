@@ -13,9 +13,10 @@
       <b-container class="bv-example-row p-0">
         <b-row>
           <b-col class="left-stepper-tab-ts h-100 p-0" style="
-            border-radius: 0;background-repeat: no-repeat;
-            background-size: cover;
-            height: auto !important;" v-bind:style="{ backgroundImage: 'url(' + bgImgStepper + ')' }">
+                border-radius: 0; 
+                background-repeat: no-repeat;
+                background-size: cover;
+                height: auto !important;" v-bind:style="{ backgroundImage: 'url(' + bgImgStepper + ')' }">
             <!-- <b-img :src="asset + '/images/ellipse-1.png'"></b-img> -->
               <h5 for="" class="lft-title-pref mb-3">First Trial Lesson</h5>
           </b-col>
@@ -42,7 +43,7 @@
               <b-col>
                 <button type="button" 
                     class="btn btn-default float-right btn-dashboard mb-3 font-14 ml-2"
-                    v-on:click="clickStepper('1', 'next')">Next</button>
+                    v-on:click="clickStepper('1', 'next')" :disabled="this.formPref.students_level_id === ''">Next</button>
               </b-col>
             </b-row>
           </b-col>
@@ -85,7 +86,9 @@
               <b-col>
                 <button type="button" 
                     class="btn btn-default float-right btn-dashboard mb-3 font-14 ml-2"
-                    v-on:click="clickStepper('2', 'next')">Next</button>
+                    v-on:click="clickStepper('2', 'next')"
+                    :disabled="this.formPref.lesson_type_details_id.length === 0"
+                    >Next</button>
                 <button type="button" 
                     class="btn btn-default float-right btn-dashboard mb-3 font-14"
                     v-on:click="clickStepper('2', 'back')">Back</button>
@@ -130,7 +133,8 @@
               <b-col >
                 <button type="button" 
                     class="btn btn-default float-right btn-dashboard mb-3 font-14 ml-2"
-                    v-on:click="clickStepper('3', 'next')">Next</button>
+                    v-on:click="clickStepper('3', 'next')"
+                    :disabled="this.formPref.students_test_preparation_id === ''">Next</button>
                 <button type="button" 
                     class="btn btn-default float-right btn-dashboard mb-3 font-14"
                     v-on:click="clickStepper('3', 'back')">Back</button>
@@ -162,7 +166,9 @@
               <b-col >
                 <button type="button" 
                     class="btn btn-default float-right btn-dashboard mb-3 font-14 ml-2"
-                    v-on:click="clickStepper('4', 'next')">Next</button>
+                    v-on:click="clickStepper('4', 'next')"
+                    :disabled="this.formPref.students_english_level_id === ''"
+                    >Next</button>
                 <button type="button" 
                     class="btn btn-default float-right btn-dashboard mb-3 font-14"
                     v-on:click="clickStepper('4', 'back')">Back</button>
@@ -194,7 +200,8 @@
               <b-col >
                 <button type="button" 
                     class="btn btn-default float-right btn-dashboard mb-3 font-14 ml-2"
-                    v-on:click="clickStepper('5', 'next')">Done</button>
+                    v-on:click="clickStepper('5', 'next')"
+                    :disabled="this.formPref.students_date_plan_id === ''">Done</button>
                 <button type="button" 
                     class="btn btn-default float-right btn-dashboard mb-3 font-14"
                     v-on:click="clickStepper('5', 'back')">Back</button>
@@ -272,6 +279,7 @@
           this.showStepper2 = !this.showStepper2;
         }
         if (ord=='4' && action=='next') {
+          console.log(this.formPref.students_english_level_id)
           this.showStepper5 = !this.showStepper5;
           this.showStepper4 = !this.showStepper4;
         }

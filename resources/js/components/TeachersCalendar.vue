@@ -169,7 +169,10 @@
             }
           },
           dateClick: function(info) {
-              Swal.fire({
+            
+            if(moment(info.date).isBefore(moment().toDate())) return false; // disable previous selection
+           
+            Swal.fire({
                 title: 'Confirm',
                 html: "Are you sure on this date? </br>" + moment(info.date).format('lll'),
                 icon: 'warning',
