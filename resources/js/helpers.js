@@ -15,13 +15,13 @@ export default {
     }
   },
   limitText(string) {
-    return string.substring(0,34) + '...';
+    return string?.substring(0,34) + '...';
   },
   limitTextFlex(string, limit) {
-    return string.substring(0,limit) + '...';
+    return string?.substring(0,limit) + '...';
   },
   definedLimitText(string, limit=60) {
-    return string.substring(0,limit) + '...';
+    return string?.substring(0,limit) + '...';
   },
   fnCompRate(sum, count){
     var x = [];
