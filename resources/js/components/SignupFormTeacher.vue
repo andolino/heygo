@@ -52,7 +52,7 @@
 		import TeacherLogin from './TeacherLogin';
     export default {
 			name: "SignupFormTeacher",
-			props: [ 'base_url' ],
+			props: [ 'base_url', 'is_login' ],
 			components: {
 				TeacherLogin
 			},
@@ -62,8 +62,8 @@
 						email: '',
 						password: '',
 					}),
-					showFormSignUp : true,
-					showFormLogin : false,
+					showFormSignUp : this.is_login == 0 ? true : false,//true,
+					showFormLogin : this.is_login == 1 ? true : false,//false,
 					csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
 					btnSignup: {
 						flg: false,

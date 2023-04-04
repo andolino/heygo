@@ -16,7 +16,7 @@
             <TeachingStrategyForm :edit_id="editId" />
           </b-col>
           <b-col cols="9" v-else-if="showFrmAddStrat==4">
-            <TeachingStrategyView :teaching_strategy_id="viewPanel.id" />
+            <TeachingStrategyView :teaching_strategy_id="viewPanel.id" @dashboard="backToDashboard" />
           </b-col>
           <b-col cols="9" v-else>
             <b-row>
@@ -101,6 +101,9 @@ export default {
       }
     },
     methods: {
+      backToDashboard(v){
+        this.showFrmAddStrat = v;
+      },
       viewStrategyPlan(id){
         this.viewPanel.id = id; 
         this.showFrmAddStrat=4;

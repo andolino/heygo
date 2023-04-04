@@ -2,9 +2,10 @@
   <div>
     <div>
       <b-card v-for="ld in lpSData" :key="ld.id">
+        <b-button variant="outline-default" size="sm" @click="backDashboard(1)" class="rounded-0 border-0"><i class="fas fa-chevron-left"></i> Back</b-button>
         <b-button variant="outline-warning" size="sm" class="float-right rounded-0"><i class="fas fa-flag"></i> Report</b-button>
         <b-button variant="outline-default" size="sm" class="float-right rounded-0 mr-1" v-on:click="editStrategyLesson(ld.id)" v-if="ld.teachers_id == ratingsData.user_id"><i class="fas fa-edit"></i> Edit</b-button>
-        <h3>{{ ld.title }}</h3>
+        <h3 class="mt-3">{{ ld.title }}</h3>
         <b-card-text class="text-muted">{{ld.lesson_type}}</b-card-text>
         <b-row class="mb-3">
           <b-col class="font-14">
@@ -100,6 +101,10 @@ export default {
         type: Number,
         default: 0
       },
+      showFrmAddStrat: {
+        type: Number,
+        default: 0
+      },
     },
     components: {},
     data() {
@@ -114,10 +119,15 @@ export default {
         },
         successRate: false,
         category_display: '',
-        moment: moment
+        moment: moment,
       }
     },
     methods: {
+      backDashboard(n){
+        // this.showFrmAddStrat = n;
+        // this.dashboardTab = n;
+        this.$emit('dashboard', n);
+      },
       clickStar(fr){
         var r = parseInt(fr.slice(-1));
         for (let i = r; i <= 5; i++) {

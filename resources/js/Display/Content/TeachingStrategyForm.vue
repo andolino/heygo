@@ -78,7 +78,7 @@
         <!-- <pre class="language-json"><code>{{ form.value_category  }}</code></pre> -->
         <!-- </div> -->
 
-        <div :class="{ 'invalid-feedback': v$.form.value_category.$error }">
+        <!-- <div :class="{ 'invalid-feedback': v$.form.value_category.$error }"> -->
           <label class="typo__label" style="color: initial">Category</label>
           <multiselect
             v-model="form.value_category"
@@ -90,7 +90,7 @@
             placeholder="Type to search"
             track-by="name"
             label="name"
-            class="mb-3"
+            class="mb-1"
           >
             <span slot="noResult"
               >Oops! No elements found. Consider changing the search
@@ -98,11 +98,11 @@
             >
           </multiselect>
           <label
-            class="typo__label form__label"
+            class="typo__label form__label text-danger font-14"
             v-if="v$.form.value_category.$error"
             >Category must have at least one value</label
           >
-        </div>
+        <!-- </div> -->
         <b-form-group
           id="input-group-4"
           label="Description"
